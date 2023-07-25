@@ -54,7 +54,7 @@ class _MenuState extends State<Menu> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xFF009688),
+                    color: Color(0xFF3BB143),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20.0),
                       bottomRight: Radius.circular(20.0),
@@ -116,7 +116,7 @@ class _MenuState extends State<Menu> {
                     ]),
                     child: CircleAvatar(
                       radius: 70.0,
-                      backgroundColor: Color(0xff009688),
+                      backgroundColor: Color(0xFF3BB143),
                       child: Container(
                           padding: EdgeInsets.only(top: 12.0, bottom: 10.0),
                           child: Image.asset(
@@ -159,7 +159,7 @@ class _MenuState extends State<Menu> {
                             begin: Alignment(1.00, 0.00),
                             colors: [
                               Color(0x00009688),
-                              Color(0xFF009688),
+                              Color(0xFF3BB143),
                             ],
                           ),
                           shape: RoundedRectangleBorder(
@@ -213,7 +213,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -263,7 +263,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -314,7 +314,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -367,7 +367,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -418,7 +418,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -471,7 +471,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -523,7 +523,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -574,7 +574,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -626,7 +626,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -678,7 +678,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -729,7 +729,7 @@ class _MenuState extends State<Menu> {
                           begin: Alignment(1.00, 0.00),
                           colors: [
                             Color(0x00009688),
-                            Color(0xFF009688),
+                            Color(0xFF3BB143),
                           ],
                         ),
                         shape: RoundedRectangleBorder(

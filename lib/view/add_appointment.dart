@@ -78,14 +78,14 @@ class _AddAppointmentState extends State<AddAppointment> {
     if (picked != null) {
       setState(() {
         _time = picked!;
-        print(picked);
+        // print(picked);
         selectTimes =
             "${picked?.hour}:${picked?.minute}:${picked?.period.name.toUpperCase()}";
       });
     }
   }
 
-  void _pickedImage() {
+  void _pickedImage(int from) {
     showDialog<ImageSource>(
       context: context,
       builder: (context) =>
@@ -93,63 +93,81 @@ class _AddAppointmentState extends State<AddAppointment> {
         TextButton(
             child: Text("Camera"),
             onPressed: () {
-              _getFromCamera();
+              _getFromCamera(from);
               Navigator.pop(context);
             }),
         TextButton(
             child: Text("Gallery"),
             onPressed: () {
-              _getFromGallery();
+              _getFromGallery(from);
               Navigator.pop(context);
             }),
       ]),
     );
   }
 
-  void _uplodHoroscopeImage() {
-    showDialog<ImageSource>(
-      context: context,
-      builder: (context) =>
-          AlertDialog(content: Text("Choose image source"), actions: [
-        TextButton(
-            child: Text("Camera"),
-            onPressed: () {
-              _getHoroscopeFromCamera();
-              Navigator.pop(context);
-            }),
-        TextButton(
-            child: Text("Gallery"),
-            onPressed: () {
-              _getHoroscopeFromGallery();
-              Navigator.pop(context);
-            }),
-      ]),
-    );
-  }
+  // void _uplodHoroscopeImage() {
+  //   showDialog<ImageSource>(
+  //     context: context,
+  //     builder: (context) =>
+  //         AlertDialog(content: Text("Choose image source"), actions: [
+  //       TextButton(
+  //           child: Text("Camera"),
+  //           onPressed: () {
+  //             _getHoroscopeFromCamera();
+  //             Navigator.pop(context);
+  //           }),
+  //       TextButton(
+  //           child: Text("Gallery"),
+  //           onPressed: () {
+  //             _getHoroscopeFromGallery();
+  //             Navigator.pop(context);
+  //           }),
+  //     ]),
+  //   );
+  // }
 
-  _getFromGallery() async {
-    PickedFile? pickedFile = await ImagePicker().getImage(
-      source: ImageSource.gallery,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-      });
+  _getFromGallery(int from) async {
+    try{
+      PickedFile? pickedFile = await ImagePicker().getImage(
+        source: ImageSource.gallery,
+        maxWidth: 900,
+        maxHeight: 1600,
+        imageQuality: 50,
+      );
+      if (pickedFile != null) {
+        setState((){
+          if(from==0) {
+            image = File(pickedFile.path);
+          }else{
+            horoscopeImage = File(pickedFile.path);
+          }
+        });
+      }
+    }catch(error){
+      print(error);
     }
   }
 
-  _getFromCamera() async {
-    PickedFile? pickedFile = await ImagePicker().getImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-      });
+  _getFromCamera(int from) async {
+    try {
+      PickedFile? pickedFile = await ImagePicker().getImage(
+        source: ImageSource.camera,
+        maxWidth: 900,
+        maxHeight: 1600,
+        imageQuality: 50,
+      );
+      if (pickedFile != null) {
+        setState(() {
+          if(from==0) {
+            image = File(pickedFile.path);
+          }else{
+            horoscopeImage = File(pickedFile.path);
+          }
+        });
+      }
+    }catch(error){
+      print(error);
     }
   }
 
@@ -177,28 +195,36 @@ class _AddAppointmentState extends State<AddAppointment> {
   }
 
   _getHoroscopeFromGallery() async {
+    try{
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
-      maxWidth: 1800,
-      maxHeight: 1800,
+      maxWidth: 1000,
+      maxHeight: 1000,
     );
     if (pickedFile != null) {
       setState(() {
         horoscopeImage = File(pickedFile.path);
       });
     }
+  }catch(error){
+    print(error);
+  }
   }
 
   _getHoroscopeFromCamera() async {
-    PickedFile? pickedFile = await ImagePicker().getImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        horoscopeImage = File(pickedFile.path);
-      });
+    try {
+      PickedFile? pickedFile = await ImagePicker().getImage(
+        source: ImageSource.camera,
+        maxWidth: 1000,
+        maxHeight: 1000,
+      );
+      if (pickedFile != null) {
+        setState(() {
+          horoscopeImage = File(pickedFile.path);
+        });
+      }
+    }catch(error){
+      print(error);
     }
   }
 
@@ -260,29 +286,30 @@ class _AddAppointmentState extends State<AddAppointment> {
     });
   }
 
-  void getContactPermission() async {
+  void getContactPermission(BuildContext context) async {
     if (await Permission.contacts.isGranted) {
-      getContacts();
+      // getContacts();
+      pickContact(context);
     } else {
       await Permission.contacts.request();
     }
   }
 
-  void getContacts() async {
-    setState(() {
-      isLoading = true;
-    });
-    contacts = await ContactsService.getContacts();
-    print(contacts[0].phones![0].value);
+  // void getContacts() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   contacts = await ContactsService.getContacts();
+  //   print(contacts[0].phones![0].value);
+  //
+  //   foundContacts = contacts;
+  //   // print(foundContacts);
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
-    foundContacts = contacts;
-    print(foundContacts);
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  Future<Contact?> pickContact(BuildContext context) async {
+  void pickContact(BuildContext context) async {
     try {
       final Contact? contact = await ContactsService.openDeviceContactPicker();
       setState(() {
@@ -292,12 +319,12 @@ class _AddAppointmentState extends State<AddAppointment> {
         } else {
           phoneNumber.text = '';
         }
+        print("???${userName.text}");
+        print("???${phoneNumber.text}");
       });
-      return contact;
     } catch (e) {
-      print(" ????  ${e}");
+      // print(" ????  ${e}");
       // Handle any exceptions here, if necessary.
-      return null;
     }
   }
 
@@ -306,7 +333,6 @@ class _AddAppointmentState extends State<AddAppointment> {
     // userName.text = widget.name;
     // phoneNumber.text = widget.number;
     categoryMethod();
-    getContactPermission();
     super.initState();
   }
 
@@ -326,7 +352,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Color(0xFF009688),
+                        color: Color(0xFF3BB143),
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(20.0),
                           bottomRight: Radius.circular(20.0),
@@ -401,7 +427,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           ),
                               child: InkWell(
                                 onTap: () {
-                                  _pickedImage();
+                                  _pickedImage(0);
                                 },
                                 child: image == null || image.path.isEmpty
                                     ? ClipRRect(
@@ -410,7 +436,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                                         child: Container(
                                           height: 100,
                                           width: 100,
-                                          color: Color(0xff009688),
+                                          color: Color(0xFF3BB143),
                                           child: Image.asset(
                                             "assets/Group 48.png",
                                             color: Colors.white,
@@ -448,8 +474,104 @@ class _AddAppointmentState extends State<AddAppointment> {
                                   fontWeight: FontWeight.w400,
                                 )),
                           ),
+
+
                           Container(
-                            margin: EdgeInsets.only(bottom: 10.0),
+                            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Text("Horscope Image",
+                                style: TextStyle(
+                                  color: Color(0xFF8A92A2),
+                                  fontSize: 13.55,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w400,
+                                )
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+
+                                    _pickedImage(1);
+                                    // _uplodHoroscopeImage();
+                                  },
+                                  child: Container(
+                                    height: 45,
+                                    alignment: Alignment.center,
+                                    // margin: EdgeInsets.only(
+                                    // top: 20.0, bottom: 20.0),
+                                    // padding: EdgeInsets.symmetric(
+                                    //     horizontal: 47.62, vertical: 5.0),
+                                    decoration: ShapeDecoration(
+                                      color: Color(0xFF526872),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset("assets/Icon-Color.png"),
+                                        SizedBox(width: 5.0,),
+                                        Text(
+                                          'UPLOAD',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _viewHoroscopeImage();
+                                    },
+                                    child: Container(
+                                      height: 45,
+                                      // alignment: Alignment.center,
+                                      // margin: EdgeInsets.only(
+                                      //     top: 20.0, bottom: 20.0),
+                                      // padding: EdgeInsets.symmetric(
+                                      //     horizontal: 47.62, vertical: 5.0),
+                                      decoration: ShapeDecoration(
+                                        color: Color(0xFF526872),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset("assets/Group 36.png"),
+                                          SizedBox(width: 5.0,),
+                                          Text(
+                                            'VIEW',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          )                                        ],
+                                      ),
+                                    ),
+                                  )
+                              )
+                            ],
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0,top:10),
                             child: Text(
                               'NAME',
                               style: TextStyle(
@@ -485,7 +607,9 @@ class _AddAppointmentState extends State<AddAppointment> {
                                     border: InputBorder.none,
                                     suffixIcon: InkWell(
                                       onTap: () {
-                                        pickContact(context);
+
+                                        getContactPermission(context);
+
                                         // Navigator.pushReplacement
                                         //   (context, MaterialPageRoute(builder: (context)=> MYBottomSheet()));
                                       },
@@ -661,20 +785,20 @@ class _AddAppointmentState extends State<AddAppointment> {
                                             String? fd = "" + "${date?.day}";
                                             if (month! < 10) {
                                               fm = "0" + "${month}";
-                                              print("fm ${fm}");
+                                              // print("fm ${fm}");
                                             }
                                             if (date!.day < 10) {
                                               fd = "0" + "${date?.day}";
-                                              print("fd ${fd}");
+                                              // print("fd ${fd}");
                                             }
                                             if (date != null) {
-                                              print(
-                                                  'Date Selecte : ${date?.day ?? ""}-${date?.month ?? ""}-${date?.year ?? ""}');
+                                              // print(
+                                              //     'Date Selecte : ${date?.day ?? ""}-${date?.month ?? ""}-${date?.year ?? ""}');
                                               setState(() {
                                                 dob =
                                                     '${date?.year ?? ""}-${fm}-${fd}';
-                                                print(
-                                                    "selectedFromDate ${dob?.split(" ")[0]}");
+                                                // print(
+                                                //     "selectedFromDate ${dob?.split(" ")[0]}");
                                               });
                                             }
                                           },
@@ -952,97 +1076,99 @@ class _AddAppointmentState extends State<AddAppointment> {
                               )
                             ],
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: Text("Horscope Image",
-                                style: TextStyle(
-                                  color: Color(0xFF8A92A2),
-                                  fontSize: 13.55,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w400,
-                                )
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () {
-                                    _uplodHoroscopeImage();
-                                  },
-                                  child: Container(
-                                    height: 45,
-                                    alignment: Alignment.center,
-                                    // margin: EdgeInsets.only(
-                                        // top: 20.0, bottom: 20.0),
-                                    // padding: EdgeInsets.symmetric(
-                                    //     horizontal: 47.62, vertical: 5.0),
-                                    decoration: ShapeDecoration(
-                                      color: Color(0xFF526872),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset("assets/Icon-Color.png"),
-                                        SizedBox(width: 5.0,),
-                                        Text(
-                                          'UPLOAD',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      _viewHoroscopeImage();
-                                    },
-                                    child: Container(
-                                      height: 45,
-                                      // alignment: Alignment.center,
-                                      // margin: EdgeInsets.only(
-                                      //     top: 20.0, bottom: 20.0),
-                                      // padding: EdgeInsets.symmetric(
-                                      //     horizontal: 47.62, vertical: 5.0),
-                                      decoration: ShapeDecoration(
-                                        color: Color(0xFF526872),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset("assets/Group 36.png"),
-                                          SizedBox(width: 5.0,),
-                                          Text(
-                                            'VIEW',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          )                                        ],
-                                      ),
-                                    ),
-                                  )
-                              )
-                            ],
-                          ),
+                          // Container(
+                          //   margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          //   child: Text("Horscope Image",
+                          //       style: TextStyle(
+                          //         color: Color(0xFF8A92A2),
+                          //         fontSize: 13.55,
+                          //         fontFamily: 'Poppins',
+                          //         fontWeight: FontWeight.w400,
+                          //       )
+                          //   ),
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Expanded(
+                          //       child: InkWell(
+                          //         onTap: () {
+                          //
+                          //           _pickedImage(1);
+                          //           // _uplodHoroscopeImage();
+                          //         },
+                          //         child: Container(
+                          //           height: 45,
+                          //           alignment: Alignment.center,
+                          //           // margin: EdgeInsets.only(
+                          //               // top: 20.0, bottom: 20.0),
+                          //           // padding: EdgeInsets.symmetric(
+                          //           //     horizontal: 47.62, vertical: 5.0),
+                          //           decoration: ShapeDecoration(
+                          //             color: Color(0xFF526872),
+                          //             shape: RoundedRectangleBorder(
+                          //               borderRadius: BorderRadius.circular(10),
+                          //             ),
+                          //           ),
+                          //           child: Row(
+                          //             mainAxisAlignment: MainAxisAlignment.center,
+                          //             children: [
+                          //               Image.asset("assets/Icon-Color.png"),
+                          //               SizedBox(width: 5.0,),
+                          //               Text(
+                          //                 'UPLOAD',
+                          //                 style: TextStyle(
+                          //                   color: Colors.white,
+                          //                   fontSize: 14,
+                          //                   fontFamily: 'Poppins',
+                          //                   fontWeight: FontWeight.w400,
+                          //                 ),
+                          //               )
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     SizedBox(
+                          //       width: 10.0,
+                          //     ),
+                          //     Expanded(
+                          //         child: InkWell(
+                          //           onTap: () {
+                          //             _viewHoroscopeImage();
+                          //           },
+                          //           child: Container(
+                          //             height: 45,
+                          //             // alignment: Alignment.center,
+                          //             // margin: EdgeInsets.only(
+                          //             //     top: 20.0, bottom: 20.0),
+                          //             // padding: EdgeInsets.symmetric(
+                          //             //     horizontal: 47.62, vertical: 5.0),
+                          //             decoration: ShapeDecoration(
+                          //               color: Color(0xFF526872),
+                          //               shape: RoundedRectangleBorder(
+                          //                 borderRadius: BorderRadius.circular(10),
+                          //               ),
+                          //             ),
+                          //             child: Row(
+                          //               mainAxisAlignment: MainAxisAlignment.center,
+                          //               children: [
+                          //                 Image.asset("assets/Group 36.png"),
+                          //                 SizedBox(width: 5.0,),
+                          //                 Text(
+                          //                   'VIEW',
+                          //                   style: TextStyle(
+                          //                     color: Colors.white,
+                          //                     fontSize: 14,
+                          //                     fontFamily: 'Poppins',
+                          //                     fontWeight: FontWeight.w400,
+                          //                   ),
+                          //                 )                                        ],
+                          //             ),
+                          //           ),
+                          //         )
+                          //     )
+                          //   ],
+                          // ),
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                             child: Text("Birth-Place",
@@ -1148,7 +1274,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 12.75, vertical: 5.0),
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFF009688),
+                                  color: Color(0xFF3BB143),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),

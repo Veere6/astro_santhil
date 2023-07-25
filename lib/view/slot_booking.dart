@@ -1,6 +1,7 @@
 import 'package:astro_santhil_app/commonpackage/SearchChoices.dart';
 import 'package:astro_santhil_app/models/add_appointment_model.dart';
 import 'package:astro_santhil_app/models/customer_name_model.dart';
+import 'package:astro_santhil_app/models/slot_view_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
 import 'package:astro_santhil_app/view/add_appointment.dart';
 import 'package:astro_santhil_app/view/appointment.dart';
@@ -22,6 +23,7 @@ class _SlotBookingState extends State<SlotBooking> {
   TextEditingController fees = TextEditingController();
   TextEditingController msg = TextEditingController();
   List<DropdownMenuItem> cutomerItems = [];
+  List<DropdownMenuItem> slotItems = [];
   List<Contact> contacts = [];
   List<Contact> foundContacts = [];
   bool isLoading = false;
@@ -38,9 +40,14 @@ class _SlotBookingState extends State<SlotBooking> {
   List<String> customer_id = [
     "0",
   ];
+  List<String> slot_id = [
+    "0",
+  ];
   String selectedCustomer_id = "";
+  String selectedSlot_id = "";
   String selectTimes = "Select Time";
   String dropdownValue = "";
+  String dropdownValue2 = "";
   bool clickLoad = false;
 
   List<String> spinnerItems = [
@@ -79,6 +86,7 @@ class _SlotBookingState extends State<SlotBooking> {
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
       today = day;
+      slots();
       print(today);
     });
   }
@@ -113,7 +121,7 @@ class _SlotBookingState extends State<SlotBooking> {
         selectTimes,
         msg.text,
         fees.text,
-        _radioSelected.toString());
+        _radioSelected.toString(),selectedSlot_id);
 
     if (_addAppointmentModel.status == true) {
       Fluttertoast.showToast(
@@ -185,8 +193,70 @@ class _SlotBookingState extends State<SlotBooking> {
   void initState() {
     super.initState();
     viewDropDown();
-
+    slots();
   }
+
+
+  List<String> _list = [];
+  bool _pageLoading = false;
+  String dob="";
+
+  late ViewSlotModel _viewSlotModel;
+  void slots() async {
+    _pageLoading = true;
+    dob = today.toString().substring(0, 10);
+    if(dob != "Select Date"){
+      dob = dob;
+    }else{
+      dob = "";
+    }
+    _viewSlotModel = await Services.SlotView(dob);
+    if(_viewSlotModel.status == true){
+      for(var i = 0; i < _viewSlotModel.body!.length; i++){
+        // _list = _viewSlotModel.body[i]. ?? [];
+
+        SlotBody _body = _viewSlotModel.body![i];
+    final fromTime =
+    _body.fromTime!.substring(0,2).contains("13") ? "01${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("14") ? "02${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("15") ? "03${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("16") ? "04${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("17") ? "05${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("18") ? "06${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("19") ? "07${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("20") ? "08${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("21") ? "09${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("22") ? "10${_body.fromTime!.substring(2,5)} PM":
+    _body.fromTime!.substring(0,2).contains("23") ? "11${_body.fromTime!.substring(2,5)} PM":
+    "${_body.fromTime!.substring(0,5)} AM";
+
+    final toTime =
+    _body.toTime!.substring(0,2).contains("13") ? "01${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("14") ? "02${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("15") ? "03${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("16") ? "04${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("17") ? "05${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("18") ? "06${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("19") ? "07${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("20") ? "08${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("21") ? "09${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("22") ? "10${_body.toTime!.substring(2,5)} PM":
+    _body.toTime!.substring(0,2).contains("23") ? "11${_body.toTime!.substring(2,5)} PM":
+    "${_body.toTime!.substring(0,5)} AM";
+
+    _list.add("${fromTime} - ${toTime}");
+        slot_id.add("${_body.slotId}");
+    slotItems.add(DropdownMenuItem(
+          child: Text("${fromTime} - ${toTime}"),
+          value: "${fromTime} - ${toTime}",
+        ));
+    }
+    }
+    setState(() {
+      _pageLoading = false;
+    });
+  }
+
 
   void searchFilter(String enteredKeyword, StateSetter dState) {
     List<Contact> results = [];
@@ -220,7 +290,7 @@ class _SlotBookingState extends State<SlotBooking> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Color(0xFF009688),
+                        color: Color(0xFF3BB143),
                         borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(20.0),
                         bottomRight: Radius.circular(20.0),
@@ -415,7 +485,7 @@ class _SlotBookingState extends State<SlotBooking> {
                             lastDay: DateTime.utc(2050, 10, 16),
                             calendarStyle: CalendarStyle(
                               selectedDecoration: BoxDecoration(
-                                color: Color(0xFF009688),
+                                color: Color(0xFF3BB143),
                                 shape: BoxShape.circle
                               ),
                               todayDecoration: BoxDecoration(
@@ -451,6 +521,105 @@ class _SlotBookingState extends State<SlotBooking> {
                                     //     AssetImage("assets/calender_bg.png"))
                                 )
                             ),
+                          ),
+                        ),
+                        Container(
+                          margin:
+                          EdgeInsets.only(left: 30.0, top: 20.0, bottom: 5.0),
+                          child: Text("SELECT SLOT",
+                          style: TextStyle(color: Color(0xFF8A92A2)),),
+                        ),
+
+                        Container(
+                          margin: EdgeInsets.only(
+                              left: 20.0, right: 20.0, bottom: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        padding:
+                                        EdgeInsets.only(left: 10.0, right: 10.0),
+                                        decoration: BoxDecoration(
+                                            border:
+                                            Border.all(color: Color(0xFFD0D4E0)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        child: SearchChoices.single(
+                                          value: dropdownValue2,
+                                          items: slotItems,
+                                          hint: "Select Slot",
+                                          searchHint: "Select Slot",
+                                          style: TextStyle(color: Colors.black),
+                                          underline: Container(),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              dropdownValue2 = value;
+                                              if (dropdownValue2 != "Select Slot") {
+                                                for (var i = 0; i < spinnerItems.length; i++) {
+                                                  if (_list[i] == dropdownValue2) {
+                                                    selectedSlot_id = slot_id[i];
+                                                  }
+                                                }
+                                              }
+                                            });
+                                          },
+                                          displayClearIcon: false,
+                                          isExpanded: true,
+                                        )
+                                      // DropdownButton<String>(
+                                      //         value: dropdownValue,
+                                      //         isExpanded: true,
+                                      //         icon: Icon(Icons.keyboard_arrow_down_sharp),
+                                      //         iconSize: 20,
+                                      //         elevation: 16,
+                                      //         style: const TextStyle(
+                                      //             color: Colors.black,
+                                      //             fontSize: 16,
+                                      //             fontWeight: FontWeight.w400),
+                                      //         underline: Container(
+                                      //             height: 0,
+                                      //             color: Colors.deepPurpleAccent,
+                                      //           ),
+                                      //         onChanged: (String? data) {
+                                      //           setState(() {
+                                      //             dropdownValue = data!;
+                                      //             if(dropdownValue != "Select Customer"){
+                                      //               for(var i = 0; i < spinnerItems.length; i++){
+                                      //                 if(spinnerItems[i] == dropdownValue){
+                                      //                   selectedCustomer_id = customer_id[i];
+                                      //                 }
+                                      //               }
+                                      //               print("fghfdsasdfghgfdsasdfghgfdsaASDFG  "+selectedCustomer_id);
+                                      //             }
+                                      //           });
+                                      //         },
+                                      //         items: spinnerItems
+                                      //             .map<DropdownMenuItem<String>>((String value){
+                                      //               return DropdownMenuItem(
+                                      //                 value: value,
+                                      //                   child: Text(value)
+                                      //               );
+                                      //         }).toList(),
+                                      //       )
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("General Practitioner", style: TextStyle(fontSize: 16.82, color: Color(0xffB2B9C4)),),
+                              //     Spacer(),
+                              //     Container(
+                              //       margin: EdgeInsets.only(top: 10.0),
+                              //         child: Text("See All Reviews",
+                              //           style: TextStyle(fontSize: 12.62, color: Color(0xffB2B9C4)),))
+                              //   ],
+                              // )
+                            ],
                           ),
                         ),
                         Container(
@@ -598,12 +767,12 @@ class _SlotBookingState extends State<SlotBooking> {
                                   margin: EdgeInsets.only(left: 10.0),
                                   decoration: BoxDecoration(
                                       border:
-                                      Border.all(color: Color(0xFF009688)),
+                                      Border.all(color: Color(0xFF3BB143)),
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(5.0))),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 5.0),
-                                  child: Text("CANCEL", style: TextStyle(color: Color(0xFF009688)),),
+                                  child: Text("CANCEL", style: TextStyle(color: Color(0xFF3BB143)),),
                                 ),
                               ),
                               SizedBox(
@@ -659,7 +828,7 @@ class _SlotBookingState extends State<SlotBooking> {
                                     // ],
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
-                                    color: Color(0xFF009688)
+                                    color: Color(0xFF3BB143)
                                   ),
                                   child: clickLoad
                                       ? Row(

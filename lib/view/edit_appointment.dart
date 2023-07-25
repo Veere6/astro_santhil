@@ -153,7 +153,7 @@ class _EditAppointmentState extends State<EditAppointment> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xFF009688),
+                    color: Color(0xFF3BB143),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20.0),
                       bottomRight: Radius.circular(20.0),
@@ -310,7 +310,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                         lastDay: DateTime.utc(2050,10,16),
                           calendarStyle: CalendarStyle(
                               selectedDecoration: BoxDecoration(
-                                  color: Color(0xFF009688),
+                                  color: Color(0xFF3BB143),
                                   shape: BoxShape.circle
                               ),
                               todayDecoration: BoxDecoration(
@@ -496,7 +496,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                               alignment: Alignment.center,
                               height: 45,
                                 decoration: ShapeDecoration(
-                                  color: Color(0xFF009688),
+                                  color: Color(0xFF3BB143),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),

@@ -104,7 +104,7 @@ class _HomeState extends State<Home> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xFF009688),
+                    color: Color(0xFF3BB143),
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20.0),
                       bottomRight: Radius.circular(20.0),

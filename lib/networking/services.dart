@@ -161,10 +161,10 @@ class Services {
     var request = new http.MultipartRequest("POST", Uri.parse(addCustomer));
     var Image;
     var fImage;
-    if(hImage.path.isNotEmpty){
+    if(hImage!=null){
        fImage = await http.MultipartFile.fromPath("h_image", hImage.path);
     }
-    if(Image.path.isNotEmpty){
+    if(image!=null){
       Image = await http.MultipartFile.fromPath("u_image", image.path);
     }
 
@@ -223,7 +223,7 @@ class Services {
   }
 
   static Future<AddAppointmentModel> addAppointment(String cId, String date, String time, String msg, String fees,
-      String fessStatus) async {
+      String fessStatus,selectedSlot_id) async {
     final params = {
       "flag":"add_appointment",
       "c_id": cId,
@@ -232,6 +232,7 @@ class Services {
       "msg": msg,
       "fees": fees,
       "fees_status": fessStatus,
+      "slot_id":selectedSlot_id
     };
     http.Response response = await http.post(Uri.parse(appointment), body: params);
     print("addAppointment ${params}");

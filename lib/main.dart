@@ -181,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                  ),
                  child: CircleAvatar(
                    radius: 70.0,
-                   backgroundColor: Color(0xff009688),
+                   backgroundColor: Color(0xFF3BB143),
                    child: Container(
                      padding: EdgeInsets.only(top: 12.0, bottom: 10.0),
                        child: Image.asset("assets/green text-01.png",
@@ -360,7 +360,7 @@ class _MyHomePageState extends State<MyHomePage> {
                    height: 50,
                    margin: EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0),
                      decoration: ShapeDecoration(
-                       color: Color(0xFF009688),
+                       color: Color(0xFF3BB143),
                        shape: RoundedRectangleBorder(
                          borderRadius: BorderRadius.circular(10),
                        ),

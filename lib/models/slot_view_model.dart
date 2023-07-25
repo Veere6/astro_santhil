@@ -11,7 +11,7 @@ String viewSlotModelToJson(ViewSlotModel data) => json.encode(data.toJson());
 class ViewSlotModel {
   bool? status;
   String? msg;
-  List<Body>? body;
+  List<SlotBody>? body;
 
   ViewSlotModel({
     this.status,
@@ -22,7 +22,7 @@ class ViewSlotModel {
   factory ViewSlotModel.fromJson(Map<String, dynamic> json) => ViewSlotModel(
     status: json["status"],
     msg: json["msg"],
-    body: json["body"] == null ? [] : List<Body>.from(json["body"]!.map((x) => Body.fromJson(x))),
+    body: json["body"] == null ? [] : List<SlotBody>.from(json["body"]!.map((x) => SlotBody.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -32,7 +32,7 @@ class ViewSlotModel {
   };
 }
 
-class Body {
+class SlotBody {
   String? slotId;
   DateTime? date;
   String? fromTime;
@@ -40,7 +40,7 @@ class Body {
   String? activeStatus;
   String? bookStatus;
 
-  Body({
+  SlotBody({
     this.slotId,
     this.date,
     this.fromTime,
@@ -49,7 +49,7 @@ class Body {
     this.bookStatus,
   });
 
-  factory Body.fromJson(Map<String, dynamic> json) => Body(
+  factory SlotBody.fromJson(Map<String, dynamic> json) => SlotBody(
     slotId: json["slot_id"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     fromTime: json["from_time"],

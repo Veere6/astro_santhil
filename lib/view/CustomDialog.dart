@@ -48,6 +48,20 @@ class _CustomDialogState extends State<CustomDialog> {
       initialDate: selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
+      builder: (BuildContext context, Widget? child){
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.black,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+            dialogBackgroundColor:Colors.white,
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -62,6 +76,20 @@ class _CustomDialogState extends State<CustomDialog> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedStartTime,
+      builder: (BuildContext context, Widget? child){
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.black,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+            dialogBackgroundColor:Colors.white,
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != selectedStartTime) {
       setState(() {
@@ -77,6 +105,20 @@ class _CustomDialogState extends State<CustomDialog> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedEndTime,
+      builder: (BuildContext context, Widget? child){
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.black,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+            dialogBackgroundColor:Colors.white,
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != selectedEndTime) {
       setState(() {
@@ -165,25 +207,26 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: Text('${widget.title} Slot'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ElevatedButton(
             onPressed: () => _selectDate(context),
-            child: Text(isDateshow==false?"Select Date":"${selectedDate.year}-${selectedDate.month}-${selectedDate.day}"),
+            child: Text(isDateshow==false?"Select Date":"${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",style: TextStyle(color: Colors.black),),
             // child: Text('Select Date' ),
           ),
           SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => _selectStartTime(context),
             // child: Text('Select Start Time'),
-            child: Text(isStartshow==false?"Select Start Time":"${formatTimeOfDay(selectedStartTime)}"),
+            child: Text(isStartshow==false?"Select Start Time":"${formatTimeOfDay(selectedStartTime)}",style: TextStyle(color: Colors.black)),
           ),
           SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => _selectEndTime(context),
-            child: Text(isEndshow==false ? "Select End Time":"${formatTimeOfDay(selectedEndTime)}"),
+            child: Text(isEndshow==false ? "Select End Time":"${formatTimeOfDay(selectedEndTime)}",style: TextStyle(color: Colors.black)),
             // child: Text('Select End Time'),
           ),
         ],
@@ -206,14 +249,14 @@ class _CustomDialogState extends State<CustomDialog> {
                   msg: "Select end time",
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.SNACKBAR);
-            }else {
-              if (widget.title == "Add") {
+            }else{
+              if(widget.title=="Add"){
                 AddAppointment(
                     "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
                     "${formatTimeOfDay(selectedStartTime)}",
                     "${formatTimeOfDay(selectedEndTime)}");
                 // Navigator.of(context).pop();
-              } else {
+              }else{
                 EditAppointment(
                     "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
                     "${formatTimeOfDay(selectedStartTime)}",
@@ -221,7 +264,7 @@ class _CustomDialogState extends State<CustomDialog> {
               }
             }
           },
-          child: Text('Done'),
+          child: Text('Done',style: TextStyle(color: Colors.black)),
         ),
       ],
     );

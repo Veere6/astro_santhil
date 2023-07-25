@@ -16,7 +16,7 @@ class _CategoryManagement extends State<CategoryManagement>{
   DateTime? date;
   String dob = "";
   late ViewSlotModel _viewSlotModel;
-  List<Body> _list = [];
+  List<SlotBody> _list = [];
   bool _pageLoading = false;
 
   void slots() async {
@@ -29,7 +29,7 @@ class _CategoryManagement extends State<CategoryManagement>{
     _viewSlotModel = await Services.SlotView(dob);
     if(_viewSlotModel.status == true){
       for(var i = 0; i < _viewSlotModel.body!.length; i++){
-        _list = _viewSlotModel.body ?? <Body> [];
+        _list = _viewSlotModel.body ?? <SlotBody> [];
       }
     }
     setState(() {
@@ -43,7 +43,7 @@ class _CategoryManagement extends State<CategoryManagement>{
   }
 
   void showCustomDialog(BuildContext context,String title,date,fromtime,totime,slot_id,bool isshow) {
-    DateTime dateTime = DateTime(2000,1,1);
+    DateTime dateTime = DateTime.now();
     TimeOfDay starttime=TimeOfDay(hour:1,minute: 0);
     TimeOfDay endtime=TimeOfDay(hour:1,minute: 0);
     if(date!=""){
@@ -84,23 +84,22 @@ class _CategoryManagement extends State<CategoryManagement>{
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text('Delete Slot'),
           content: Text('Are you sure you want to delete this slot?'),
           actions: [
             ElevatedButton(
               onPressed: () {
-                // Perform the delete operation here
-                // Add your logic to delete the slot
                 deleteSlot(id);
                 Navigator.of(context).pop();
               },
-              child: Text('Yes'),
+              child: Text('Yes',style: TextStyle(color: Colors.black)),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('No'),
+              child: Text('No',style: TextStyle(color: Colors.black)),
             ),
           ],
         );
@@ -124,7 +123,7 @@ class _CategoryManagement extends State<CategoryManagement>{
         children: [
           Container(
             decoration: BoxDecoration(
-                color: Color(0xFF009688),
+                color: Color(0xFF3BB143),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20.0),
                   bottomRight: Radius.circular(20.0),
@@ -203,20 +202,21 @@ class _CategoryManagement extends State<CategoryManagement>{
                 String? fd = "" + "${date?.day}";
                 if (month! < 10) {
                   fm = "0" + "${month}";
-                  print("fm ${fm}");
+                  // print("fm ${fm}");
                 }
                 if (date!.day < 10) {
                   fd = "0" + "${date?.day}";
-                  print("fd ${fd}");
+                  // print("fd ${fd}");
                 }
                 if (date != null) {
-                  print(
-                      'Date Selecte : ${date?.day ?? ""}-${date?.month ?? ""}-${date?.year ?? ""}');
+                  // print(
+                  //     'Date Selecte : ${date?.day ?? ""}-${date?.month ?? ""}-${date?.year ?? ""}');
                   setState(() {
                     dob =
                     '${date?.year ?? ""}-${fm}-${fd}';
-                    print(
-                        "selectedFromDate ${dob?.split(" ")[0]}");
+                    slots();
+                    // print(
+                    //     "selectedFromDate ${dob?.split(" ")[0]}");
                   });
                 }
               },
@@ -252,6 +252,15 @@ class _CategoryManagement extends State<CategoryManagement>{
                     Spacer(),
                     Icon(Icons.calendar_month,
                       color: Color(0xff6C7480),
+                    ),
+                    if(dob.isNotEmpty) InkWell(
+                      onTap:(){
+                        setState((){dob="";
+                        slots();});
+                      },
+                      child: Icon(Icons.close,
+                        color: Color(0xff6C7480),
+                      ),
                     )
                   ],
                 )
@@ -267,11 +276,12 @@ class _CategoryManagement extends State<CategoryManagement>{
                 itemCount: _list.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 3,
+                    childAspectRatio: 2.7,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 20.0
-                  ), itemBuilder: (context, index){
-                  Body _body = _list[index];
+                  ),
+                  itemBuilder: (context, index){
+                SlotBody _body = _list[index];
                 final fromTime =
                 _body.fromTime!.substring(0,2).contains("13") ? "01${_body.fromTime!.substring(2,5)} PM":
                 _body.fromTime!.substring(0,2).contains("14") ? "02${_body.fromTime!.substring(2,5)} PM":
@@ -285,7 +295,6 @@ class _CategoryManagement extends State<CategoryManagement>{
                 _body.fromTime!.substring(0,2).contains("22") ? "10${_body.fromTime!.substring(2,5)} PM":
                 _body.fromTime!.substring(0,2).contains("23") ? "11${_body.fromTime!.substring(2,5)} PM":
                 "${_body.fromTime!.substring(0,5)} AM";
-
                 final toTime =
                 _body.toTime!.substring(0,2).contains("13") ? "01${_body.toTime!.substring(2,5)} PM":
                 _body.toTime!.substring(0,2).contains("14") ? "02${_body.toTime!.substring(2,5)} PM":
@@ -301,43 +310,55 @@ class _CategoryManagement extends State<CategoryManagement>{
                 "${_body.toTime!.substring(0,5)} AM";
 
                     return InkWell(
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration:  BoxDecoration(
-                          color: _body.bookStatus == "1" ? Colors.grey[400] : Colors.white,
-                          border: Border.all(
-                            color: Colors.grey
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("${fromTime} - ${toTime}",
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${_body.date.toString().substring(0,10)}",
                             style: TextStyle(
                               fontSize: 10,
                               color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
                             ),),
-                            SizedBox(width: 5,),
-                            InkWell(
+                          Container(
+                            alignment: Alignment.center,
+                            decoration:  BoxDecoration(
+                              color: _body.bookStatus == "1" ? Colors.grey[400] : Colors.white,
+                              border: Border.all(
+                                color: Colors.grey
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(10.0))
+                            ),
+                            padding:const EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("${fromTime} - ${toTime}",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
+                                ),),
+                                SizedBox(width: 5,),
+                                InkWell(
+                                  onTap: (){
+                                    showCustomDialog(context,"Edit","${_body.date}","${_body.fromTime}","${_body.toTime}","${_body.slotId}",true);
+                                  },
+                                  child: Image.asset("assets/edit_ic.png",
+                                    color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
+                                    height: 15,),
+                                ),
+                                SizedBox(width: 5,),
+                                InkWell(
                               onTap: (){
-                                showCustomDialog(context,"Edit","${_body.date}","${_body.fromTime}","${_body.toTime}","${_body.slotId}",true);
+                                _showDeleteConfirmationDialog(context,_body.slotId.toString());
                               },
-                              child: Image.asset("assets/edit_ic.png",
+                              child: Image.asset("assets/delete_ic.png",
                                 color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
                                 height: 15,),
+                            )
+                              ],
                             ),
-                        SizedBox(width: 5,),
-                        InkWell(
-                          onTap: (){
-                            _showDeleteConfirmationDialog(context,_body.slotId.toString());
-                          },
-                          child: Image.asset("assets/delete_ic.png",
-                            color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
-                            height: 15,),
-                        )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
               }),
@@ -346,7 +367,7 @@ class _CategoryManagement extends State<CategoryManagement>{
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF009688),
+        backgroundColor: const Color(0xFF3BB143),
         foregroundColor: Colors.white,
         onPressed: () {
           showCustomDialog(context,"Add","","","","",false);

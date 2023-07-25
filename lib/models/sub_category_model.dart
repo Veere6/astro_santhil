@@ -22,7 +22,7 @@ class SubCategoryModel {
   factory SubCategoryModel.fromJson(Map<String, dynamic> json) => SubCategoryModel(
     status: json["status"],
     msg: json["msg"],
-    body: List<Body>.from(json["body"].map((x) => Body.fromJson(x))),
+    body: json["body"]==null ? null: List<Body>.from(json["body"].map((x) => Body.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

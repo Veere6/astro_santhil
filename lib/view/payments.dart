@@ -146,7 +146,7 @@ class _PaymentsState extends State<Payments>{
                 constraints: BoxConstraints(),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Color(0xFF009688),
+                      color: Color(0xFF3BB143),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(20.0),
                         bottomRight: Radius.circular(20.0),
@@ -300,7 +300,7 @@ class _PaymentsState extends State<Payments>{
                     },
                     child: Container(
                       decoration: ShapeDecoration(
-                        color: Color(0xFF009688),
+                        color: Color(0xFF3BB143),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       ),
                       padding: EdgeInsets.all(5.0),
@@ -340,7 +340,7 @@ class _PaymentsState extends State<Payments>{
                   children: [
                     Text("Rs.${_paymentViewModel.totalFees ??""}",
                         style: TextStyle(
-                          color: Color(0xFF009688),
+                          color: Color(0xFF3BB143),
                           fontSize: 32,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w700,
@@ -351,7 +351,7 @@ class _PaymentsState extends State<Payments>{
                       margin: EdgeInsets.only(top: 10.0),
                       alignment: Alignment.center,
                       decoration: ShapeDecoration(
-                        color: Color(0xFF009688),
+                        color: Color(0xFF3BB143),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

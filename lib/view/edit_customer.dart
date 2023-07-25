@@ -343,7 +343,7 @@ class _EditCustomerState extends State<EditCustomer> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Color(0xFF009688),
+                        color: Color(0xFF3BB143),
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(20.0),
                           bottomRight: Radius.circular(20.0),
@@ -410,14 +410,14 @@ class _EditCustomerState extends State<EditCustomer> {
                                 onTap: (){
                                   _pickedImage();
                                 },
-                                child: image == null || _customerDetailModel.data![0].uImage!.isEmpty
+                                child: image == null && _customerDetailModel.data![0].uImage!.isEmpty
                                     ? ClipRRect(
                                   borderRadius:
                                   BorderRadius.circular(50.0),
                                   child: Container(
                                     height: 100,
                                     width: 100,
-                                    color: Color(0xff009688),
+                                    color: Color(0xFF3BB143),
                                     child: Image.asset(
                                       "assets/Group 48.png",
                                       color: Colors.white,
@@ -465,8 +465,102 @@ class _EditCustomerState extends State<EditCustomer> {
                               ),
                             ),
                           ),
+
+
                           Container(
-                            margin: EdgeInsets.only(bottom: 10.0),
+                            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Text("Horscope Image",
+                                style: TextStyle(
+                                  color: Color(0xFF8A92A2),
+                                  fontSize: 13.55,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w400,
+                                )
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    _uplodHoroscopeImage();
+                                  },
+                                  child: Container(
+                                    height: 45,
+                                    alignment: Alignment.center,
+                                    // margin: EdgeInsets.only(
+                                    // top: 20.0, bottom: 20.0),
+                                    // padding: EdgeInsets.symmetric(
+                                    //     horizontal: 47.62, vertical: 5.0),
+                                    decoration: ShapeDecoration(
+                                      color: Color(0xFF526872),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset("assets/Icon-Color.png"),
+                                        SizedBox(width: 5.0,),
+                                        Text(
+                                          'UPLOAD',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _viewHoroscopeImage();
+                                    },
+                                    child: Container(
+                                      height: 45,
+                                      // alignment: Alignment.center,
+                                      // margin: EdgeInsets.only(
+                                      //     top: 20.0, bottom: 20.0),
+                                      // padding: EdgeInsets.symmetric(
+                                      //     horizontal: 47.62, vertical: 5.0),
+                                      decoration: ShapeDecoration(
+                                        color: Color(0xFF526872),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset("assets/Group 36.png"),
+                                          SizedBox(width: 5.0,),
+                                          Text(
+                                            'VIEW',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          )                                        ],
+                                      ),
+                                    ),
+                                  )
+                              )
+                            ],
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0,top: 10),
                             child: Text(
                               'NAME',
                               style: TextStyle(
@@ -904,97 +998,6 @@ class _EditCustomerState extends State<EditCustomer> {
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: Text("Horscope Image",
-                                style: TextStyle(
-                                  color: Color(0xFF8A92A2),
-                                  fontSize: 13.55,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w400,
-                                )
-                            ),
-                          ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  _uplodHoroscopeImage();
-                                },
-                                child: Container(
-                                  height: 45,
-                                  alignment: Alignment.center,
-                                  // margin: EdgeInsets.only(
-                                  // top: 20.0, bottom: 20.0),
-                                  // padding: EdgeInsets.symmetric(
-                                  //     horizontal: 47.62, vertical: 5.0),
-                                  decoration: ShapeDecoration(
-                                    color: Color(0xFF526872),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset("assets/Icon-Color.png"),
-                                      SizedBox(width: 5.0,),
-                                      Text(
-                                        'UPLOAD',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Expanded(
-                                child: InkWell(
-                                  onTap: () {
-                                    _viewHoroscopeImage();
-                                  },
-                                  child: Container(
-                                    height: 45,
-                                    // alignment: Alignment.center,
-                                    // margin: EdgeInsets.only(
-                                    //     top: 20.0, bottom: 20.0),
-                                    // padding: EdgeInsets.symmetric(
-                                    //     horizontal: 47.62, vertical: 5.0),
-                                    decoration: ShapeDecoration(
-                                      color: Color(0xFF526872),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset("assets/Group 36.png"),
-                                        SizedBox(width: 5.0,),
-                                        Text(
-                                          'VIEW',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        )                                        ],
-                                    ),
-                                  ),
-                                )
-                            )
-                          ],
-                        ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                             child: Text("Birth-Place",
                               style: TextStyle(
                                 color: Color(0xFF8A92A2),
@@ -1077,7 +1080,7 @@ class _EditCustomerState extends State<EditCustomer> {
                                     margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                                     padding: EdgeInsets.symmetric(horizontal: 12.75, vertical: 5.0),
                                   decoration: ShapeDecoration(
-                                    color: Color(0xFF009688),
+                                    color: Color(0xFF3BB143),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
