@@ -442,19 +442,19 @@ color: Colors.white            ),
                         itemBuilder: (context, index){
                           Body _body = _list[index];
                           int randomNumber = _random.nextInt(5);
-                          final time =
-                          _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
-                          "${_body.time!.substring(0,5)} AM";
+                          // final time =
+                          // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
+                          // "${_body.time!.substring(0,5)} AM";
                           return Container(
                               margin: EdgeInsets.only(bottom: 20.0),
                               child: Card(
@@ -526,12 +526,12 @@ color: Colors.white                                                ),
                                                       fontFamily: 'Inter',
                                                       fontWeight: FontWeight.w400,
                                                     ),),
-                                                    Text("(${time})",style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight: FontWeight.w400,
-                                                    ),)
+                                                    // Text("(${time})",style: TextStyle(
+                                                    //   color: Colors.white,
+                                                    //   fontSize: 14,
+                                                    //   fontFamily: 'Inter',
+                                                    //   fontWeight: FontWeight.w400,
+                                                    // ),)
                                                   ],
                                                 ),
                                               )
@@ -655,19 +655,19 @@ color: Colors.white                                                ),
                         itemBuilder: (context, index){
                           Body _body = _list[index];
                           int randomNumber = _random.nextInt(5);
-                          final time =
-                          _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
-                          "${_body.time!.substring(0,5)} AM";
+                          // final time =
+                          // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
+                          // "${_body.time!.substring(0,5)} AM";
                           return Container(
                               margin: EdgeInsets.only(bottom: 20.0),
                               child: Card(
@@ -743,13 +743,13 @@ color: Colors.white                                                ),
                                                         fontFamily: 'Inter',
                                                         fontWeight: FontWeight.w400,
                                                       ),),
-                                                    Text("(${time})",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14,
-                                                        fontFamily: 'Inter',
-                                                        fontWeight: FontWeight.w400,
-                                                      ),)
+                                                    // Text("(${time})",
+                                                    //   style: TextStyle(
+                                                    //     color: Colors.white,
+                                                    //     fontSize: 14,
+                                                    //     fontFamily: 'Inter',
+                                                    //     fontWeight: FontWeight.w400,
+                                                    //   ),)
                                                   ],
                                                 ),
                                               )
@@ -875,19 +875,19 @@ color: Colors.white                                                ),
                         itemBuilder: (context, index){
                           Body _body = _list[index];
                           int randomNumber = _random.nextInt(5);
-                          final time =
-                          _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
-                          "${_body.time!.substring(0,5)} AM";
+                          // final time =
+                          // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
+                          // "${_body.time!.substring(0,5)} AM";
                           return Container(
                               margin: EdgeInsets.only(bottom: 20.0),
                               child: Card(
@@ -940,31 +940,31 @@ color: Colors.white                                                ),
                                                       ),),
                                                     Row(
                                                       children: [
-                                                        Text("Payment Status",
+                                                        Text("₹${_body.fees}",
                                                           style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 14,
                                                             fontFamily: 'Inter',
                                                             fontWeight: FontWeight.w400,
                                                           ),),
-                                                        Container(
-                                                          height: 8.0,
-                                                          width: 8.0,
-                                                          margin: EdgeInsets.only(left: 5.0),
-                                                          decoration: BoxDecoration(
-                                                              shape: BoxShape.circle,
-                                                              gradient: LinearGradient(
-                                                                  colors: [
-                                                                    Color(0xffFF3D3D),
-                                                                    Color(0xffFF663D)
-                                                                  ],
-                                                                  begin: const FractionalOffset(0.0, 0.0),
-                                                                  end: const FractionalOffset(0.0, 1.0),
-                                                                  stops: [0.0, 1.0],
-                                                                  tileMode: TileMode.clamp
-                                                              )
-                                                          ),
-                                                        )
+                                                        // Container(
+                                                        //   height: 8.0,
+                                                        //   width: 8.0,
+                                                        //   margin: EdgeInsets.only(left: 5.0),
+                                                        //   decoration: BoxDecoration(
+                                                        //       shape: BoxShape.circle,
+                                                        //       gradient: LinearGradient(
+                                                        //           colors: [
+                                                        //             Color(0xffFF3D3D),
+                                                        //             Color(0xffFF663D)
+                                                        //           ],
+                                                        //           begin: const FractionalOffset(0.0, 0.0),
+                                                        //           end: const FractionalOffset(0.0, 1.0),
+                                                        //           stops: [0.0, 1.0],
+                                                        //           tileMode: TileMode.clamp
+                                                        //       )
+                                                        //   ),
+                                                        // )
                                                       ],
                                                     )
                                                   ],
@@ -982,13 +982,13 @@ color: Colors.white                                                ),
                                                         fontFamily: 'Inter',
                                                         fontWeight: FontWeight.w400,
                                                       ),),
-                                                    Text("(${time})",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14,
-                                                        fontFamily: 'Inter',
-                                                        fontWeight: FontWeight.w400,
-                                                      ),)
+                                                    // Text("(${time})",
+                                                    //   style: TextStyle(
+                                                    //     color: Colors.white,
+                                                    //     fontSize: 14,
+                                                    //     fontFamily: 'Inter',
+                                                    //     fontWeight: FontWeight.w400,
+                                                    //   ),)
                                                   ],
                                                 ),
                                               )
@@ -1035,19 +1035,19 @@ color: Colors.white                                                ),
                         itemBuilder: (context, index){
                           int randomNumber = _random.nextInt(5);
                           Body _body = _list[index];
-                          final time =
-                          _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
-                          _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
-                          "${_body.time!.substring(0,5)} AM";
+                          // final time =
+                          // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
+                          // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
+                          // "${_body.time!.substring(0,5)} AM";
                           return Container(
                               margin: EdgeInsets.only(bottom: 20.0),
                               child: Card(
@@ -1100,7 +1100,7 @@ color: Colors.white                                                ),
                                                       ),),
                                                     Row(
                                                       children: [
-                                                        Text("Payment Status",
+                                                        Text("₹${_body.fees}",
                                                           style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 14,
@@ -1124,13 +1124,13 @@ color: Colors.white                                                ),
                                                         fontFamily: 'Inter',
                                                         fontWeight: FontWeight.w400,
                                                       ),),
-                                                    Text("(${time})",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14,
-                                                        fontFamily: 'Inter',
-                                                        fontWeight: FontWeight.w400,
-                                                      ),)
+                                                    // Text("(${time})",
+                                                    //   style: TextStyle(
+                                                    //     color: Colors.white,
+                                                    //     fontSize: 14,
+                                                    //     fontFamily: 'Inter',
+                                                    //     fontWeight: FontWeight.w400,
+                                                    //   ),)
                                                   ],
                                                 ),
                                               )

@@ -5,6 +5,7 @@ import 'package:astro_santhil_app/view/category_managmet.dart';
 import 'package:astro_santhil_app/view/home.dart';
 import 'package:astro_santhil_app/view/payments.dart';
 import 'package:astro_santhil_app/view/slot_booking.dart';
+import 'package:astro_santhil_app/view/upcoming_appointment.dart';
 import 'package:astro_santhil_app/view/view_customer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -115,14 +116,14 @@ class _MenuState extends State<Menu> {
                       )
                     ]),
                     child: CircleAvatar(
-                      radius: 70.0,
+                      radius: 50.0,
                       backgroundColor: Color(0xFF3BB143),
                       child: Container(
                           padding: EdgeInsets.only(top: 12.0, bottom: 10.0),
                           child: Image.asset(
                             "assets/green text-01.png",
                             color: Colors.white,
-                            width: 120,
+                            width:80,
                           )),
                     ),
                   ),
@@ -133,7 +134,7 @@ class _MenuState extends State<Menu> {
                     'Astro Senthil',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 28,
+                      fontSize: 20,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
                     ),
@@ -151,7 +152,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10.0),
+                            vertical: 10, horizontal: 10.0),
                         margin: EdgeInsets.symmetric(horizontal: 20.0),
                         decoration: tab.matchAsPrefix("Home") != null ? ShapeDecoration(
                           gradient: LinearGradient(
@@ -171,8 +172,8 @@ class _MenuState extends State<Menu> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: 30,
-                              width: 30,
+                              height: 20,
+                              width: 20,
                               child: Image.asset(
                                 "assets/Vector (19).png",
                                 color: tab.matchAsPrefix("Home") != null ? Colors.white : Colors.black,
@@ -185,7 +186,7 @@ class _MenuState extends State<Menu> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: tab.matchAsPrefix("Home") != null ? Colors.white : Colors.black,
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w400,
                                 )),
@@ -205,7 +206,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: tab.matchAsPrefix("Profile") != null ? ShapeDecoration(
                         gradient: LinearGradient(
@@ -225,8 +226,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/Group 93.png",
                               color: tab.matchAsPrefix("Profile") != null ? Colors.white : Colors.black,
@@ -239,7 +240,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Profile") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -256,7 +257,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       decoration: tab.matchAsPrefix("Add Appointment") != null ? ShapeDecoration(
                         gradient: LinearGradient(
                           end: Alignment(-1, 0),
@@ -276,8 +277,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/user_ic_white.png",
                               color: tab.matchAsPrefix("Add Appointment") != null ? Colors.white : Colors.black,
@@ -290,7 +291,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Add Appointment") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -307,7 +308,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       decoration: tab.matchAsPrefix("Appointment today") != null ? ShapeDecoration(
                         gradient: LinearGradient(
                           end: Alignment(-1, 0),
@@ -328,8 +329,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/today_ic.png",
                               color: tab.matchAsPrefix("Appointment today") != null ? Colors.white : Colors.black,
@@ -342,7 +343,59 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Appointment today") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400,
+                              )),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      onClick("Appointment upcoming");
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> UpcomingAppointment(),
+                      ));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10.0),
+                      decoration: tab.matchAsPrefix("Appointment upcoming") != null ? ShapeDecoration(
+                        gradient: LinearGradient(
+                          end: Alignment(-1, 0),
+                          begin: Alignment(1.00, 0.00),
+                          colors: [
+                            Color(0x00009688),
+                            Color(0xFF3BB143),
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ) : null,
+
+                      margin: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: Image.asset(
+                              "assets/today_ic.png",
+                              color: tab.matchAsPrefix("Appointment upcoming") != null ? Colors.white : Colors.black,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Upcoming Appointment",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: tab.matchAsPrefix("Appointment upcoming") != null ? Colors.white : Colors.black,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -359,7 +412,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: tab.matchAsPrefix("Appointment completed") != null ? ShapeDecoration(
                         gradient: LinearGradient(
@@ -380,8 +433,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/upcoming_ic.png",
                               color: tab.matchAsPrefix("Appointment completed") != null ? Colors.white : Colors.black,
@@ -394,7 +447,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Appointment completed") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -411,7 +464,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       decoration: tab.matchAsPrefix("Appointment pending") != null ? ShapeDecoration(
                         gradient: LinearGradient(
                           end: Alignment(-1, 0),
@@ -432,8 +485,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/pending_ic.png",
                               color: tab.matchAsPrefix("Appointment pending") != null ? Colors.white : Colors.black,
@@ -446,7 +499,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Appointment pending") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -463,7 +516,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: tab.matchAsPrefix("Appointment cancel") != null ? ShapeDecoration(
                         gradient: LinearGradient(
@@ -484,8 +537,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/cancel_appointment_ic.png",
                               color: tab.matchAsPrefix("Appointment cancel") != null ? Colors.white : Colors.black,
@@ -498,7 +551,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Appointment cancel") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -515,7 +568,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: tab.matchAsPrefix("Slot Booking") != null ? ShapeDecoration(
                         gradient: LinearGradient(
@@ -536,8 +589,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/add_appointment_ic.png",
                             ),
@@ -549,7 +602,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Slot Booking") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -566,7 +619,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: tab.matchAsPrefix("Payment") != null ? ShapeDecoration(
                         gradient: LinearGradient(
@@ -587,8 +640,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/pay_repo_ic.png",
                               color: tab.matchAsPrefix("Payment") != null ? Colors.white : Colors.black,
@@ -601,7 +654,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Payment") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -618,7 +671,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: tab.matchAsPrefix("Slots") != null ? ShapeDecoration(
                         gradient: LinearGradient(
@@ -639,8 +692,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/category_manage_ic.png",
                               color: tab.matchAsPrefix("Slots") != null ? Colors.white : Colors.black,
@@ -653,7 +706,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("Slots") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -670,7 +723,7 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
                       decoration: tab.matchAsPrefix("View Customer") != null ? ShapeDecoration(
                         gradient: LinearGradient(
@@ -690,8 +743,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/view_customer.png",
                               color: tab.matchAsPrefix("View Customer") != null ? Colors.white : Colors.black,
@@ -704,7 +757,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("View Customer") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),
@@ -721,9 +774,9 @@ class _MenuState extends State<Menu> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10.0),
+                          vertical: 10, horizontal: 10.0),
                       margin: EdgeInsets.symmetric(horizontal: 20.0),
-                      decoration: tab.matchAsPrefix("Home") != null ? ShapeDecoration(
+                      decoration: tab.matchAsPrefix("log") != null ? ShapeDecoration(
                         gradient: LinearGradient(
                           end: Alignment(-1, 0),
                           begin: Alignment(1.00, 0.00),
@@ -741,8 +794,8 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 30,
-                            width: 30,
+                            height: 20,
+                            width: 20,
                             child: Image.asset(
                               "assets/turn_off.png",
                               color: tab.matchAsPrefix("log") != null ? Colors.white : Colors.black,
@@ -755,7 +808,7 @@ class _MenuState extends State<Menu> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: tab.matchAsPrefix("log") != null ? Colors.white : Colors.black,
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               )),

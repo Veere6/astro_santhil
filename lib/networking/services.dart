@@ -18,6 +18,7 @@ import 'package:astro_santhil_app/models/payment_view_model.dart';
 import 'package:astro_santhil_app/models/slot_view_model.dart';
 import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/models/cancel_appointment_model.dart';
+import 'package:astro_santhil_app/models/upcoming_appointment_model.dart';
 import 'package:astro_santhil_app/models/update_appointment_model.dart';
 import 'package:astro_santhil_app/models/update_customer_model.dart';
 import 'package:astro_santhil_app/models/view_customer_model.dart';
@@ -161,10 +162,10 @@ class Services {
     var request = new http.MultipartRequest("POST", Uri.parse(addCustomer));
     var Image;
     var fImage;
-    if(hImage!=null){
+    if(hImage!=null && hImage.path!=""){
        fImage = await http.MultipartFile.fromPath("h_image", hImage.path);
     }
-    if(image!=null){
+    if(image!=null && image.path!=""){
       Image = await http.MultipartFile.fromPath("u_image", image.path);
     }
 
@@ -222,13 +223,13 @@ class Services {
     }
   }
 
-  static Future<AddAppointmentModel> addAppointment(String cId, String date, String time, String msg, String fees,
+  static Future<AddAppointmentModel> addAppointment(String cId, String date, /*String time,*/ String msg, String fees,
       String fessStatus,selectedSlot_id) async {
     final params = {
       "flag":"add_appointment",
       "c_id": cId,
       "date": date,
-      "time": time,
+      // "time": time,
       "msg": msg,
       "fees": fees,
       "fees_status": fessStatus,
@@ -423,15 +424,16 @@ class Services {
   }
 
   static Future<UpdateAppointmentModel> updateAppointment(String id, String date, String time, String msg, String fees,
-      String fessStatus) async {
+      String fessStatus,selectedSlot_id) async {
     final params = {
       "flag":"update_appointment",
       "id": id,
       "date": date,
-      "time": time,
+      // "time": time,
       "message": msg,
       "fees": fees,
       "fees status": fessStatus,
+      "slot_id": selectedSlot_id,
     };
     http.Response response = await http.post(Uri.parse(appointment), body: params);
     print("updateAppointment ${params}");
@@ -560,5 +562,26 @@ class Services {
       return user;
     }
   }
+
+  static Future<UpcomingAppointmentModel> appointmentUpcoming() async {
+    final params = {
+      "flag": "upcoming_appointment",
+    };
+
+    http.Response response = await http.post(Uri.parse(appointment), body: params);
+    print("appointmentUpcoming ${params}");
+    print("appointmentUpcoming ${response.body}");
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      UpcomingAppointmentModel user = UpcomingAppointmentModel.fromJson(data);
+      return user;
+    } else {
+      var data = jsonDecode(response.body);
+      UpcomingAppointmentModel user = UpcomingAppointmentModel.fromJson(data);
+      return user;
+    }
+  }
+
 
 }
