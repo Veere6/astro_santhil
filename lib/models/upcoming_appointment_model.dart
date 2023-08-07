@@ -37,6 +37,8 @@ class uBody {
   String? customerId;
   DateTime? date;
   String? slotId;
+  String? from_time;
+  String? to_time;
   String? status;
   String? message;
   String? fees;
@@ -50,6 +52,8 @@ class uBody {
     this.customerId,
     this.date,
     this.slotId,
+    this.from_time,
+    this.to_time,
     this.status,
     this.message,
     this.fees,
@@ -64,6 +68,8 @@ class uBody {
     customerId: json["customer_id"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     slotId: json["slot_id"],
+    from_time: json["from_time"],
+    to_time: json["to_time"],
     status: json["status"],
     message: json["message"],
     fees: json["fees"],
@@ -78,6 +84,8 @@ class uBody {
     "customer_id": customerId,
     "date": "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
     "slot_id": slotId,
+    "from_time": from_time,
+    "to_time": to_time,
     "status": status,
     "message": message,
     "fees": fees,

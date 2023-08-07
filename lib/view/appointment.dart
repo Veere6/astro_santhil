@@ -526,12 +526,12 @@ color: Colors.white                                                ),
                                                       fontFamily: 'Inter',
                                                       fontWeight: FontWeight.w400,
                                                     ),),
-                                                    // Text("(${time})",style: TextStyle(
-                                                    //   color: Colors.white,
-                                                    //   fontSize: 14,
-                                                    //   fontFamily: 'Inter',
-                                                    //   fontWeight: FontWeight.w400,
-                                                    // ),)
+                                                    Text("(${_body.from_time}-${_body.to_time})",style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight: FontWeight.w400,
+                                                    ),)
                                                   ],
                                                 ),
                                               )
@@ -743,13 +743,13 @@ color: Colors.white                                                ),
                                                         fontFamily: 'Inter',
                                                         fontWeight: FontWeight.w400,
                                                       ),),
-                                                    // Text("(${time})",
-                                                    //   style: TextStyle(
-                                                    //     color: Colors.white,
-                                                    //     fontSize: 14,
-                                                    //     fontFamily: 'Inter',
-                                                    //     fontWeight: FontWeight.w400,
-                                                    //   ),)
+                                                    Text("(${_body.from_time}-${_body.to_time})",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight: FontWeight.w400,
+                                                      ),)
                                                   ],
                                                 ),
                                               )
@@ -982,13 +982,13 @@ color: Colors.white                                                ),
                                                         fontFamily: 'Inter',
                                                         fontWeight: FontWeight.w400,
                                                       ),),
-                                                    // Text("(${time})",
-                                                    //   style: TextStyle(
-                                                    //     color: Colors.white,
-                                                    //     fontSize: 14,
-                                                    //     fontFamily: 'Inter',
-                                                    //     fontWeight: FontWeight.w400,
-                                                    //   ),)
+                                                    Text("(${_body.from_time}-${_body.to_time})",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight: FontWeight.w400,
+                                                      ),)
                                                   ],
                                                 ),
                                               )
@@ -1124,13 +1124,13 @@ color: Colors.white                                                ),
                                                         fontFamily: 'Inter',
                                                         fontWeight: FontWeight.w400,
                                                       ),),
-                                                    // Text("(${time})",
-                                                    //   style: TextStyle(
-                                                    //     color: Colors.white,
-                                                    //     fontSize: 14,
-                                                    //     fontFamily: 'Inter',
-                                                    //     fontWeight: FontWeight.w400,
-                                                    //   ),)
+                                                    Text("(${_body.from_time}-${_body.to_time})",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight: FontWeight.w400,
+                                                      ),)
                                                   ],
                                                 ),
                                               )

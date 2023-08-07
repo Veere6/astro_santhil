@@ -219,55 +219,55 @@ class _SlotBookingState extends State<SlotBooking> {
         // _list = _viewSlotModel.body[i]. ?? [];
 
         SlotBody _body = _viewSlotModel.body![i];
-        final fromTime =
-        _body.fromTime!.substring(0, 2).contains("13") ? "01${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("14") ? "02${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("15") ? "03${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("16") ? "04${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("17") ? "05${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("18") ? "06${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("19") ? "07${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("20") ? "08${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("21") ? "09${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("22") ? "10${_body.fromTime!
-            .substring(2, 5)} PM" :
-        _body.fromTime!.substring(0, 2).contains("23") ? "11${_body.fromTime!
-            .substring(2, 5)} PM" :
-        "${_body.fromTime!.substring(0, 5)} AM";
+        final fromTime =_body.fromTime.toString().toUpperCase();
+        // _body.fromTime!.substring(0, 2).contains("13") ? "01${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("14") ? "02${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("15") ? "03${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("16") ? "04${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("17") ? "05${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("18") ? "06${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("19") ? "07${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("20") ? "08${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("21") ? "09${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("22") ? "10${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("23") ? "11${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // "${_body.fromTime!.substring(0, 5)} AM";
 
-        final toTime =
-        _body.toTime!.substring(0, 2).contains("13") ? "01${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("14") ? "02${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("15") ? "03${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("16") ? "04${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("17") ? "05${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("18") ? "06${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("19") ? "07${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("20") ? "08${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("21") ? "09${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("22") ? "10${_body.toTime!
-            .substring(2, 5)} PM" :
-        _body.toTime!.substring(0, 2).contains("23") ? "11${_body.toTime!
-            .substring(2, 5)} PM" :
-        "${_body.toTime!.substring(0, 5)} AM";
+        final toTime =_body.toTime.toString().toUpperCase();
+        // _body.toTime!.substring(0, 2).contains("13") ? "01${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("14") ? "02${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("15") ? "03${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("16") ? "04${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("17") ? "05${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("18") ? "06${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("19") ? "07${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("20") ? "08${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("21") ? "09${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("22") ? "10${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("23") ? "11${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // "${_body.toTime!.substring(0, 5)} AM";
 
         if (_body.bookStatus != "1") {
           _list.add("${fromTime} - ${toTime}");
@@ -508,7 +508,7 @@ class _SlotBookingState extends State<SlotBooking> {
                           
                           child: TableCalendar(
                             focusedDay: today,
-                            firstDay: DateTime.utc(2010, 10, 16),
+                            firstDay: DateTime.now(),
                             lastDay: DateTime.utc(2050, 10, 16),
                             calendarStyle: CalendarStyle(
                               selectedDecoration: BoxDecoration(

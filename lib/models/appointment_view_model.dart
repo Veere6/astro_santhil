@@ -40,6 +40,8 @@ class Body {
   String? status;
   String? message;
   String? fees;
+  String? from_time;
+  String? to_time;
   String? feesStatus;
   String? cancelStatus;
   String? name;
@@ -51,6 +53,8 @@ class Body {
     this.date,
     this.time,
     this.status,
+    this.from_time,
+    this.to_time,
     this.message,
     this.fees,
     this.feesStatus,
@@ -65,6 +69,8 @@ class Body {
     date: DateTime.parse(json["date"]),
     time: json["time"],
     status: json["status"],
+    from_time: json["from_time"],
+    to_time: json["to_time"],
     message: json["message"],
     fees: json["fees"],
     feesStatus: json["fees_status"],
@@ -80,6 +86,8 @@ class Body {
     "time": time,
     "status": status,
     "message": message,
+    "from_time": from_time,
+    "to_time": to_time,
     "fees": fees,
     "fees_status": feesStatus,
     "cancel_status": cancelStatus,

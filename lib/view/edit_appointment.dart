@@ -58,7 +58,7 @@ class _EditAppointmentState extends State<EditAppointment> {
   void slots(String id) async {
     _pageLoading = true;
     dob = today.toString().substring(0, 10);
-    if(dob != "Select Date"){
+    if(dob != ""){
       dob = dob;
     }else{
       dob = "";
@@ -70,38 +70,40 @@ class _EditAppointmentState extends State<EditAppointment> {
     if(_viewSlotModel.status == true){
       for(var i = 0; i < _viewSlotModel.body!.length; i++){
         // _list = _viewSlotModel.body[i]. ?? [];
-
         SlotBody _body = _viewSlotModel.body![i];
-        final fromTime =
-        _body.fromTime!.substring(0,2).contains("13") ? "01${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("14") ? "02${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("15") ? "03${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("16") ? "04${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("17") ? "05${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("18") ? "06${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("19") ? "07${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("20") ? "08${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("21") ? "09${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("22") ? "10${_body.fromTime!.substring(2,5)} PM":
-        _body.fromTime!.substring(0,2).contains("23") ? "11${_body.fromTime!.substring(2,5)} PM":
-        "${_body.fromTime!.substring(0,5)} AM";
+        final fromTime = _body.fromTime.toString().toUpperCase();
+        // _body.fromTime!.substring(0,2).contains("13") ? "01${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("14") ? "02${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("15") ? "03${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("16") ? "04${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("17") ? "05${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("18") ? "06${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("19") ? "07${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("20") ? "08${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("21") ? "09${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("22") ? "10${_body.fromTime!.substring(2,5)} PM":
+        // _body.fromTime!.substring(0,2).contains("23") ? "11${_body.fromTime!.substring(2,5)} PM":
+        // "${_body.fromTime!.substring(0,5)} AM";
 
-        final toTime =
-        _body.toTime!.substring(0,2).contains("13") ? "01${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("14") ? "02${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("15") ? "03${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("16") ? "04${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("17") ? "05${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("18") ? "06${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("19") ? "07${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("20") ? "08${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("21") ? "09${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("22") ? "10${_body.toTime!.substring(2,5)} PM":
-        _body.toTime!.substring(0,2).contains("23") ? "11${_body.toTime!.substring(2,5)} PM":
-        "${_body.toTime!.substring(0,5)} AM";
+        final toTime =_body.toTime.toString().toUpperCase();
+        // _body.toTime!.substring(0,2).contains("13") ? "01${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("14") ? "02${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("15") ? "03${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("16") ? "04${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("17") ? "05${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("18") ? "06${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("19") ? "07${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("20") ? "08${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("21") ? "09${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("22") ? "10${_body.toTime!.substring(2,5)} PM":
+        // _body.toTime!.substring(0,2).contains("23") ? "11${_body.toTime!.substring(2,5)} PM":
+        // "${_body.toTime!.substring(0,5)} AM";
+
         if(id==_body.slotId){
           dropdownValue2="${fromTime} - ${toTime}";
+          print("??????$dropdownValue2");
         }
+
         if (_body.bookStatus != "1") {
           _list.add("${fromTime} - ${toTime}");
           slot_id.add("${_body.slotId}");
@@ -395,7 +397,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                       ),
                       child: TableCalendar(
                         focusedDay: today,
-                        firstDay: DateTime.utc(2010, 10, 16),
+                        firstDay: DateTime.now(),
                         lastDay: DateTime.utc(2050,10,16),
                           calendarStyle: CalendarStyle(
                               selectedDecoration: BoxDecoration(
@@ -466,7 +468,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                                     child: SearchChoices.single(
                                       value: dropdownValue2,
                                       items: slotItems,
-                                      hint: "Select Slot",
+                                      hint: dropdownValue2!="" ? dropdownValue2:"Select Slot",
                                       searchHint: "Select Slot",
                                       style: TextStyle(color: Colors.black),
                                       underline: Container(),
