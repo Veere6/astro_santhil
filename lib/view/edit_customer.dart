@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:astro_santhil_app/commonpackage/SearchChoices.dart';
 import 'package:astro_santhil_app/models/category_model.dart';
+import 'package:astro_santhil_app/models/counrty_model.dart';
 import 'package:astro_santhil_app/models/customer_detail_model.dart';
 import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/models/update_customer_model.dart';
@@ -237,7 +239,7 @@ class _EditCustomerState extends State<EditCustomer> {
       isLoad = false;
     });
   }
-
+  String dropdownValue = "";
   Future<void> viewCustomer() async {
     setState(() {
       isLoad = true;
@@ -255,9 +257,11 @@ class _EditCustomerState extends State<EditCustomer> {
       phoneNumber.text = _customerDetailModel.data![0].phone.toString();
       birthPlace.text = _customerDetailModel.data![0].birthPlace.toString();
       text.text = _customerDetailModel.data![0].text.toString();
+      selectedCustomer_id = _customerDetailModel.data![0].country_id.toString();
       // selectedCategory = _customerDetailModel.data![0].catName.toString();
       // categoryId = _customerDetailModel.data![0].catId.toString();
       // subCategoryId = _customerDetailModel.data![0].subCatId.toString();
+      country();
     }
     setState(() {
       isLoad = false;
@@ -300,7 +304,7 @@ class _EditCustomerState extends State<EditCustomer> {
     print("filea $filea");
     _updateCustomerModel = await Services.updateCustomer(widget.id, userName.text, selectedGender, city.text,
         dob.toString(), selectTimes, email.text, phoneNumber.text, categoryId, subCategoryId, place.text,
-        text.text, birthPlace.text, uFilea, filea);
+        text.text, birthPlace.text, uFilea, filea,selectedCustomer_id);
     if(_updateCustomerModel.status == true){
       Fluttertoast.showToast(msg: "${_updateCustomerModel.msg}",
           toastLength: Toast.LENGTH_SHORT,
@@ -325,6 +329,35 @@ class _EditCustomerState extends State<EditCustomer> {
     super.initState();
   }
 
+
+  List<String> country_id = [];
+  List<String> countryList = ["Select Country",];
+  String selectedCountry = "Select Country";
+  late CountryModel _countryModel;
+  List<DropdownMenuItem> countryItems = [];
+  String selectedCustomer_id = "";
+  Future<void> country() async {
+    _countryModel = await Services.countryList();
+    if(_countryModel.status == true){
+      for(var i = 0; i < _countryModel.data!.length; i++){
+        countryList.add("${_countryModel.data![i].name}");
+        countryItems.add(DropdownMenuItem(
+          child: Text(_countryModel.data![i].name.toString()),
+          value: _countryModel.data![i].name.toString(),
+        ));
+        country_id.add(_countryModel.data![i].id.toString());
+        if(selectedCustomer_id=="${_countryModel.data![i].id.toString()}"){
+          dropdownValue = _countryModel.data![i].name.toString();
+        }
+      }
+    }else {
+      Fluttertoast.showToast(
+          msg: "not found",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR);
+    }
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -670,6 +703,67 @@ class _EditCustomerState extends State<EditCustomer> {
                           //       )
                           //   ),
                           // ),
+
+
+
+                          Container(
+                            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Text(
+                              'Country',
+                              style: TextStyle(
+                                color: Color(0xFF8A92A2),
+                                fontSize: 13.55,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0),
+                            padding: EdgeInsets.only(left: 10.0),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(width: 0.50, color: Color(0xFFD0D4E0)),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            child: SearchChoices.single(
+                              value: dropdownValue,
+                              items: countryItems,
+                              hint: "Select Country",
+                              searchHint: "Select Country",
+                              style: TextStyle(color: Colors.black),
+                              underline: Container(),
+                              onChanged: (value) {
+                                setState(() {
+                                  dropdownValue = value;
+                                  if (dropdownValue != "Select Country") {
+                                    for (var i = 0;
+                                    i < countryItems.length;
+                                    i++) {
+                                      if (countryList[i] ==
+                                          dropdownValue) {
+                                        print(
+                                            "fghfdsasdfghgfdsasdfghgfdsaASDFG  " +
+                                                country_id[i]);
+
+                                        selectedCustomer_id =
+                                        country_id[i];
+                                      }
+                                    }
+                                    print(
+                                        "fghfdsasdfghgfdsasdfghgfdsaASDFG  " +
+                                            selectedCustomer_id);
+                                  }
+                                });
+                              },
+                              displayClearIcon: false,
+                              isExpanded: true,
+                            ),
+                          ),
+
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                             child: Text("City",

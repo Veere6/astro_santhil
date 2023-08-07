@@ -37,6 +37,7 @@ class Datum {
   String? name;
   String? gender;
   String? place;
+  String? country_id;
   String? city;
   DateTime? dob;
   String? birthTime;
@@ -57,6 +58,7 @@ class Datum {
     this.gender,
     this.place,
     this.city,
+    this.country_id,
     this.dob,
     this.birthTime,
     this.birthPlace,
@@ -77,6 +79,7 @@ class Datum {
     gender: json["gender"],
     place: json["place"],
     city: json["city"],
+    country_id: json["country_id"],
     dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
     birthTime: json["birth_time"],
     birthPlace: json["birth_place"],
@@ -97,6 +100,7 @@ class Datum {
     "gender": gender,
     "place": place,
     "city": city,
+    "country_id": country_id,
     "dob": "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
     "birth_time": birthTime,
     "birth_place": birthPlace,

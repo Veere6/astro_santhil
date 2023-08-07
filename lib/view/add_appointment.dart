@@ -6,13 +6,10 @@ import 'package:astro_santhil_app/models/category_model.dart';
 import 'package:astro_santhil_app/models/counrty_model.dart';
 import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
-import 'package:astro_santhil_app/view/Widget/mycontactpickerwidget.dart';
-import 'package:astro_santhil_app/view/Widget/myimagepickerwidgeth.dart';
 import 'package:astro_santhil_app/view/home.dart';
 import 'package:astro_santhil_app/view/menu.dart';
-import 'package:astro_santhil_app/view/slot_booking.dart';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -56,8 +53,6 @@ class _AddAppointmentState extends State<AddAppointment> {
   TimeOfDay? picked;
   String selectTimes = "Select Time";
   bool clickLoad = false;
-  List<Contact> contacts = [];
-  List<Contact> foundContacts = [];
   bool isLoading = false;
   late CountryModel _countryModel;
   List<String> countryList = ["Select Country",];
@@ -275,8 +270,8 @@ class _AddAppointmentState extends State<AddAppointment> {
         phoneNumber.text,
         categoryId,
         subCategoryId,
-        text.text,
         selectedCustomer_id,
+        text.text,
         birthPlace.text,
         uimage,
         himage);
@@ -323,11 +318,13 @@ class _AddAppointmentState extends State<AddAppointment> {
 
   void pickContact(BuildContext context) async {
     try {
-      final Contact? contact = await ContactsService.openDeviceContactPicker();
+
+      final PhoneContact contact =
+      await FlutterContactPicker.pickPhoneContact();
       setState(() {
-        userName.text = contact?.displayName ?? "";
-        if (contact!.phones!.isNotEmpty) {
-          phoneNumber.text = contact?.phones?[0].value ?? "";
+        userName.text = contact?.fullName ?? "";
+        if (contact!.phoneNumber!.number!.isNotEmpty) {
+          phoneNumber.text = contact?.phoneNumber?.number ?? "";
         } else {
           phoneNumber.text = '';
         }
@@ -735,7 +732,19 @@ class _AddAppointmentState extends State<AddAppointment> {
                           //   ),
                           // ),
                           Container(
-                            margin: EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
+                            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Text(
+                              'Country',
+                              style: TextStyle(
+                                color: Color(0xFF8A92A2),
+                                fontSize: 13.55,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0),
                             padding: EdgeInsets.only(left: 10.0),
                             width: MediaQuery.of(context).size.width,
                             decoration: ShapeDecoration(

@@ -456,7 +456,7 @@ class Services {
 
   static Future<UpdateCustomerModel> updateCustomer(String cId, String name, String gender, String city, String dob, String birt_time,
       String email, String phone, String catId, String subCatId, String place, String text, String birthPlace,
-      File image, File hImage) async {
+      File image, File hImage,String selectedCustomer_id) async {
     var request = new http.MultipartRequest("POST", Uri.parse(nameList));
     var Image;
     var hImage;
@@ -481,6 +481,7 @@ class Services {
     request.fields["place"] = place;
     request.fields["text"] = text;
     request.fields["birth_place"] = birthPlace;
+    request.fields["country_id"] = selectedCustomer_id;
 
     if(Image != null){
       request.files.add(Image);
