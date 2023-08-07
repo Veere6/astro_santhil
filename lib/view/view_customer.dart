@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:astro_santhil_app/commonpackage/SearchChoices.dart';
 import 'package:astro_santhil_app/models/category_model.dart';
+import 'package:astro_santhil_app/models/counrty_model.dart';
 import 'package:astro_santhil_app/models/delete_customer_model.dart';
 import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/models/view_customer_model.dart';
@@ -21,16 +23,24 @@ class _ViewCustomerState extends State<ViewCustomer> {
   late ViewCustomerModel _customerModel;
   List<Datum> _list = [];
   List<Datum> filtterList = [];
+  List<DropdownMenuItem> countryItems = [];
+  String dropdownValue = "";
+  String selectedCustomer_id = "";
   bool _pageLoading = false;
   List<String> categoryList = ["Select Category",];
   String selectedCategory = "Select Category";
   List<String> subCategoryList = ["Select Sub Category",];
   String selectedSubCategory = "Select Sub Category";
+  List<String> countryList = ["Select Country",];
+  String selectedCountry = "Select Country";
+  List<String> country_id = [];
   String categoryId = "";
   String subCategoryId = "";
+  String countryId = "";
   late CategoryModel _categoryModel;
   late SubCategoryModel _subCategoryModel;
   late DeleteCustomerModel _deleteCustomerModel;
+  late CountryModel _countryModel;
 
   List<Color> gradientColorList = [
     Color(0xff1C3B70),
@@ -73,9 +83,29 @@ class _ViewCustomerState extends State<ViewCustomer> {
     });
   }
 
-  Future<void> customerVeiw(String name, String catId, String subCatId) async {
+  Future<void> country() async {
+    _countryModel = await Services.countryList();
+    if(_countryModel.status == true){
+      for(var i = 0; i < _countryModel.data!.length; i++){
+        countryList.add("${_countryModel.data![i].name}");
+        countryItems.add(DropdownMenuItem(
+          child: Text(_countryModel.data![i].name.toString()),
+          value: _countryModel.data![i].name.toString(),
+        ));
+        country_id.add(_countryModel.data![i].id.toString());
+      }
+    }else {
+      Fluttertoast.showToast(
+          msg: "not found",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR);
+    }
+    setState(() {});
+  }
+
+  Future<void> customerVeiw(String name, String catId, String subCatId, String countryId) async {
     _pageLoading = true;
-    _customerModel = await Services.veiwCustomer(name, name, catId, subCatId);
+    _customerModel = await Services.veiwCustomer(name, name, catId, subCatId, countryId);
     if(_customerModel.status == true){
       for(var i = 0; i < _customerModel.data!.length; i++){
         _list = _customerModel.data ?? <Datum> [];
@@ -136,7 +166,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
       Fluttertoast.showToast(msg: "${_deleteCustomerModel.msg}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR);
-      customerVeiw("", "", "");
+      customerVeiw("", "", "","");
       Navigator.pop(context);
     }else {
       Fluttertoast.showToast(msg: "${_deleteCustomerModel.msg}",
@@ -152,7 +182,8 @@ class _ViewCustomerState extends State<ViewCustomer> {
   void initState() {
     categoryMethod();
     subCategoryMethod();
-    customerVeiw("", "", "");
+    customerVeiw("", "", "","");
+    country();
     super.initState();
   }
 
@@ -259,11 +290,11 @@ class _ViewCustomerState extends State<ViewCustomer> {
                                       if(data == _categoryModel.body![i].catName) {
                                         categoryId = _categoryModel.body![i].catId.toString();
                                         subCategoryMethod();
-                                        customerVeiw("", categoryId, "");
+                                        customerVeiw("", categoryId, "","");
                                       }
                                     }
                                   }else{
-                                    customerVeiw("", "", "");
+                                    customerVeiw("", "", "","");
                                   }
                                 });
                               },
@@ -305,7 +336,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
                                     for(var i = 0; i < _subCategoryModel.body!.length; i++){
                                       if(data == _subCategoryModel.body![i].subCatName) {
                                         subCategoryId = _subCategoryModel.body![i].subCatId.toString();
-                                        customerVeiw("", categoryId, subCategoryId);
+                                        customerVeiw("", categoryId, subCategoryId,"");
                                       }
                                     }
                                   }
@@ -323,6 +354,52 @@ class _ViewCustomerState extends State<ViewCustomer> {
                           ),
                         )
                       ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
+                      padding: EdgeInsets.only(left: 10.0),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(width: 0.50, color: Color(0xFFD0D4E0)),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: SearchChoices.single(
+                        value: dropdownValue,
+                        items: countryItems,
+                        hint: "Select Country",
+                        searchHint: "Select Country",
+                        style: TextStyle(color: Colors.black),
+                        underline: Container(),
+                        onChanged: (value) {
+                          setState(() {
+                            dropdownValue = value;
+                            if (dropdownValue != "Select Country") {
+                              for (var i = 0;
+                              i < countryItems.length;
+                              i++) {
+                                if (countryList[i] ==
+                                    dropdownValue) {
+                                  print(
+                                      "fghfdsasdfghgfdsasdfghgfdsaASDFG  " +
+                                          country_id[i]);
+
+                                  selectedCustomer_id =
+                                  country_id[i];
+                                }
+                              }
+                              print(
+                                  "fghfdsasdfghgfdsasdfghgfdsaASDFG  " +
+                                      selectedCustomer_id);
+                            }
+                            customerVeiw("", categoryId, subCategoryId, selectedCustomer_id);
+                          });
+                        },
+                        displayClearIcon: false,
+                        isExpanded: true,
+                      ),
                     ),
                     Container(
                       decoration: ShapeDecoration(
@@ -354,7 +431,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10.0),
-                      padding: EdgeInsets.only(bottom: 230),
+                      padding: EdgeInsets.only(bottom: 320),
                       color: Colors.white,
                       height: MediaQuery.of(context).size.height,
                       child: _pageLoading? Center(

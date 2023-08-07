@@ -1,17 +1,20 @@
 import 'dart:io';
 
+import 'package:astro_santhil_app/commonpackage/SearchChoices.dart';
 import 'package:astro_santhil_app/models/add_customer_model.dart';
 import 'package:astro_santhil_app/models/category_model.dart';
+import 'package:astro_santhil_app/models/counrty_model.dart';
 import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
+import 'package:astro_santhil_app/view/Widget/mycontactpickerwidget.dart';
+import 'package:astro_santhil_app/view/Widget/myimagepickerwidgeth.dart';
 import 'package:astro_santhil_app/view/home.dart';
 import 'package:astro_santhil_app/view/menu.dart';
+import 'package:astro_santhil_app/view/slot_booking.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddAppointment extends StatefulWidget {
@@ -53,7 +56,16 @@ class _AddAppointmentState extends State<AddAppointment> {
   TimeOfDay? picked;
   String selectTimes = "Select Time";
   bool clickLoad = false;
+  List<Contact> contacts = [];
+  List<Contact> foundContacts = [];
   bool isLoading = false;
+  late CountryModel _countryModel;
+  List<String> countryList = ["Select Country",];
+  String selectedCountry = "Select Country";
+  List<String> country_id = [];
+  List<DropdownMenuItem> countryItems = [];
+  String dropdownValue = "";
+  String selectedCustomer_id = "";
 
   Future<Null> selectTime(BuildContext context) async {
     picked = await showTimePicker(
@@ -105,26 +117,26 @@ class _AddAppointmentState extends State<AddAppointment> {
     );
   }
 
-  void _uplodHoroscopeImage() {
-    showDialog<ImageSource>(
-      context: context,
-      builder: (context) =>
-          AlertDialog(content: Text("Choose image source"), actions: [
-        TextButton(
-            child: Text("Camera"),
-            onPressed: () {
-              _getHoroscopeFromCamera();
-              Navigator.pop(context);
-            }),
-        TextButton(
-            child: Text("Gallery"),
-            onPressed: () {
-              _getHoroscopeFromGallery();
-              Navigator.pop(context);
-            }),
-      ]),
-    );
-  }
+  // void _uplodHoroscopeImage() {
+  //   showDialog<ImageSource>(
+  //     context: context,
+  //     builder: (context) =>
+  //         AlertDialog(content: Text("Choose image source"), actions: [
+  //       TextButton(
+  //           child: Text("Camera"),
+  //           onPressed: () {
+  //             _getHoroscopeFromCamera();
+  //             Navigator.pop(context);
+  //           }),
+  //       TextButton(
+  //           child: Text("Gallery"),
+  //           onPressed: () {
+  //             _getHoroscopeFromGallery();
+  //             Navigator.pop(context);
+  //           }),
+  //     ]),
+  //   );
+  // }
 
   _getFromGallery(int from) async {
     try{
@@ -147,27 +159,6 @@ class _AddAppointmentState extends State<AddAppointment> {
       print(error);
     }
   }
-
-
-
-
-  // static const platform = MethodChannel('my_channel');
-  // static const messageChannel = BasicMessageChannel<String>('result_channel', StringCodec());
-
-  // String _imageUri = '';
-  // String _contactName = '';
-  // String _contactNumber = '';
-
-  @override
-  void initState() {
-    super.initState();
-    userName.text = widget.name;
-    phoneNumber.text = widget.number;
-    categoryMethod();
-
-  }
-
-
 
   _getFromCamera(int from) async {
     try {
@@ -285,6 +276,7 @@ class _AddAppointmentState extends State<AddAppointment> {
         categoryId,
         subCategoryId,
         text.text,
+        selectedCustomer_id,
         birthPlace.text,
         uimage,
         himage);
@@ -306,24 +298,36 @@ class _AddAppointmentState extends State<AddAppointment> {
     });
   }
 
-  void getContactPermission() async {
+  void getContactPermission(BuildContext context) async {
     if (await Permission.contacts.isGranted) {
-      pickContact();
+      // getContacts();
+      pickContact(context);
     } else {
       await Permission.contacts.request();
     }
   }
 
+  // void getContacts() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   contacts = await ContactsService.getContacts();
+  //   print(contacts[0].phones![0].value);
+  //
+  //   foundContacts = contacts;
+  //   // print(foundContacts);
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
-  void pickContact() async {
+  void pickContact(BuildContext context) async {
     try {
-      final PhoneContact contact =
-      await FlutterContactPicker.pickPhoneContact();
-
+      final Contact? contact = await ContactsService.openDeviceContactPicker();
       setState(() {
-        userName.text = contact?.fullName ?? "";
-        if (contact!.phoneNumber!.number!.isNotEmpty) {
-          phoneNumber.text = contact?.phoneNumber?.number ?? "";
+        userName.text = contact?.displayName ?? "";
+        if (contact!.phones!.isNotEmpty) {
+          phoneNumber.text = contact?.phones?[0].value ?? "";
         } else {
           phoneNumber.text = '';
         }
@@ -334,6 +338,36 @@ class _AddAppointmentState extends State<AddAppointment> {
       // print(" ????  ${e}");
       // Handle any exceptions here, if necessary.
     }
+  }
+
+  Future<void> country() async {
+    _countryModel = await Services.countryList();
+    if(_countryModel.status == true){
+      for(var i = 0; i < _countryModel.data!.length; i++){
+        countryList.add("${_countryModel.data![i].name}");
+        countryItems.add(DropdownMenuItem(
+          child: Text(_countryModel.data![i].name.toString()),
+          value: _countryModel.data![i].name.toString(),
+        ));
+        country_id.add(_countryModel.data![i].id.toString());
+      }
+    }else {
+      Fluttertoast.showToast(
+          msg: "not found",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR);
+    }
+    setState(() {});
+  }
+
+
+  @override
+  void initState() {
+    // userName.text = widget.name;
+    // phoneNumber.text = widget.number;
+    country();
+    categoryMethod();
+    super.initState();
   }
 
   @override
@@ -427,9 +461,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           ),
                               child: InkWell(
                                 onTap: () {
-                                  // _pickImage();
                                   _pickedImage(0);
-                                  // _handleImagePicker();
                                 },
                                 child: image == null || image.path.isEmpty
                                     ? ClipRRect(
@@ -495,8 +527,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                                 child: InkWell(
                                   onTap: () {
 
-                                    // _pickedImage(1);
-                                    _uplodHoroscopeImage();
+                                    _pickedImage(1);
+                                    // _uplodHoroscopeImage();
                                   },
                                   child: Container(
                                     height: 45,
@@ -506,7 +538,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                                     // padding: EdgeInsets.symmetric(
                                     //     horizontal: 47.62, vertical: 5.0),
                                     decoration: ShapeDecoration(
-                                      color: Color(0xFF526872),
+                                      color: Color(0xFF3BB143),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -546,7 +578,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                                       // padding: EdgeInsets.symmetric(
                                       //     horizontal: 47.62, vertical: 5.0),
                                       decoration: ShapeDecoration(
-                                        color: Color(0xFF526872),
+                                        color: Color(0xFF3BB143),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(10),
                                         ),
@@ -611,8 +643,11 @@ class _AddAppointmentState extends State<AddAppointment> {
                                     border: InputBorder.none,
                                     suffixIcon: InkWell(
                                       onTap: () {
-                                        // _pickContact();
-                                        getContactPermission();
+
+                                        getContactPermission(context);
+
+                                        // Navigator.pushReplacement
+                                        //   (context, MaterialPageRoute(builder: (context)=> MYBottomSheet()));
                                       },
                                       child: Container(
                                           margin: EdgeInsets.symmetric(
@@ -699,6 +734,52 @@ class _AddAppointmentState extends State<AddAppointment> {
                           //       )
                           //   ),
                           // ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10.0, top: 20.0, right: 10.0),
+                            padding: EdgeInsets.only(left: 10.0),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(width: 0.50, color: Color(0xFFD0D4E0)),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            child: SearchChoices.single(
+                              value: dropdownValue,
+                              items: countryItems,
+                              hint: "Select Country",
+                              searchHint: "Select Country",
+                              style: TextStyle(color: Colors.black),
+                              underline: Container(),
+                              onChanged: (value) {
+                                setState(() {
+                                  dropdownValue = value;
+                                  if (dropdownValue != "Select Country") {
+                                    for (var i = 0;
+                                    i < countryItems.length;
+                                    i++) {
+                                      if (countryList[i] ==
+                                          dropdownValue) {
+                                        print(
+                                            "fghfdsasdfghgfdsasdfghgfdsaASDFG  " +
+                                                country_id[i]);
+
+                                        selectedCustomer_id =
+                                        country_id[i];
+                                      }
+                                    }
+                                    print(
+                                        "fghfdsasdfghgfdsasdfghgfdsaASDFG  " +
+                                            selectedCustomer_id);
+                                  }
+                                });
+                              },
+                              displayClearIcon: false,
+                              isExpanded: true,
+                            ),
+                          ),
+
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                             child: Text("Current City",
