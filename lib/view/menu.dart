@@ -6,8 +6,10 @@ import 'package:astro_santhil_app/view/home.dart';
 import 'package:astro_santhil_app/view/payments.dart';
 import 'package:astro_santhil_app/view/slot_booking.dart';
 import 'package:astro_santhil_app/view/view_customer.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Menu extends StatefulWidget {
@@ -251,6 +253,14 @@ class _MenuState extends State<Menu> {
                   InkWell(
                     onTap: () {
                       onClick("Add Appointment");
+
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (BuildContext context) {
+                      //     return MyDialog();
+                      //   },
+                      // );
+
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> AddAppointment("", ""),
                       ));
                     },
@@ -768,6 +778,173 @@ class _MenuState extends State<Menu> {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class MyDialog extends StatefulWidget {
+  @override
+  _MyDialogState createState() => _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  TextEditingController userName = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
+
+
+  void getContactPermission() async {
+    if (await Permission.contacts.isGranted) {
+      pickContact();
+    } else {
+      await Permission.contacts.request();
+    }
+  }
+
+  void pickContact() async {
+    try {
+      final Contact? contact = await ContactsService.openDeviceContactPicker();
+      setState(() {
+        userName.text = contact?.displayName ?? "";
+        if (contact!.phones!.isNotEmpty) {
+          phoneNumber.text = contact?.phones?[0].value ?? "";
+        } else {
+          phoneNumber.text = '';
+        }
+        // print("???${userName.text}");
+        // print("???${phoneNumber.text}");
+      });
+    } catch (e) {
+      // print(" ????  ${e}");
+      // Handle any exceptions here, if necessary.
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.green.shade200,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 10.0,top:10),
+              child: Text(
+                'NAME',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 13.55,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                  left: 10.0, top: 5.0, bottom: 5.0),
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 0.50, color: Color(0xFFD0D4E0)),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              child: TextField(
+                  controller: userName,
+                  textAlignVertical: TextAlignVertical.center,
+                  textAlign: TextAlign.left,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                      isDense: true,
+                      hintText: 'Name',
+                      hintStyle: const TextStyle(
+                        fontSize: 14.0,
+                        color: Color(0xff6C7480),
+                      ),
+                      border: InputBorder.none,
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          getContactPermission();
+                        },
+                        child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10.0),
+                            padding: EdgeInsets.only(
+                                left: 10,
+                                top: 10,
+                                right: 10,
+                                bottom: 10),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color(0xff6C7480)),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(10.0))),
+                            child: Icon(Icons.contacts)),
+                      ))),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child: Text("Phone Number",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13.55,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                  )
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                  left: 10.0, top: 5.0, bottom: 5.0),
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 0.50, color: Color(0xFFD0D4E0)),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              child: TextField(
+                  controller: phoneNumber,
+                  textAlignVertical: TextAlignVertical.center,
+                  textAlign: TextAlign.left,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: 'Phone Number',
+                    hintStyle: const TextStyle(
+                      fontSize: 14.0,
+                      color: Color(0xff6C7480),
+                    ),
+                    border: InputBorder.none,
+                  )),
+            ),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Perform actions here when the button is pressed
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> AddAppointment("${userName.text}", "${phoneNumber.text}"),
+                    ));
+                    // Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('Submit'),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

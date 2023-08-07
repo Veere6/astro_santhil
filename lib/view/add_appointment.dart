@@ -9,6 +9,7 @@ import 'package:astro_santhil_app/view/menu.dart';
 import 'package:astro_santhil_app/view/slot_booking.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -106,26 +107,26 @@ class _AddAppointmentState extends State<AddAppointment> {
     );
   }
 
-  // void _uplodHoroscopeImage() {
-  //   showDialog<ImageSource>(
-  //     context: context,
-  //     builder: (context) =>
-  //         AlertDialog(content: Text("Choose image source"), actions: [
-  //       TextButton(
-  //           child: Text("Camera"),
-  //           onPressed: () {
-  //             _getHoroscopeFromCamera();
-  //             Navigator.pop(context);
-  //           }),
-  //       TextButton(
-  //           child: Text("Gallery"),
-  //           onPressed: () {
-  //             _getHoroscopeFromGallery();
-  //             Navigator.pop(context);
-  //           }),
-  //     ]),
-  //   );
-  // }
+  void _uplodHoroscopeImage() {
+    showDialog<ImageSource>(
+      context: context,
+      builder: (context) =>
+          AlertDialog(content: Text("Choose image source"), actions: [
+        TextButton(
+            child: Text("Camera"),
+            onPressed: () {
+              _getHoroscopeFromCamera();
+              Navigator.pop(context);
+            }),
+        TextButton(
+            child: Text("Gallery"),
+            onPressed: () {
+              _getHoroscopeFromGallery();
+              Navigator.pop(context);
+            }),
+      ]),
+    );
+  }
 
   _getFromGallery(int from) async {
     try{
@@ -148,6 +149,33 @@ class _AddAppointmentState extends State<AddAppointment> {
       print(error);
     }
   }
+
+
+  static const platform = MethodChannel('my_channel');
+
+  Future<void> _handleImagePicker() async {
+    try {
+      print("work");
+      final result = await platform.invokeMethod('pickImage');
+      // setState(() {
+      //   _imageUri = result;
+      // });
+      print('onActivityResult: $result');
+    }catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  Future<void> _handleContactPicker() async {
+
+    try {
+      final result = await platform.invokeMethod('pickContact');
+      print('onActivityResult: $result');
+    } on PlatformException catch (e) {
+      print("Error: $e");
+    }
+  }
+
 
   _getFromCamera(int from) async {
     try {
@@ -286,30 +314,15 @@ class _AddAppointmentState extends State<AddAppointment> {
     });
   }
 
-  void getContactPermission(BuildContext context) async {
+  void getContactPermission() async {
     if (await Permission.contacts.isGranted) {
-      // getContacts();
-      pickContact(context);
+      pickContact();
     } else {
       await Permission.contacts.request();
     }
   }
 
-  // void getContacts() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   contacts = await ContactsService.getContacts();
-  //   print(contacts[0].phones![0].value);
-  //
-  //   foundContacts = contacts;
-  //   // print(foundContacts);
-  //   setState(() {
-  //     isLoading = false;
-  //   });
-  // }
-
-  void pickContact(BuildContext context) async {
+  void pickContact() async {
     try {
       final Contact? contact = await ContactsService.openDeviceContactPicker();
       setState(() {
@@ -319,8 +332,8 @@ class _AddAppointmentState extends State<AddAppointment> {
         } else {
           phoneNumber.text = '';
         }
-        print("???${userName.text}");
-        print("???${phoneNumber.text}");
+        // print("???${userName.text}");
+        // print("???${phoneNumber.text}");
       });
     } catch (e) {
       // print(" ????  ${e}");
@@ -328,10 +341,14 @@ class _AddAppointmentState extends State<AddAppointment> {
     }
   }
 
+
+
+
+
   @override
   void initState() {
-    // userName.text = widget.name;
-    // phoneNumber.text = widget.number;
+    userName.text = widget.name;
+    phoneNumber.text = widget.number;
     categoryMethod();
     super.initState();
   }
@@ -427,7 +444,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                           ),
                               child: InkWell(
                                 onTap: () {
-                                  _pickedImage(0);
+                                  // _pickedImage(0);
+                                  _handleImagePicker();
                                 },
                                 child: image == null || image.path.isEmpty
                                     ? ClipRRect(
@@ -493,8 +511,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                                 child: InkWell(
                                   onTap: () {
 
-                                    _pickedImage(1);
-                                    // _uplodHoroscopeImage();
+                                    // _pickedImage(1);
+                                    _uplodHoroscopeImage();
                                   },
                                   child: Container(
                                     height: 45,
@@ -607,11 +625,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                                     border: InputBorder.none,
                                     suffixIcon: InkWell(
                                       onTap: () {
-
-                                        getContactPermission(context);
-
-                                        // Navigator.pushReplacement
-                                        //   (context, MaterialPageRoute(builder: (context)=> MYBottomSheet()));
+                                        _handleContactPicker();
+                                        // getContactPermission();
                                       },
                                       child: Container(
                                           margin: EdgeInsets.symmetric(
