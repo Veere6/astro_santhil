@@ -4,16 +4,14 @@ import 'package:astro_santhil_app/models/add_customer_model.dart';
 import 'package:astro_santhil_app/models/category_model.dart';
 import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
-import 'package:astro_santhil_app/view/Widget/mycontactpickerwidget.dart';
-import 'package:astro_santhil_app/view/Widget/myimagepickerwidgeth.dart';
 import 'package:astro_santhil_app/view/home.dart';
 import 'package:astro_santhil_app/view/menu.dart';
-import 'package:astro_santhil_app/view/slot_booking.dart';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddAppointment extends StatefulWidget {
@@ -55,8 +53,6 @@ class _AddAppointmentState extends State<AddAppointment> {
   TimeOfDay? picked;
   String selectTimes = "Select Time";
   bool clickLoad = false;
-  List<Contact> contacts = [];
-  List<Contact> foundContacts = [];
   bool isLoading = false;
 
   Future<Null> selectTime(BuildContext context) async {
@@ -153,30 +149,24 @@ class _AddAppointmentState extends State<AddAppointment> {
   }
 
 
-  static const platform = MethodChannel('my_channel');
 
-  Future<void> _handleImagePicker() async {
-    try {
-      print("work");
-      final result = await platform.invokeMethod('pickImage');
-      // setState(() {
-      //   _imageUri = result;
-      // });
-      print('onActivityResult: $result');
-    }catch (e) {
-      print("Error: $e");
-    }
+
+  // static const platform = MethodChannel('my_channel');
+  // static const messageChannel = BasicMessageChannel<String>('result_channel', StringCodec());
+
+  // String _imageUri = '';
+  // String _contactName = '';
+  // String _contactNumber = '';
+
+  @override
+  void initState() {
+    super.initState();
+    userName.text = widget.name;
+    phoneNumber.text = widget.number;
+    categoryMethod();
+
   }
 
-  Future<void> _handleContactPicker() async {
-
-    try {
-      final result = await platform.invokeMethod('pickContact');
-      print('onActivityResult: $result');
-    } on PlatformException catch (e) {
-      print("Error: $e");
-    }
-  }
 
 
   _getFromCamera(int from) async {
@@ -324,35 +314,26 @@ class _AddAppointmentState extends State<AddAppointment> {
     }
   }
 
+
   void pickContact() async {
     try {
-      final Contact? contact = await ContactsService.openDeviceContactPicker();
+      final PhoneContact contact =
+      await FlutterContactPicker.pickPhoneContact();
+
       setState(() {
-        userName.text = contact?.displayName ?? "";
-        if (contact!.phones!.isNotEmpty) {
-          phoneNumber.text = contact?.phones?[0].value ?? "";
+        userName.text = contact?.fullName ?? "";
+        if (contact!.phoneNumber!.number!.isNotEmpty) {
+          phoneNumber.text = contact?.phoneNumber?.number ?? "";
         } else {
           phoneNumber.text = '';
         }
-        // print("???${userName.text}");
-        // print("???${phoneNumber.text}");
+        print("???${userName.text}");
+        print("???${phoneNumber.text}");
       });
     } catch (e) {
       // print(" ????  ${e}");
       // Handle any exceptions here, if necessary.
     }
-  }
-
-
-
-
-
-  @override
-  void initState() {
-    userName.text = widget.name;
-    phoneNumber.text = widget.number;
-    categoryMethod();
-    super.initState();
   }
 
   @override
@@ -446,8 +427,9 @@ class _AddAppointmentState extends State<AddAppointment> {
                           ),
                               child: InkWell(
                                 onTap: () {
-                                  // _pickedImage(0);
-                                  _handleImagePicker();
+                                  // _pickImage();
+                                  _pickedImage(0);
+                                  // _handleImagePicker();
                                 },
                                 child: image == null || image.path.isEmpty
                                     ? ClipRRect(
@@ -629,8 +611,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                                     border: InputBorder.none,
                                     suffixIcon: InkWell(
                                       onTap: () {
-                                        _handleContactPicker();
-                                        // getContactPermission();
+                                        // _pickContact();
+                                        getContactPermission();
                                       },
                                       child: Container(
                                           margin: EdgeInsets.symmetric(

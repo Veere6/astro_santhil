@@ -6,7 +6,7 @@ import 'package:astro_santhil_app/networking/services.dart';
 import 'package:astro_santhil_app/view/add_appointment.dart';
 import 'package:astro_santhil_app/view/appointment.dart';
 import 'package:astro_santhil_app/view/menu.dart';
-import 'package:contacts_service/contacts_service.dart';
+// import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,8 +24,8 @@ class _SlotBookingState extends State<SlotBooking> {
   TextEditingController msg = TextEditingController();
   List<DropdownMenuItem> cutomerItems = [];
   List<DropdownMenuItem> slotItems = [];
-  List<Contact> contacts = [];
-  List<Contact> foundContacts = [];
+  // List<Contact> contacts = [];
+  // List<Contact> foundContacts = [];
   bool isLoading = false;
 
   late CustomerNameModel _customerNameModel;
@@ -144,25 +144,25 @@ class _SlotBookingState extends State<SlotBooking> {
   void getContactPermission() async {
 
     if(await Permission.contacts.isGranted) {
-      getContacts();
+      // getContacts();
     }else {
       await Permission.contacts.request();
     }
   }
 
-  void getContacts() async {
-    setState(() {
-      isLoading = true;
-    });
-   contacts = await ContactsService.getContacts();
-   print(contacts[0].phones![0].value);
-
-   foundContacts = contacts;
-   print(foundContacts);
-   setState(() {
-     isLoading = false;
-   });
-  }
+  // void getContacts() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //  contacts = await ContactsService.getContacts();
+  //  print(contacts[0].phones![0].value);
+  //
+  //  foundContacts = contacts;
+  //  print(foundContacts);
+  //  setState(() {
+  //    isLoading = false;
+  //  });
+  // }
 
 
   // void contactList(){
@@ -285,19 +285,19 @@ class _SlotBookingState extends State<SlotBooking> {
   }
 
 
-  void searchFilter(String enteredKeyword, StateSetter dState) {
-    List<Contact> results = [];
-    if(enteredKeyword.isEmpty){
-      results = contacts;
-    }else{
-      results = contacts
-          .where((element) =>
-          element.givenName!.toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
-    }
-    dState(() {
-      foundContacts = results;
-    });
-  }
+  // void searchFilter(String enteredKeyword, StateSetter dState) {
+  //   List<Contact> results = [];
+  //   if(enteredKeyword.isEmpty){
+  //     results = contacts;
+  //   }else{
+  //     results = contacts
+  //         .where((element) =>
+  //         element.givenName!.toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
+  //   }
+  //   dState(() {
+  //     foundContacts = results;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -911,191 +911,191 @@ class _SlotBookingState extends State<SlotBooking> {
   }
 }
 
-class MYBottomSheet extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() => _BottomSheetState();
-}
-
-class _BottomSheetState extends State<MYBottomSheet>{
-
-  List<Contact> contacts = [];
-  List<Contact> foundContacts = [];
-  bool isLoading = false;
-
-  void getContactPermission() async {
-
-    if(await Permission.contacts.isGranted) {
-      getContacts();
-    }else if(await Permission.contacts.isPermanentlyDenied) {
-      await Permission.contacts.request();
-      if (await Permission.contacts.isGranted) {
-        getContacts();
-      }
-    }else {
-      await Permission.contacts.request();
-      if (await Permission.contacts.isGranted) {
-        getContacts();
-      }
-    }
-  }
-
-  void getContacts() async {
-    setState(() {
-      isLoading = true;
-    });
-    contacts = await ContactsService.getContacts();
-    print(contacts[0].phones![0].value);
-
-    foundContacts = contacts;
-    print(foundContacts);
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getContactPermission();
-  }
-
-  void searchFilter(String enteredKeyword, StateSetter dState) {
-    List<Contact> results = [];
-    if(enteredKeyword.isEmpty){
-      results = contacts;
-    }else{
-      results = contacts
-          .where((element) =>
-          element.givenName!.toLowerCase().contains(enteredKeyword.toLowerCase()) ||
-              element.phones![0].value!.contains(enteredKeyword)).toList();
-    }
-    dState(() {
-      foundContacts = results;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState){
-            return isLoading ? Center(
-              child: CircularProgressIndicator(),
-            ):Container(
-              height: MediaQuery.of(context).size.height,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                          onTap: (){
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.arrow_back_rounded)),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Color(0xff6C7480)),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(5.0))),
-                      margin: EdgeInsets.only(left: 20.0, right: 20.0),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                      ),
-                      child: TextField(
-                        // controller: fees,
-                        textAlignVertical: TextAlignVertical.center,
-                        textAlign: TextAlign.left,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          hintText: 'Search Contact',
-                          prefixStyle: TextStyle(color: Colors.black),
-                          hintStyle: const TextStyle(
-                            fontSize: 14.0,
-                            color: Color(0xff6C7480),
-                          ),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) => searchFilter(value, setState),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                          itemCount: foundContacts.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index){
-                            return InkWell(
-                              onTap: (){
-                                setState((){
-                                  // dropdownValue = foundContacts[index].displayName.toString();
-                                });
-                                // cutomerItems.add(DropdownMenuItem(
-                                //   child: Text(foundContacts[index].displayName.toString()),
-                                //   value: foundContacts[index].displayName.toString(),
-                                // ));
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                    AddAppointment(foundContacts[index].displayName.toString(), foundContacts[index].phones![0].value.toString())));
-                              },
-                              child: ListTile(
-                                leading: Container(
-                                  height: 30,
-                                  width: 30,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 7,
-                                            color: Colors.white.withOpacity(0.1),
-                                            offset: Offset(-3, -3)
-                                        ),
-                                        BoxShadow(
-                                            blurRadius: 7,
-                                            color: Colors.black.withOpacity(0.1),
-                                            offset: Offset(3, -3)
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(6.0)
-                                      ),
-                                      color: Color(0xff262626)
-                                  ),
-                                  child: Text(
-                                    "${foundContacts[index].givenName?.substring(0,1).toUpperCase()}",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white
-                                    ),
-                                  ),
-                                ),
-                                title: Text(
-                                  "${foundContacts[index].displayName}",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  "${foundContacts[index].phones![0].value}",
-                                  style: TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w400
-                                  ),
-                                ),
-                                horizontalTitleGap: 12,
-                              ),
-                            );
-                          }),
-                    )
-                  ],
-                ),
-              ),
-            );
-          }),
-    );
-  }
-
-}
+// class MYBottomSheet extends StatefulWidget{
+//   @override
+//   State<StatefulWidget> createState() => _BottomSheetState();
+// }
+//
+// class _BottomSheetState extends State<MYBottomSheet>{
+//
+//   // List<Contact> contacts = [];
+//   // List<Contact> foundContacts = [];
+//   bool isLoading = false;
+//
+//   // void getContactPermission() async {
+//   //
+//   //   if(await Permission.contacts.isGranted) {
+//   //     getContacts();
+//   //   }else if(await Permission.contacts.isPermanentlyDenied) {
+//   //     await Permission.contacts.request();
+//   //     if (await Permission.contacts.isGranted) {
+//   //       getContacts();
+//   //     }
+//   //   }else {
+//   //     await Permission.contacts.request();
+//   //     if (await Permission.contacts.isGranted) {
+//   //       getContacts();
+//   //     }
+//   //   }
+//   // }
+//
+//   // void getContacts() async {
+//   //   setState(() {
+//   //     isLoading = true;
+//   //   });
+//   //   contacts = await ContactsService.getContacts();
+//   //   print(contacts[0].phones![0].value);
+//   //
+//   //   foundContacts = contacts;
+//   //   print(foundContacts);
+//   //   setState(() {
+//   //     isLoading = false;
+//   //   });
+//   // }
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     // getContactPermission();
+//   }
+//
+//   // void searchFilter(String enteredKeyword, StateSetter dState) {
+//   //   List<Contact> results = [];
+//   //   if(enteredKeyword.isEmpty){
+//   //     results = contacts;
+//   //   }else{
+//   //     results = contacts
+//   //         .where((element) =>
+//   //         element.givenName!.toLowerCase().contains(enteredKeyword.toLowerCase()) ||
+//   //             element.phones![0].value!.contains(enteredKeyword)).toList();
+//   //   }
+//   //   dState(() {
+//   //     foundContacts = results;
+//   //   });
+//   // }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: StatefulBuilder(
+//           builder: (BuildContext context, StateSetter setState){
+//             return isLoading ? Center(
+//               child: CircularProgressIndicator(),
+//             ):Container(
+//               height: MediaQuery.of(context).size.height,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(top: 50.0),
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.start,
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: InkWell(
+//                           onTap: (){
+//                             Navigator.pop(context);
+//                           },
+//                           child: Icon(Icons.arrow_back_rounded)),
+//                     ),
+//                     Container(
+//                       decoration: BoxDecoration(
+//                           border: Border.all(color: Color(0xff6C7480)),
+//                           borderRadius:
+//                           BorderRadius.all(Radius.circular(5.0))),
+//                       margin: EdgeInsets.only(left: 20.0, right: 20.0),
+//                       padding: EdgeInsets.symmetric(
+//                         horizontal: 20.0,
+//                       ),
+//                       child: TextField(
+//                         // controller: fees,
+//                         textAlignVertical: TextAlignVertical.center,
+//                         textAlign: TextAlign.left,
+//                         decoration: InputDecoration(
+//                           isDense: true,
+//                           hintText: 'Search Contact',
+//                           prefixStyle: TextStyle(color: Colors.black),
+//                           hintStyle: const TextStyle(
+//                             fontSize: 14.0,
+//                             color: Color(0xff6C7480),
+//                           ),
+//                           border: InputBorder.none,
+//                         ),
+//                         // onChanged: (value) => searchFilter(value, setState),
+//                       ),
+//                     ),
+//                     Expanded(
+//                       child: ListView.builder(
+//                           itemCount: foundContacts.length,
+//                           shrinkWrap: true,
+//                           itemBuilder: (context, index){
+//                             return InkWell(
+//                               onTap: (){
+//                                 setState((){
+//                                   // dropdownValue = foundContacts[index].displayName.toString();
+//                                 });
+//                                 // cutomerItems.add(DropdownMenuItem(
+//                                 //   child: Text(foundContacts[index].displayName.toString()),
+//                                 //   value: foundContacts[index].displayName.toString(),
+//                                 // ));
+//                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+//                                     AddAppointment(foundContacts[index].displayName.toString(), foundContacts[index].phones![0].value.toString())));
+//                               },
+//                               child: ListTile(
+//                                 leading: Container(
+//                                   height: 30,
+//                                   width: 30,
+//                                   alignment: Alignment.center,
+//                                   decoration: BoxDecoration(
+//                                       boxShadow: [
+//                                         BoxShadow(
+//                                             blurRadius: 7,
+//                                             color: Colors.white.withOpacity(0.1),
+//                                             offset: Offset(-3, -3)
+//                                         ),
+//                                         BoxShadow(
+//                                             blurRadius: 7,
+//                                             color: Colors.black.withOpacity(0.1),
+//                                             offset: Offset(3, -3)
+//                                         )
+//                                       ],
+//                                       borderRadius: BorderRadius.all(
+//                                           Radius.circular(6.0)
+//                                       ),
+//                                       color: Color(0xff262626)
+//                                   ),
+//                                   child: Text(
+//                                     "${foundContacts[index].givenName?.substring(0,1).toUpperCase()}",
+//                                     style: TextStyle(
+//                                         fontSize: 20,
+//                                         color: Colors.white
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 title: Text(
+//                                   "${foundContacts[index].displayName}",
+//                                   style: TextStyle(
+//                                       fontSize: 16,
+//                                       fontWeight: FontWeight.w500
+//                                   ),
+//                                 ),
+//                                 subtitle: Text(
+//                                   "${foundContacts[index].phones![0].value}",
+//                                   style: TextStyle(
+//                                       fontSize: 11,
+//                                       fontWeight: FontWeight.w400
+//                                   ),
+//                                 ),
+//                                 horizontalTitleGap: 12,
+//                               ),
+//                             );
+//                           }),
+//                     )
+//                   ],
+//                 ),
+//               ),
+//             );
+//           }),
+//     );
+//   }
+//
+// }
