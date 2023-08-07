@@ -13,7 +13,7 @@ class CategoryManagement extends StatefulWidget{
 
 class _CategoryManagement extends State<CategoryManagement>{
 
-  DateTime? date;
+  DateTime? date=DateTime.now();
   String dob = "";
   late ViewSlotModel _viewSlotModel;
   List<SlotBody> _list = [];
@@ -21,10 +21,10 @@ class _CategoryManagement extends State<CategoryManagement>{
 
   void slots() async {
     _pageLoading = true;
-    if(dob != "Select Date"){
+    if(dob != ""){
       dob = dob;
     }else{
-      dob = "";
+      dob = date.toString().substring(0,10);
     }
     _viewSlotModel = await Services.SlotView(dob);
     if(_viewSlotModel.status == true){
@@ -42,6 +42,25 @@ class _CategoryManagement extends State<CategoryManagement>{
     slots();
   }
 
+  TimeOfDay parseTimeString(String timeString) {
+    // Split the timeString into hours, minutes, and am/pm parts
+    List<String> parts = timeString.toLowerCase().split(':');
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1].substring(0, 2));
+    String amPm = parts[1].substring(2);
+
+    // Adjust the hours if it's PM
+    if (amPm == 'pm') {
+      hours = hours + 12;
+      if (hours == 24) {
+        hours = 12; // 12:00 PM should be converted to 12:00 not 24:00
+      }
+    }
+
+    return TimeOfDay(hour: hours, minute: minutes);
+  }
+
+
   void showCustomDialog(BuildContext context,String title,date,fromtime,totime,slot_id,bool isshow) {
     DateTime dateTime = DateTime.now();
     TimeOfDay starttime=TimeOfDay(hour:1,minute: 0);
@@ -50,18 +69,21 @@ class _CategoryManagement extends State<CategoryManagement>{
       dateTime=DateTime.parse(date);
     }
     if(fromtime!=""){
-      print(fromtime);
-      List<String> parts = fromtime.split(':');
-      int hour = int.parse(parts[0]);
-      int minute = int.parse(parts[1]);
-      starttime=TimeOfDay(hour: hour, minute: minute);
+      // print(fromtime);
+      // String parts = fromtime;
+      // int hour = int.parse(parts[0]);
+      // int minute = int.parse(parts[1]);
+      // starttime=TimeOfDay(hour: hour, minute: minute);
+
+      starttime = parseTimeString(fromtime);
     }
     if(totime!=""){
-      print(totime);
-      List<String> parts = totime.split(':');
-      int hour = int.parse(parts[0]);
-      int minute = int.parse(parts[1]);
-      endtime=TimeOfDay(hour: hour, minute: minute);
+      // print(totime);
+      // String parts = totime;
+      // int hour = int.parse(parts[0]);
+      // int minute = int.parse(parts[1]);
+      endtime = parseTimeString(totime);
+      // endtime=TimeOfDay(hour: hour, minute: minute);
     }
     showDialog(
       context: context,
@@ -115,6 +137,12 @@ class _CategoryManagement extends State<CategoryManagement>{
   }
   @override
   Widget build(BuildContext context) {
+
+    var size = MediaQuery.of(context).size;
+    /*24 is for notification bar on Android*/
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 10;
+    final double itemWidth = size.width / 2;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -221,147 +249,155 @@ class _CategoryManagement extends State<CategoryManagement>{
                 }
               },
               child: Container(
-                width: MediaQuery.of(context).size.width,
-                margin:
-                EdgeInsets.only(right: 10.0),
-                padding: EdgeInsets.only(
-                    left: 10.0,
-                    top: 10.0,
-                    right: 10.0,
-                    bottom: 10.0),
-                decoration: ShapeDecoration(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 0.50, color: Color(0xFFD0D4E0)),
-                    borderRadius: BorderRadius.circular(5),
+                  width: MediaQuery.of(context).size.width,
+                  margin:
+                  EdgeInsets.only(right: 10.0),
+                  padding: EdgeInsets.only(
+                      left: 10.0,
+                      top: 10.0,
+                      right: 10.0,
+                      bottom: 10.0),
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 0.50, color: Color(0xFFD0D4E0)),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    dob.isEmpty ?Text(
-                      "Select Date",
-                      style: TextStyle(
+                  child: Row(
+                    children: [
+                      dob.isEmpty ?Text(
+                        "Select Date",
+                        style: TextStyle(
+                          color: Color(0xff6C7480),
+                        ),
+                      ): Text(
+                        "${dob}",
+                        style: TextStyle(
+                          color: Color(0xff6C7480),
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(Icons.calendar_month,
                         color: Color(0xff6C7480),
                       ),
-                    ): Text(
-                      "${dob}",
-                      style: TextStyle(
-                        color: Color(0xff6C7480),
-                      ),
-                    ),
-                    Spacer(),
-                    Icon(Icons.calendar_month,
-                      color: Color(0xff6C7480),
-                    ),
-                    if(dob.isNotEmpty) InkWell(
-                      onTap:(){
-                        setState((){dob="";
-                        slots();});
-                      },
-                      child: Icon(Icons.close,
-                        color: Color(0xff6C7480),
-                      ),
-                    )
-                  ],
-                )
+                      if(dob.isNotEmpty) InkWell(
+                        onTap:(){
+                          setState((){dob="";
+                          slots();});
+                        },
+                        child: Icon(Icons.close,
+                          color: Color(0xff6C7480),
+                        ),
+                      )
+                    ],
+                  )
               ),
             ),
           ),
           Expanded(
             child: _pageLoading ? Center(
               child: CircularProgressIndicator(),
-            ) : Container(
+            ) : _list.isNotEmpty ? Container(
               margin: EdgeInsets.symmetric(horizontal: 20.0),
               child: GridView.builder(
-                itemCount: _list.length,
+                  itemCount: _list.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 2.7,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 20.0
+                      crossAxisCount: 2,
+                      childAspectRatio: (itemWidth / itemHeight),
+                      // childAspectRatio: 2.5,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 20.0
                   ),
                   itemBuilder: (context, index){
-                SlotBody _body = _list[index];
-                final fromTime =
-                _body.fromTime!.substring(0,2).contains("13") ? "01${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("14") ? "02${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("15") ? "03${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("16") ? "04${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("17") ? "05${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("18") ? "06${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("19") ? "07${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("20") ? "08${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("21") ? "09${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("22") ? "10${_body.fromTime!.substring(2,5)} PM":
-                _body.fromTime!.substring(0,2).contains("23") ? "11${_body.fromTime!.substring(2,5)} PM":
-                "${_body.fromTime!.substring(0,5)} AM";
-                final toTime =
-                _body.toTime!.substring(0,2).contains("13") ? "01${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("14") ? "02${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("15") ? "03${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("16") ? "04${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("17") ? "05${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("18") ? "06${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("19") ? "07${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("20") ? "08${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("21") ? "09${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("22") ? "10${_body.toTime!.substring(2,5)} PM":
-                _body.toTime!.substring(0,2).contains("23") ? "11${_body.toTime!.substring(2,5)} PM":
-                "${_body.toTime!.substring(0,5)} AM";
+                    SlotBody _body = _list[index];
+                    final fromTime =_body.fromTime;
+                    // _body.fromTime!.substring(0,2).contains("13") ? "01${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("14") ? "02${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("15") ? "03${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("16") ? "04${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("17") ? "05${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("18") ? "06${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("19") ? "07${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("20") ? "08${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("21") ? "09${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("22") ? "10${_body.fromTime!.substring(2,5)} PM":
+                    // _body.fromTime!.substring(0,2).contains("23") ? "11${_body.fromTime!.substring(2,5)} PM":
+                    // "${_body.fromTime!.substring(0,5)} AM";
+                    final toTime =_body.toTime;
+                    // _body.toTime!.substring(0,2).contains("13") ? "01${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("14") ? "02${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("15") ? "03${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("16") ? "04${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("17") ? "05${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("18") ? "06${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("19") ? "07${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("20") ? "08${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("21") ? "09${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("22") ? "10${_body.toTime!.substring(2,5)} PM":
+                    // _body.toTime!.substring(0,2).contains("23") ? "11${_body.toTime!.substring(2,5)} PM":
+                    // "${_body.toTime!.substring(0,5)} AM";
 
                     return InkWell(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${_body.date.toString().substring(0,10)}",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
-                            ),),
-                          Container(
-                            alignment: Alignment.center,
-                            decoration:  BoxDecoration(
-                              color: _body.bookStatus == "1" ? Colors.grey[400] : Colors.white,
-                              border: Border.all(
-                                color: Colors.grey
-                              ),
-                              borderRadius: BorderRadius.all(Radius.circular(10.0))
-                            ),
-                            padding:const EdgeInsets.symmetric(vertical: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("${fromTime} - ${toTime}",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
-                                ),),
-                                SizedBox(width: 5,),
-                                InkWell(
-                                  onTap: (){
-                                    showCustomDialog(context,"Edit","${_body.date}","${_body.fromTime}","${_body.toTime}","${_body.slotId}",true);
-                                  },
-                                  child: Image.asset("assets/edit_ic.png",
-                                    color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
-                                    height: 15,),
-                                ),
-                                SizedBox(width: 5,),
-                                InkWell(
-                              onTap: (){
-                                _showDeleteConfirmationDialog(context,_body.slotId.toString());
-                              },
-                              child: Image.asset("assets/delete_ic.png",
+                      child: Container(
+                        // height:height 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${_body.date.toString().substring(0,10)}",
+                              style: TextStyle(
+                                fontSize: 10,
                                 color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
-                                height: 15,),
-                            )
-                              ],
+                              ),),
+                            Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              decoration:  BoxDecoration(
+                                  color: _body.bookStatus == "1" ? Colors.grey[400] : Colors.white,
+                                  border: Border.all(
+                                      color: Colors.grey
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0))
+                              ),
+                              padding:const EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("${fromTime} - ${toTime}".toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
+                                    ),),
+                                  SizedBox(width: 5,),
+                                  InkWell(
+                                    onTap: (){
+                                      showCustomDialog(context,"Edit","${_body.date}","${_body.fromTime}","${_body.toTime}","${_body.slotId}",true);
+                                    },
+                                    child: Image.asset("assets/edit_ic.png",
+                                      color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
+                                      height: 15,),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  InkWell(
+                                    onTap: (){
+                                      _showDeleteConfirmationDialog(context,_body.slotId.toString());
+                                    },
+                                    child: Image.asset("assets/delete_ic.png",
+                                      color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
+                                      height: 15,),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
-              }),
+                  }),
+            ):Center(
+              child:  Text("Slot not available".toUpperCase(),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
             ),
           )
         ],

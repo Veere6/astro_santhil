@@ -72,7 +72,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20.0),
+            margin: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.only(
+                // top: MediaQuery.of(context).padding.top,
+                bottom:MediaQuery.of(context).padding.bottom+20),
             child: Image.asset("assets/green text-01.png")
         ),
       ),

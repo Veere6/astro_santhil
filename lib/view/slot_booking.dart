@@ -118,7 +118,7 @@ class _SlotBookingState extends State<SlotBooking> {
     _addAppointmentModel = await Services.addAppointment(
         selectedCustomer_id,
         today.toString().substring(0, 10),
-        selectTimes,
+        // selectTimes,
         msg.text,
         fees.text,
         _radioSelected.toString(),selectedSlot_id);
@@ -210,47 +210,74 @@ class _SlotBookingState extends State<SlotBooking> {
     }else{
       dob = "";
     }
+    _list.clear();
+    slot_id.clear();
+    slotItems.clear();
     _viewSlotModel = await Services.SlotView(dob);
     if(_viewSlotModel.status == true){
-      for(var i = 0; i < _viewSlotModel.body!.length; i++){
+      for(var i = 0; i < _viewSlotModel.body!.length; i++) {
         // _list = _viewSlotModel.body[i]. ?? [];
 
         SlotBody _body = _viewSlotModel.body![i];
-    final fromTime =
-    _body.fromTime!.substring(0,2).contains("13") ? "01${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("14") ? "02${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("15") ? "03${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("16") ? "04${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("17") ? "05${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("18") ? "06${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("19") ? "07${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("20") ? "08${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("21") ? "09${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("22") ? "10${_body.fromTime!.substring(2,5)} PM":
-    _body.fromTime!.substring(0,2).contains("23") ? "11${_body.fromTime!.substring(2,5)} PM":
-    "${_body.fromTime!.substring(0,5)} AM";
+        final fromTime =_body.fromTime.toString().toUpperCase();
+        // _body.fromTime!.substring(0, 2).contains("13") ? "01${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("14") ? "02${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("15") ? "03${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("16") ? "04${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("17") ? "05${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("18") ? "06${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("19") ? "07${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("20") ? "08${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("21") ? "09${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("22") ? "10${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // _body.fromTime!.substring(0, 2).contains("23") ? "11${_body.fromTime!
+        //     .substring(2, 5)} PM" :
+        // "${_body.fromTime!.substring(0, 5)} AM";
 
-    final toTime =
-    _body.toTime!.substring(0,2).contains("13") ? "01${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("14") ? "02${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("15") ? "03${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("16") ? "04${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("17") ? "05${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("18") ? "06${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("19") ? "07${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("20") ? "08${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("21") ? "09${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("22") ? "10${_body.toTime!.substring(2,5)} PM":
-    _body.toTime!.substring(0,2).contains("23") ? "11${_body.toTime!.substring(2,5)} PM":
-    "${_body.toTime!.substring(0,5)} AM";
+        final toTime =_body.toTime.toString().toUpperCase();
+        // _body.toTime!.substring(0, 2).contains("13") ? "01${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("14") ? "02${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("15") ? "03${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("16") ? "04${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("17") ? "05${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("18") ? "06${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("19") ? "07${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("20") ? "08${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("21") ? "09${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("22") ? "10${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // _body.toTime!.substring(0, 2).contains("23") ? "11${_body.toTime!
+        //     .substring(2, 5)} PM" :
+        // "${_body.toTime!.substring(0, 5)} AM";
 
-    _list.add("${fromTime} - ${toTime}");
-        slot_id.add("${_body.slotId}");
-    slotItems.add(DropdownMenuItem(
-          child: Text("${fromTime} - ${toTime}"),
-          value: "${fromTime} - ${toTime}",
-        ));
-    }
+        if (_body.bookStatus != "1") {
+          _list.add("${fromTime} - ${toTime}");
+          slot_id.add("${_body.slotId}");
+          slotItems.add(DropdownMenuItem(
+            child: Text("${fromTime} - ${toTime}"),
+            value: "${fromTime} - ${toTime}",
+          ));
+        }
+      }
     }
     setState(() {
       _pageLoading = false;
@@ -481,7 +508,7 @@ class _SlotBookingState extends State<SlotBooking> {
                           
                           child: TableCalendar(
                             focusedDay: today,
-                            firstDay: DateTime.utc(2010, 10, 16),
+                            firstDay: DateTime.now(),
                             lastDay: DateTime.utc(2050, 10, 16),
                             calendarStyle: CalendarStyle(
                               selectedDecoration: BoxDecoration(
@@ -558,6 +585,7 @@ class _SlotBookingState extends State<SlotBooking> {
                                           onChanged: (value) {
                                             setState(() {
                                               dropdownValue2 = value;
+                                              print(dropdownValue2);
                                               if (dropdownValue2 != "Select Slot") {
                                                 for (var i = 0; i < spinnerItems.length; i++) {
                                                   if (_list[i] == dropdownValue2) {
@@ -622,33 +650,33 @@ class _SlotBookingState extends State<SlotBooking> {
                             ],
                           ),
                         ),
-                        Container(
-                          margin:
-                          EdgeInsets.only(left: 30.0, top: 20.0, bottom: 5.0),
-                          child: Text("SELECT TIME",
-                          style: TextStyle(color: Color(0xFF8A92A2)),),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            selectTime(context);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Color(0xFFD0D4E0)),
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(5.0))),
-                            margin: EdgeInsets.only(left: 20.0, right: 20.0),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10.0),
-                            child: Row(
-                              children: [
-                                Text(selectTimes),
-                                Spacer(),
-                                Icon(Icons.keyboard_arrow_down)
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   margin:
+                        //   EdgeInsets.only(left: 30.0, top: 20.0, bottom: 5.0),
+                        //   child: Text("SELECT TIME",
+                        //   style: TextStyle(color: Color(0xFF8A92A2)),),
+                        // ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     selectTime(context);
+                        //   },
+                        //   child: Container(
+                        //     decoration: BoxDecoration(
+                        //         border: Border.all(color: Color(0xFFD0D4E0)),
+                        //         borderRadius:
+                        //         BorderRadius.all(Radius.circular(5.0))),
+                        //     margin: EdgeInsets.only(left: 20.0, right: 20.0),
+                        //     padding: EdgeInsets.symmetric(
+                        //         horizontal: 20.0, vertical: 10.0),
+                        //     child: Row(
+                        //       children: [
+                        //         Text(selectTimes),
+                        //         Spacer(),
+                        //         Icon(Icons.keyboard_arrow_down)
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         Container(
                           margin:
                           EdgeInsets.only(left: 30.0, top: 20.0, bottom: 5.0),
@@ -785,12 +813,14 @@ class _SlotBookingState extends State<SlotBooking> {
                                         msg: "Please Select Customer",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.SNACKBAR);
-                                  } else if (selectTimes == "Select Time") {
-                                    Fluttertoast.showToast(
-                                        msg: "Please Select Time",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.SNACKBAR);
-                                  } else if (fees.text.isEmpty) {
+                                  }
+                                  // else if (selectTimes == "Select Time") {
+                                  //   Fluttertoast.showToast(
+                                  //       msg: "Please Select Time",
+                                  //       toastLength: Toast.LENGTH_SHORT,
+                                  //       gravity: ToastGravity.SNACKBAR);
+                                  // }
+                                  else if (fees.text.isEmpty) {
                                     Fluttertoast.showToast(
                                         msg: "Please Enter Fees",
                                         toastLength: Toast.LENGTH_SHORT,
@@ -800,12 +830,14 @@ class _SlotBookingState extends State<SlotBooking> {
                                         msg: "Please Select Fess Type",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.SNACKBAR);
-                                  } else if (msg.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: "Please Enter Message",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.SNACKBAR);
-                                  } else {
+                                  }
+                                  // else if (msg.text.isEmpty) {
+                                  //   Fluttertoast.showToast(
+                                  //       msg: "Please Enter Message",
+                                  //       toastLength: Toast.LENGTH_SHORT,
+                                  //       gravity: ToastGravity.SNACKBAR);
+                                  // }
+                                  else {
                                     addAppointment();
                                   }
                                 },

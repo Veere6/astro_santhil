@@ -39,6 +39,7 @@ class Body {
   String? time;
   String? status;
   String? message;
+  String? slot_id;
   String? fees;
   String? feesStatus;
   String? cancelStatus;
@@ -52,6 +53,7 @@ class Body {
     this.time,
     this.status,
     this.message,
+    this.slot_id,
     this.fees,
     this.feesStatus,
     this.cancelStatus,
@@ -66,6 +68,7 @@ class Body {
     time: json["time"],
     status: json["status"],
     message: json["message"],
+    slot_id: json["slot_id"],
     fees: json["fees"],
     feesStatus: json["fees_status"],
     cancelStatus: json["cancel_status"],
@@ -80,6 +83,7 @@ class Body {
     "time": time,
     "status": status,
     "message": message,
+    "slot_id": slot_id,
     "fees": fees,
     "fees_status": feesStatus,
     "cancel_status": cancelStatus,

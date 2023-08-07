@@ -4,6 +4,8 @@ import 'package:astro_santhil_app/models/add_customer_model.dart';
 import 'package:astro_santhil_app/models/category_model.dart';
 import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
+import 'package:astro_santhil_app/view/Widget/mycontactpickerwidget.dart';
+import 'package:astro_santhil_app/view/Widget/myimagepickerwidgeth.dart';
 import 'package:astro_santhil_app/view/home.dart';
 import 'package:astro_santhil_app/view/menu.dart';
 import 'package:astro_santhil_app/view/slot_booking.dart';
@@ -587,7 +589,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                               )
                             ],
                           ),
-
+                          // MyHImagePickerWidget(),
                           Container(
                             margin: EdgeInsets.only(bottom: 10.0,top:10),
                             child: Text(
@@ -610,7 +612,9 @@ class _AddAppointmentState extends State<AddAppointment> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                            child: TextField(
+                            child:
+                            // MyContactPickerWidget()
+                            TextField(
                                 controller: userName,
                                 textAlignVertical: TextAlignVertical.center,
                                 textAlign: TextAlign.left,
@@ -956,10 +960,12 @@ class _AddAppointmentState extends State<AddAppointment> {
                             ),
                             child: TextField(
                                 controller: phoneNumber,
+                                maxLength: 10,
                                 textAlignVertical: TextAlignVertical.center,
                                 textAlign: TextAlign.left,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
+                                  counterText: "",
                                   isDense: true,
                                   hintText: 'Phone Number',
                                   hintStyle: const TextStyle(
@@ -1259,25 +1265,41 @@ class _AddAppointmentState extends State<AddAppointment> {
                           ),
                           InkWell(
                             onTap: () {
-                              if (image == null) {
-                                Fluttertoast.showToast(msg: "Select customer image");
-                              } else if (userName.text.isEmpty) {
+                              // if (image == null) {
+                              //   Fluttertoast.showToast(msg: "Select customer image");
+                              // }
+                              // else
+                                if (userName.text.isEmpty) {
                                 Fluttertoast.showToast(msg: "Enter name");
-                              } else if (city.text.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: "Enter current city");
-                              } else if (dob == "(DD/MM/YYYY)") {
-                                Fluttertoast.showToast(
-                                    msg: "Enter Date of bith");
-                              } else if (selectTimes == "Select Time") {
-                                Fluttertoast.showToast(msg: "Enter time");
-                              } else if (phoneNumber.text.isEmpty) {
+                              }
+                              // else if (city.text.isEmpty) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Enter current city");
+                              // }
+                              // else if (dob == "(DD/MM/YYYY)") {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Enter Date of bith");
+                              // }
+                              // else if (selectTimes == "Select Time") {
+                              //   Fluttertoast.showToast(msg: "Enter time");
+                              // }
+                              else if (phoneNumber.text.isEmpty) {
                                 Fluttertoast.showToast(
                                     msg: "Enter phone number");
-                              } else if (birthPlace.text.isEmpty) {
+                              }
+                              else if (selectedCategory == "Select Category") {
                                 Fluttertoast.showToast(
-                                    msg: "Enter birth place");
-                              } else {
+                                    msg: "Select category");
+                              }
+                              else if (selectedSubCategory == "Select Sub Category") {
+                                Fluttertoast.showToast(
+                                    msg: "Select sub category");
+                              }
+                              // else if (birthPlace.text.isEmpty) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Enter birth place");
+                              // }
+                              else {
                                 addCustomer();
                               }
                             },
