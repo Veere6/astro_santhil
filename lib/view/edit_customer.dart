@@ -493,7 +493,7 @@ class _EditCustomerState extends State<EditCustomer> {
                                     // padding: EdgeInsets.symmetric(
                                     //     horizontal: 47.62, vertical: 5.0),
                                     decoration: ShapeDecoration(
-                                      color: Color(0xFF526872),
+                                      color: Color(0xFF3BB143),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -533,7 +533,7 @@ class _EditCustomerState extends State<EditCustomer> {
                                       // padding: EdgeInsets.symmetric(
                                       //     horizontal: 47.62, vertical: 5.0),
                                       decoration: ShapeDecoration(
-                                        color: Color(0xFF526872),
+                                        color: Color(0xFF3BB143),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(10),
                                         ),

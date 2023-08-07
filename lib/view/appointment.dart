@@ -311,7 +311,7 @@ color: Colors.white            ),
                     height: 50,
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: ShapeDecoration(
-                      color: Color(0x33009688),
+                      color: Color(0xFF3BB143),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),

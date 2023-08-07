@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
                 margin: EdgeInsets.only(left: 20.22, top: 30.0, right: 20.22),
                 padding: EdgeInsets.all(15.0),
                 decoration: ShapeDecoration(
-                  color: Color(0xFF607D8B),
+                  color: Color(0xFF3BB143),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),

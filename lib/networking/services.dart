@@ -9,6 +9,7 @@ import 'package:astro_santhil_app/models/appointment_detai_model.dart';
 import 'package:astro_santhil_app/models/appointment_view_model.dart';
 import 'package:astro_santhil_app/models/category_model.dart';
 import 'package:astro_santhil_app/models/complete_appointment_model.dart';
+import 'package:astro_santhil_app/models/counrty_model.dart';
 import 'package:astro_santhil_app/models/customer_detail_model.dart';
 import 'package:astro_santhil_app/models/customer_name_model.dart';
 import 'package:astro_santhil_app/models/dashboard.dart';
@@ -157,7 +158,7 @@ class Services {
   }
 
   static Future<AddCustomerModel> customerAdd(String name, String gender, String city, String dob, String birt_time,
-      String email, String phone, String catId, String subCatId, String text, String birthPlace,
+      String email, String phone, String catId, String subCatId, String countryId, String text, String birthPlace,
       File image, File hImage) async {
     var request = new http.MultipartRequest("POST", Uri.parse(addCustomer));
     var Image;
@@ -179,6 +180,7 @@ class Services {
     request.fields["cat_id"] = catId;
     request.fields["sub_cat_id"] = subCatId;
     request.fields["text"] = text;
+    request.fields["country_id"] = countryId;
     request.fields["birth_place"] = birthPlace;
     if(Image != null){
       request.files.add(Image);
@@ -357,13 +359,15 @@ class Services {
     }
   }
 
-  static Future<ViewCustomerModel> veiwCustomer(String name, String phone, String catId, String subCatId) async {
+  static Future<ViewCustomerModel> veiwCustomer(String name, String phone, String catId, String subCatId,
+      String countryId) async {
     final params = {
       "flag": "customer_list",
       "name": name,
       "phone": phone,
       "cat_id": catId,
       "sub_cat_id": subCatId,
+      "country_id":countryId,
     };
 
     http.Response response = await http.post(Uri.parse(nameList), body: params);
@@ -579,6 +583,26 @@ class Services {
     } else {
       var data = jsonDecode(response.body);
       UpcomingAppointmentModel user = UpcomingAppointmentModel.fromJson(data);
+      return user;
+    }
+  }
+
+  static Future<CountryModel> countryList() async {
+    final params = {
+      "flag": "get_country_list",
+    };
+
+    http.Response response = await http.post(Uri.parse(nameList), body: params);
+    print("countryList ${params}");
+    print("countryList ${response.body}");
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      CountryModel user = CountryModel.fromJson(data);
+      return user;
+    } else {
+      var data = jsonDecode(response.body);
+      CountryModel user = CountryModel.fromJson(data);
       return user;
     }
   }
