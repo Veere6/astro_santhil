@@ -93,10 +93,12 @@ class Services {
     }
   }
 
-  static Future<AppointmentViewModel> appointmentView(String type) async {
+  static Future<AppointmentViewModel> appointmentView(String type,String fromdate,todate) async {
     final params = {
       "flag":"view_type",
       "view_type":type,
+      "s_date":fromdate,
+      "e_date":todate
     };
 
     http.Response response = await http.post(Uri.parse(appointment), body: params);
@@ -458,14 +460,23 @@ class Services {
       String email, String phone, String catId, String subCatId, String place, String text, String birthPlace,
       File image, File hImage,String selectedCustomer_id) async {
     var request = new http.MultipartRequest("POST", Uri.parse(nameList));
+    // var Image;
+    // var hImage;
     var Image;
-    var hImage;
-    if(hImage != null){
-      hImage = await http.MultipartFile.fromPath("h_image", hImage.path);
+    var fImage;
+    if(hImage!=null && hImage.path!=""){
+      fImage = await http.MultipartFile.fromPath("h_image", hImage.path);
     }
-    if(Image != null){
+    if(image!=null && image.path!=""){
       Image = await http.MultipartFile.fromPath("u_image", image.path);
     }
+
+    // if(hImage != null){
+    //   hImage = await http.MultipartFile.fromPath("h_image", hImage.path);
+    // }
+    // if(Image != null){
+    //   Image = await http.MultipartFile.fromPath("u_image", image.path);
+    // }
 
     request.fields["flag"] = "edit_customer";
     request.fields["customer_id"] = cId;
@@ -486,12 +497,20 @@ class Services {
     if(Image != null){
       request.files.add(Image);
     }
-    if(hImage != null) {
-      request.files.add(hImage);
+    if(fImage != null) {
+      request.files.add(fImage);
     }
+
+    // if(Image != null){
+    //   request.files.add(Image);
+    // }
+    // if(hImage != null) {
+    //   request.files.add(hImage);
+    // }
 
     var response = await request.send();
     var response2 = await http.Response.fromStream(response);
+    print("updateCustomer ${request.files}");
     print("updateCustomer ${request.fields}");
     print("updateCustomer ${response2.body}");
 
@@ -568,9 +587,11 @@ class Services {
     }
   }
 
-  static Future<AppointmentViewModel> appointmentUpcoming() async {
+  static Future<AppointmentViewModel> appointmentUpcoming(String fromdate,todate) async {
     final params = {
       "flag": "upcoming_appointment",
+      "s_date": fromdate,
+      "e_date":todate
     };
 
     http.Response response = await http.post(Uri.parse(appointment), body: params);

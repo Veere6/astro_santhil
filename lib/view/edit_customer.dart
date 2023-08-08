@@ -210,9 +210,9 @@ class _EditCustomerState extends State<EditCustomer> {
     if(_categoryModel.status == true){
       for(var i=0; i < _categoryModel.body!.length; i++){
         categoryList.add(_categoryModel.body![i].catName.toString());
-        if(selectedCategory == _categoryModel.body![i].catName){
-          categoryId = _categoryModel.body![i].catId.toString();
-          subCategoryMethod();
+        if(categoryId == _categoryModel.body![i].catId){
+          selectedCategory = _categoryModel.body![i].catName.toString();
+
         }
         // selectedSubCategory = _customerDetailModel.data![0].subCatName.toString();
       }
@@ -229,10 +229,10 @@ class _EditCustomerState extends State<EditCustomer> {
     _subCategoryModel = await Services.subCategoryList(categoryId);
     if(_subCategoryModel.status == true){
       for(var i=0; i < _subCategoryModel.body!.length; i++){
-        if(selectedSubCategory == _subCategoryModel.body![i].subCatName){
-          subCategoryId = _subCategoryModel.body![i].subCatId.toString();
-        }
         subCategoryList.add(_subCategoryModel.body![i].subCatName.toString());
+        if(subCategoryId == _subCategoryModel.body![i].subCatId){
+          selectedSubCategory = _subCategoryModel.body![i].subCatName.toString();
+        }
       }
     }
     setState(() {
@@ -259,8 +259,11 @@ class _EditCustomerState extends State<EditCustomer> {
       text.text = _customerDetailModel.data![0].text.toString();
       selectedCustomer_id = _customerDetailModel.data![0].country_id.toString();
       // selectedCategory = _customerDetailModel.data![0].catName.toString();
-      // categoryId = _customerDetailModel.data![0].catId.toString();
-      // subCategoryId = _customerDetailModel.data![0].subCatId.toString();
+      categoryId = _customerDetailModel.data![0].catId.toString();
+      subCategoryId = _customerDetailModel.data![0].subCatId.toString();
+
+      categoryMethod();
+      subCategoryMethod();
       country();
     }
     setState(() {
@@ -325,7 +328,6 @@ class _EditCustomerState extends State<EditCustomer> {
   @override
   void initState() {
     viewCustomer();
-    categoryMethod();
     super.initState();
   }
 

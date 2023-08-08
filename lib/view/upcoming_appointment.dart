@@ -26,11 +26,11 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
   int _radioSelected = 0;
   String _radioVal = "";
   bool _pageLoading = false;
-
+  DateTime fromdate=DateTime.now();
   Future<void> viewAppointment() async {
     _pageLoading = true;
     _list.clear();
-    _appointmentViewModel = await Services.appointmentView("today");
+    _appointmentViewModel = await Services.appointmentView("today","${fromdate.year}-${fromdate.month}-${fromdate.day}","${fromdate.year}-${fromdate.month}-${fromdate.day}");
     if(_appointmentViewModel.status == true){
       for(var i = 0; i < _appointmentViewModel.body!.length; i++){
         _list = _appointmentViewModel.body ?? <Body> [];
@@ -227,7 +227,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Menu("Appointment upcoming")));
+                                  builder: (context) => Menu("Today's Appointment")));
                         },
                         child: Container(
                           child: Image.asset(
@@ -240,7 +240,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                       Spacer(),
                       Container(
                         child: Text(
-                          "Upcoming Appointment",
+                          "Today's Appointment",
                           style:
                           TextStyle(color: Colors.white, fontSize: 21.61),
                         ),

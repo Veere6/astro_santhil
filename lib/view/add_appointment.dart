@@ -618,7 +618,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           Container(
                             margin: EdgeInsets.only(bottom: 10.0,top:10),
                             child: Text(
-                              'NAME',
+                              'Name *',
                               style: TextStyle(
                                 color: Color(0xFF8A92A2),
                                 fontSize: 13.55,
@@ -679,7 +679,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                             child: Text(
-                              ' GENDER',
+                              'Gender',
                               style: TextStyle(
                                 color: Color(0xFF8A92A2),
                                 fontSize: 13.55,
@@ -748,7 +748,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                             child: Text(
-                              'Country',
+                              'Country *',
                               style: TextStyle(
                                 color: Color(0xFF8A92A2),
                                 fontSize: 13.55,
@@ -1033,7 +1033,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: Text("Phone Number",
+                            child: Text("Phone Number *",
                                 style: TextStyle(
                                   color: Color(0xFF8A92A2),
                                   fontSize: 13.55,
@@ -1071,7 +1071,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: Text("Category",
+                            child: Text("Category *",
                                 style: TextStyle(
                                   color: Color(0xFF8A92A2),
                                   fontSize: 13.55,
@@ -1374,9 +1374,9 @@ class _AddAppointmentState extends State<AddAppointment> {
                               //   Fluttertoast.showToast(
                               //       msg: "Enter Date of bith");
                               // }
-                              // else if (selectTimes == "Select Time") {
-                              //   Fluttertoast.showToast(msg: "Enter time");
-                              // }
+                              else if (selectedCountry == "Select Country") {
+                                Fluttertoast.showToast(msg: "Select country");
+                              }
                               else if (phoneNumber.text.isEmpty) {
                                 Fluttertoast.showToast(
                                     msg: "Enter phone number");

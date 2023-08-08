@@ -67,14 +67,15 @@ class _AppointmentState extends State<Appointment> {
   //   });
   //   _pageLoading = false;
   // }
-
+  DateTime currentdate = DateTime.now();
   Future<void> viewAppointment(String type) async {
     _pageLoading = true;
     _list.clear();
+
     if(type=="upcoming"){
-      _appointmentViewModel = await Services.appointmentUpcoming();
+      _appointmentViewModel = await Services.appointmentUpcoming("${selectedFromDate}","${selectedToDate}");
     }else {
-      _appointmentViewModel = await Services.appointmentView(type);
+      _appointmentViewModel = await Services.appointmentView(type,"${selectedFromDate}","${selectedToDate}",);
     }
     if (_appointmentViewModel.status == true) {
       for (var i = 0; i < _appointmentViewModel.body!.length; i++) {
@@ -248,8 +249,9 @@ class _AppointmentState extends State<Appointment> {
   @override
   void initState() {
     tab = widget.tabValue;
+    selectedFromDate = "${currentdate.year}-${currentdate.month}-${currentdate.day}";
+    selectedToDate = "${currentdate.year}-${currentdate.month}-${currentdate.day}";
     viewAppointment(tab);
-    // UpcomingviewAppointment();
     super.initState();
   }
 
@@ -263,6 +265,109 @@ class _AppointmentState extends State<Appointment> {
       // }
     });
   }
+
+
+
+
+  DateTime? fromDate;
+  String selectedFromDate = "";
+  DateTime? toDate;
+  String selectedToDate = "";
+  bool isLoad = false;
+
+  void fromdateMethod() async {
+    fromDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1950),
+        lastDate: DateTime(2030),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.black,
+                onPrimary: Colors.white,
+                surface: Colors.white,
+                onSurface: Colors.black,
+                secondary: Colors.green,
+                onSecondary: Colors.green,
+                secondaryContainer: Colors.green,
+              ),
+              datePickerTheme:
+              DatePickerThemeData(yearStyle: TextStyle(color: Colors.grey)),
+              dialogBackgroundColor: Colors.white,
+            ),
+            child: child!,
+          );
+        });
+    int? month = fromDate?.month;
+    String? fm = "" + "${month}";
+    String? fd = "" + "${fromDate?.day}";
+    if (month! < 10) {
+      fm = "0" + "${month}";
+      print("fm ${fm}");
+    }
+    if (fromDate!.day < 10) {
+      fd = "0" + "${fromDate?.day}";
+      print("fd ${fd}");
+    }
+    if (fromDate != null) {
+      print(
+          'Date Selecte : ${fromDate?.day ?? ""}-${fromDate?.month ?? ""}-${fromDate?.year ?? ""}');
+      setState(() {
+        selectedFromDate = '${fromDate?.year ?? ""}-${fm}-${fd}';
+        print("selectedFromDate ${selectedFromDate?.split(" ")[0]}");
+      });
+    }
+  }
+
+  void toDateMethod() async {
+    toDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1950),
+        lastDate: DateTime(2030),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.black,
+                onPrimary: Colors.white,
+                surface: Colors.white,
+                onSurface: Colors.black,
+                secondary: Colors.green,
+                onSecondary: Colors.green,
+                secondaryContainer: Colors.green,
+              ),
+              datePickerTheme:
+              DatePickerThemeData(yearStyle: TextStyle(color: Colors.grey)),
+              dialogBackgroundColor: Colors.white,
+            ),
+            child: child!,
+          );
+        });
+    int? month = toDate?.month;
+    String? fm = "" + "${month}";
+    String? fd = "" + "${toDate?.day}";
+    if (month! < 10) {
+      fm = "0" + "${month}";
+      print("fm ${fm}");
+    }
+    if (toDate!.day < 10) {
+      fd = "0" + "${toDate?.day}";
+      print("fd ${fd}");
+    }
+    if (toDate != null) {
+      print(
+          'Date Selecte : ${toDate?.day ?? ""}-${toDate?.month ?? ""}-${toDate?.year ?? ""}');
+      setState(() {
+        selectedToDate = '${toDate?.year ?? ""}-${fm}-${fd}';
+        print("selectedFromDate ${selectedToDate?.split(" ")[0]}");
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -332,8 +437,142 @@ class _AppointmentState extends State<Appointment> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.0,
+                    height: 10.0,
                   ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'From Date',
+                            style: TextStyle(
+                              color: Color(0xFF8A92A2),
+                              fontSize: 13.55,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              fromdateMethod();
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(top: 5.0),
+                              padding: EdgeInsets.all(10.0),
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      width: 0.50, color: Color(0xFFD0D4E0)),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    selectedFromDate.isNotEmpty
+                                        ? "${selectedFromDate}"
+                                        : "(DD/MM/YYYY)",
+                                    style: TextStyle(
+                                      color: Color(0xFF262A3F),
+                                      fontSize: 13.55,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 11.0),
+                                    child: Image.asset(
+                                      "assets/ic_down.png",
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'To Date',
+                            style: TextStyle(
+                              color: Color(0xFF8A92A2),
+                              fontSize: 13.55,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              toDateMethod();
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(top: 5.0),
+                              padding: EdgeInsets.all(10.0),
+                              decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      width: 0.50, color: Color(0xFFD0D4E0)),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                      selectedToDate.isNotEmpty
+                                          ? "${selectedToDate}"
+                                          : "(DD/MM/YYYY)",
+                                      style: TextStyle(
+                                        color: Color(0xFF262A3F),
+                                        fontSize: 13.55,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                      )),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 11.0),
+                                    child: Image.asset(
+                                      "assets/ic_down.png",
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () {
+                          viewAppointment(tab);
+                        },
+                        child: Container(
+                          decoration: ShapeDecoration(
+                            color: Color(0xFF3BB143),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                          padding: EdgeInsets.all(5.0),
+                          margin: EdgeInsets.only(top: 15.0),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.white,
+                            size: 30.0,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+
                   Container(
                     height: 50,
                     margin: EdgeInsets.symmetric(horizontal: 20.0),

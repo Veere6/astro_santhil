@@ -7,6 +7,7 @@ import 'package:astro_santhil_app/view/category_managmet.dart';
 import 'package:astro_santhil_app/view/menu.dart';
 import 'package:astro_santhil_app/view/payments.dart';
 import 'package:astro_santhil_app/view/slot_booking.dart';
+import 'package:astro_santhil_app/view/upcoming_appointment.dart';
 import 'package:astro_santhil_app/view/view_customer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -230,53 +231,59 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(height: 30.0),
-              Container(
-                height: 70,
-                margin: EdgeInsets.symmetric(horizontal: 20.0),
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                        offset: Offset(0, 5),
-                      )
-                    ]),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20.0,
-                      backgroundImage: AssetImage("assets/Vector (2).png"),
-                      backgroundColor: Colors.transparent,
-                      child: Image.asset(
-                        "assets/today_ic.png",
-                        height: 20.0,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        "Today's Total Appointment",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> UpcomingAppointment(),
+                  ));
+                },
+                child: Container(
+                  height: 70,
+                  margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
+                        )
+                      ]),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20.0,
+                        backgroundImage: AssetImage("assets/Vector (2).png"),
+                        backgroundColor: Colors.transparent,
+                        child: Image.asset(
+                          "assets/today_ic.png",
+                          height: 20.0,
                         ),
                       ),
-                    ),
-                    Spacer(),
-                    Text(
-                      "${appointment_counts}",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "Today's Total Appointment",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      Spacer(),
+                      Text(
+                        "${appointment_counts}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 30.0),
