@@ -196,7 +196,7 @@ class _EditAppointmentState extends State<EditAppointment> {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => Appointment("upcoming")));
       }else{
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> UpcomingAppointment(),
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> UpcomingAppointment(),
         ));
       }
     }else{

@@ -8,6 +8,7 @@ import 'package:astro_santhil_app/models/sub_category_model.dart';
 import 'package:astro_santhil_app/models/update_customer_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
 import 'package:astro_santhil_app/view/menu.dart';
+import 'package:astro_santhil_app/view/view_customer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -87,17 +88,20 @@ class _EditCustomerState extends State<EditCustomer> {
     showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
+          backgroundColor: Color(0xFFCBFCCB),
           content: Text("Choose image source"),
           actions: [
             TextButton(
-                child: Text("Camera"),
+                child: Text("Camera",
+                    style: TextStyle(color: Color(0xFF3BB143))),
                 onPressed: () {
                   _getFromCamera();
                   Navigator.pop(context);
                 }
             ),
             TextButton(
-                child: Text("Gallery"),
+                child: Text("Gallery",
+                    style: TextStyle(color: Color(0xFF3BB143))),
                 onPressed: () {
                   _getFromGallery();
                   Navigator.pop(context);
@@ -115,20 +119,23 @@ class _EditCustomerState extends State<EditCustomer> {
           content: Text("Choose image source"),
           actions: [
             TextButton(
-                child: Text("Camera"),
+                child: Text("Camera",
+                    style: TextStyle(color: Color(0xFF3BB143))),
                 onPressed: () {
                   _getHoroscopeFromCamera();
                   Navigator.pop(context);
                 }
             ),
             TextButton(
-                child: Text("Gallery"),
+                child: Text("Gallery",
+                    style: TextStyle(color: Color(0xFF3BB143))),
                 onPressed: () {
                   _getHoroscopeFromGallery();
                   Navigator.pop(context);
                 }
             ),
-          ]
+          ],
+          backgroundColor: Color(0xFFCBFCCB)
       ),
     );
   }
@@ -163,6 +170,7 @@ class _EditCustomerState extends State<EditCustomer> {
   void _viewHoroscopeImage() {
     showDialog(context: context,
         builder: (context) => AlertDialog(
+          backgroundColor: Color(0xFFCBFCCB),
           title: Text("View Horoscope Image", textAlign: TextAlign.center,),
           titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
           content: horoscopeImage.path != "" ?
@@ -310,7 +318,7 @@ class _EditCustomerState extends State<EditCustomer> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Home()));
+          context, MaterialPageRoute(builder: (context) => ViewCustomer()));
     }else{
 
       Fluttertoast.showToast(msg: "${_updateCustomerModel.msg}",
