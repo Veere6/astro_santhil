@@ -26,6 +26,7 @@ class _CategoryManagement extends State<CategoryManagement>{
     }else{
       dob = date.toString().substring(0,10);
     }
+    _list.clear();
     _viewSlotModel = await Services.SlotView(dob);
     if(_viewSlotModel.status == true){
       for(var i = 0; i < _viewSlotModel.body!.length; i++){
@@ -218,6 +219,12 @@ class _CategoryManagement extends State<CategoryManagement>{
                           onPrimary: Colors.white,
                           surface: Colors.white,
                           onSurface: Colors.black,
+                          secondary: Colors.green,
+                          onSecondary: Colors.green,
+                          secondaryContainer: Colors.green,
+                        ),
+                        datePickerTheme: DatePickerThemeData(
+                            yearStyle: TextStyle(color: Colors.grey)
                         ),
                         dialogBackgroundColor:Colors.white,
                       ),

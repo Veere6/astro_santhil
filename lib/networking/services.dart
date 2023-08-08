@@ -568,7 +568,7 @@ class Services {
     }
   }
 
-  static Future<UpcomingAppointmentModel> appointmentUpcoming() async {
+  static Future<AppointmentViewModel> appointmentUpcoming() async {
     final params = {
       "flag": "upcoming_appointment",
     };
@@ -579,11 +579,11 @@ class Services {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      UpcomingAppointmentModel user = UpcomingAppointmentModel.fromJson(data);
+      AppointmentViewModel user = AppointmentViewModel.fromJson(data);
       return user;
     } else {
       var data = jsonDecode(response.body);
-      UpcomingAppointmentModel user = UpcomingAppointmentModel.fromJson(data);
+      AppointmentViewModel user = AppointmentViewModel.fromJson(data);
       return user;
     }
   }

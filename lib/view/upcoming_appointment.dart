@@ -1,3 +1,5 @@
+
+import 'package:astro_santhil_app/models/appointment_view_model.dart';
 import 'package:astro_santhil_app/models/cancel_appointment_model.dart';
 import 'package:astro_santhil_app/models/complete_appointment_model.dart';
 import 'package:astro_santhil_app/models/upcoming_appointment_model.dart';
@@ -17,10 +19,10 @@ class UpcomingAppointment extends StatefulWidget {
 
 class _UpcomingAppointmentState extends State<UpcomingAppointment> {
 
-  late UpcomingAppointmentModel _appointmentViewModel;
+  late AppointmentViewModel _appointmentViewModel;
   late CancelAppointmentModel _cancelAppointmentModel;
   late CompleteAppointmentModel _completeAppointmentModel;
-  List<uBody> _list = [];
+  List<Body> _list = [];
   int _radioSelected = 0;
   String _radioVal = "";
   bool _pageLoading = false;
@@ -28,10 +30,10 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
   Future<void> viewAppointment() async {
     _pageLoading = true;
     _list.clear();
-    _appointmentViewModel = await Services.appointmentUpcoming();
+    _appointmentViewModel = await Services.appointmentView("today");
     if(_appointmentViewModel.status == true){
       for(var i = 0; i < _appointmentViewModel.body!.length; i++){
-        _list = _appointmentViewModel.body ?? <uBody> [];
+        _list = _appointmentViewModel.body ?? <Body> [];
       }
     }
     setState(() {
@@ -278,7 +280,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                     itemCount: _list.length,
                     physics: AlwaysScrollableScrollPhysics(),
                     itemBuilder: (context, index){
-                      uBody _body = _list[index];
+                      Body _body = _list[index];
                       // final time =
                       // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
                       // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
@@ -427,7 +429,7 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
                                             InkWell(
                                               onTap: (){
                                                 Navigator.push(context,
-                                                    MaterialPageRoute(builder: (context) => EditAppointment(_body.id.toString())));
+                                                    MaterialPageRoute(builder: (context) => EditAppointment(_body.id.toString(),"today")));
                                               },
                                               child: Container(
                                                 width: 40,

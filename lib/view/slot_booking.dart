@@ -129,7 +129,7 @@ class _SlotBookingState extends State<SlotBooking> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR);
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => Appointment("today")));
+          MaterialPageRoute(builder: (context) => Appointment("upcoming")));
     } else {
       Fluttertoast.showToast(
           msg: "${_addAppointmentModel.msg}",

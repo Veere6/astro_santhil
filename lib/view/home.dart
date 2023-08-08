@@ -54,8 +54,8 @@ class _HomeState extends State<Home> {
   ];
   var navigate = [
     AddAppointment("", ""),
-    Appointment("today"),
-    Appointment("today"),
+    Appointment("upcoming"),
+    Appointment("upcoming"),
     Appointment("pending"),
     Appointment("cancel"),
     SlotBooking(),

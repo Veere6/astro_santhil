@@ -9,14 +9,16 @@ import 'package:astro_santhil_app/models/update_appointment_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
 import 'package:astro_santhil_app/view/appointment.dart';
 import 'package:astro_santhil_app/view/menu.dart';
+import 'package:astro_santhil_app/view/upcoming_appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class EditAppointment extends StatefulWidget {
   String id = "";
+  String tab = "";
 
-  EditAppointment(this.id);
+  EditAppointment(this.id,this.tab);
 
   @override
   State<StatefulWidget> createState() => _EditAppointmentState();
@@ -190,8 +192,13 @@ class _EditAppointmentState extends State<EditAppointment> {
       Fluttertoast.showToast(msg: "${_updateAppointmentModel.msg}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR);
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => Appointment("today")));
+      if(widget.tab=="upcoming") {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => Appointment("upcoming")));
+      }else{
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> UpcomingAppointment(),
+        ));
+      }
     }else{
       Fluttertoast.showToast(msg: "${_updateAppointmentModel.msg}",
           toastLength: Toast.LENGTH_SHORT,

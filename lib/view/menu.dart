@@ -310,14 +310,14 @@ class _MenuState extends State<Menu> {
                   ),
                   InkWell(
                     onTap: () {
-                      onClick("Appointment today");
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("today"),
+                      onClick("Appointment reports");
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("upcoming"),
                       ));
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10.0),
-                      decoration: tab.matchAsPrefix("Appointment today") != null ? ShapeDecoration(
+                      decoration: tab.matchAsPrefix("Appointment reports") != null ? ShapeDecoration(
                         gradient: LinearGradient(
                           end: Alignment(-1, 0),
                           begin: Alignment(1.00, 0.00),
@@ -341,7 +341,59 @@ class _MenuState extends State<Menu> {
                             width: 20,
                             child: Image.asset(
                               "assets/today_ic.png",
-                              color: tab.matchAsPrefix("Appointment today") != null ? Colors.white : Colors.black,
+                              color: tab.matchAsPrefix("Appointment reports") != null ? Colors.white : Colors.black,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Appointment reports",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: tab.matchAsPrefix("Appointment reports") != null ? Colors.white : Colors.black,
+                                fontSize: 15,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400,
+                              )),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      onClick("Today's Appointment");
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> UpcomingAppointment(),
+                      ));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10.0),
+                      decoration: tab.matchAsPrefix("Today's Appointment") != null ? ShapeDecoration(
+                        gradient: LinearGradient(
+                          end: Alignment(-1, 0),
+                          begin: Alignment(1.00, 0.00),
+                          colors: [
+                            Color(0x00009688),
+                            Color(0xFF3BB143),
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ) : null,
+
+                      margin: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: Image.asset(
+                              "assets/today_ic.png",
+                              color: tab.matchAsPrefix("Today's Appointment") != null ? Colors.white : Colors.black,
                             ),
                           ),
                           SizedBox(
@@ -350,7 +402,7 @@ class _MenuState extends State<Menu> {
                           Text("Today's Appointment",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: tab.matchAsPrefix("Appointment today") != null ? Colors.white : Colors.black,
+                                color: tab.matchAsPrefix("Today's Appointment") != null ? Colors.white : Colors.black,
                                 fontSize: 15,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
@@ -360,214 +412,162 @@ class _MenuState extends State<Menu> {
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      onClick("Appointment upcoming");
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> UpcomingAppointment(),
-                      ));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10.0),
-                      decoration: tab.matchAsPrefix("Appointment upcoming") != null ? ShapeDecoration(
-                        gradient: LinearGradient(
-                          end: Alignment(-1, 0),
-                          begin: Alignment(1.00, 0.00),
-                          colors: [
-                            Color(0x00009688),
-                            Color(0xFF3BB143),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ) : null,
-
-                      margin: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Image.asset(
-                              "assets/today_ic.png",
-                              color: tab.matchAsPrefix("Appointment upcoming") != null ? Colors.white : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text("Upcoming Appointment",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: tab.matchAsPrefix("Appointment upcoming") != null ? Colors.white : Colors.black,
-                                fontSize: 15,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                              )),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      onClick("Appointment completed");
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("completed"),
-                      ));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10.0),
-                      margin: EdgeInsets.symmetric(horizontal: 20.0),
-                      decoration: tab.matchAsPrefix("Appointment completed") != null ? ShapeDecoration(
-                        gradient: LinearGradient(
-                          end: Alignment(-1, 0),
-                          begin: Alignment(1.00, 0.00),
-                          colors: [
-                            Color(0x00009688),
-                            Color(0xFF3BB143),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ) : null,
-
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Image.asset(
-                              "assets/upcoming_ic.png",
-                              color: tab.matchAsPrefix("Appointment completed") != null ? Colors.white : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text("Completed Appointment",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: tab.matchAsPrefix("Appointment completed") != null ? Colors.white : Colors.black,
-                                fontSize: 15,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                              )),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      onClick("Appointment pending");
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("pending"),
-                      ));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10.0),
-                      decoration: tab.matchAsPrefix("Appointment pending") != null ? ShapeDecoration(
-                        gradient: LinearGradient(
-                          end: Alignment(-1, 0),
-                          begin: Alignment(1.00, 0.00),
-                          colors: [
-                            Color(0x00009688),
-                            Color(0xFF3BB143),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ) : null,
-
-                      margin: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Image.asset(
-                              "assets/pending_ic.png",
-                              color: tab.matchAsPrefix("Appointment pending") != null ? Colors.white : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text("Pending Appointment",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: tab.matchAsPrefix("Appointment pending") != null ? Colors.white : Colors.black,
-                                fontSize: 15,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                              )),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      onClick("Appointment cancel");
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("cancel"),
-                      ));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10.0),
-                      margin: EdgeInsets.symmetric(horizontal: 20.0),
-                      decoration: tab.matchAsPrefix("Appointment cancel") != null ? ShapeDecoration(
-                        gradient: LinearGradient(
-                          end: Alignment(-1, 0),
-                          begin: Alignment(1.00, 0.00),
-                          colors: [
-                            Color(0x00009688),
-                            Color(0xFF3BB143),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ) : null,
-
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Image.asset(
-                              "assets/cancel_appointment_ic.png",
-                              color: tab.matchAsPrefix("Appointment cancel") != null ? Colors.white : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text("Cancel Appointment",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: tab.matchAsPrefix("Appointment cancel") != null ? Colors.white : Colors.black,
-                                fontSize: 15,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                              )),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     onClick("Appointment completed");
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("completed"),
+                  //     ));
+                  //   },
+                  //   child: Container(
+                  //     padding: const EdgeInsets.symmetric(
+                  //         vertical: 10, horizontal: 10.0),
+                  //     margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  //     decoration: tab.matchAsPrefix("Appointment completed") != null ? ShapeDecoration(
+                  //       gradient: LinearGradient(
+                  //         end: Alignment(-1, 0),
+                  //         begin: Alignment(1.00, 0.00),
+                  //         colors: [
+                  //           Color(0x00009688),
+                  //           Color(0xFF3BB143),
+                  //         ],
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //       ),
+                  //     ) : null,
+                  //
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         SizedBox(
+                  //           height: 20,
+                  //           width: 20,
+                  //           child: Image.asset(
+                  //             "assets/upcoming_ic.png",
+                  //             color: tab.matchAsPrefix("Appointment completed") != null ? Colors.white : Colors.black,
+                  //           ),
+                  //         ),
+                  //         SizedBox(
+                  //           width: 15,
+                  //         ),
+                  //         Text("Completed Appointment",
+                  //             textAlign: TextAlign.center,
+                  //             style: TextStyle(
+                  //               color: tab.matchAsPrefix("Appointment completed") != null ? Colors.white : Colors.black,
+                  //               fontSize: 15,
+                  //               fontFamily: 'Poppins',
+                  //               fontWeight: FontWeight.w400,
+                  //             )),
+                  //         Spacer(),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     onClick("Appointment pending");
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("pending"),
+                  //     ));
+                  //   },
+                  //   child: Container(
+                  //     padding: const EdgeInsets.symmetric(
+                  //         vertical: 10, horizontal: 10.0),
+                  //     decoration: tab.matchAsPrefix("Appointment pending") != null ? ShapeDecoration(
+                  //       gradient: LinearGradient(
+                  //         end: Alignment(-1, 0),
+                  //         begin: Alignment(1.00, 0.00),
+                  //         colors: [
+                  //           Color(0x00009688),
+                  //           Color(0xFF3BB143),
+                  //         ],
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //       ),
+                  //     ) : null,
+                  //
+                  //     margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         SizedBox(
+                  //           height: 20,
+                  //           width: 20,
+                  //           child: Image.asset(
+                  //             "assets/pending_ic.png",
+                  //             color: tab.matchAsPrefix("Appointment pending") != null ? Colors.white : Colors.black,
+                  //           ),
+                  //         ),
+                  //         SizedBox(
+                  //           width: 15,
+                  //         ),
+                  //         Text("Pending Appointment",
+                  //             textAlign: TextAlign.center,
+                  //             style: TextStyle(
+                  //               color: tab.matchAsPrefix("Appointment pending") != null ? Colors.white : Colors.black,
+                  //               fontSize: 15,
+                  //               fontFamily: 'Poppins',
+                  //               fontWeight: FontWeight.w400,
+                  //             )),
+                  //         Spacer(),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     onClick("Appointment cancel");
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context)=> Appointment("cancel"),
+                  //     ));
+                  //   },
+                  //   child: Container(
+                  //     padding: const EdgeInsets.symmetric(
+                  //         vertical: 10, horizontal: 10.0),
+                  //     margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  //     decoration: tab.matchAsPrefix("Appointment cancel") != null ? ShapeDecoration(
+                  //       gradient: LinearGradient(
+                  //         end: Alignment(-1, 0),
+                  //         begin: Alignment(1.00, 0.00),
+                  //         colors: [
+                  //           Color(0x00009688),
+                  //           Color(0xFF3BB143),
+                  //         ],
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //       ),
+                  //     ) : null,
+                  //
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         SizedBox(
+                  //           height: 20,
+                  //           width: 20,
+                  //           child: Image.asset(
+                  //             "assets/cancel_appointment_ic.png",
+                  //             color: tab.matchAsPrefix("Appointment cancel") != null ? Colors.white : Colors.black,
+                  //           ),
+                  //         ),
+                  //         SizedBox(
+                  //           width: 15,
+                  //         ),
+                  //         Text("Cancel Appointment",
+                  //             textAlign: TextAlign.center,
+                  //             style: TextStyle(
+                  //               color: tab.matchAsPrefix("Appointment cancel") != null ? Colors.white : Colors.black,
+                  //               fontSize: 15,
+                  //               fontFamily: 'Poppins',
+                  //               fontWeight: FontWeight.w400,
+                  //             )),
+                  //         Spacer(),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   InkWell(
                     onTap: () {
                       onClick("Slot Booking");

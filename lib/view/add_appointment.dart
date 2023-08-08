@@ -57,7 +57,7 @@ class _AddAppointmentState extends State<AddAppointment> {
   late CountryModel _countryModel;
   List<String> countryList = ["Select Country",];
   String selectedCountry = "Select Country";
-  List<String> country_id = [];
+  List<String> country_id = ["0"];
   List<DropdownMenuItem> countryItems = [];
   String dropdownValue = "";
   String selectedCustomer_id = "";
@@ -324,7 +324,7 @@ class _AddAppointmentState extends State<AddAppointment> {
       setState(() {
         userName.text = contact?.fullName ?? "";
         if (contact!.phoneNumber!.number!.isNotEmpty) {
-          phoneNumber.text = contact?.phoneNumber?.number ?? "";
+          phoneNumber.text = getLast10Digits(contact?.phoneNumber?.number ?? "");
         } else {
           phoneNumber.text = '';
         }
@@ -335,6 +335,20 @@ class _AddAppointmentState extends State<AddAppointment> {
       // print(" ????  ${e}");
       // Handle any exceptions here, if necessary.
     }
+  }
+
+
+  String getLast10Digits(String input) {
+    // Remove all non-digit characters
+    String digitsOnly = input.replaceAll(RegExp(r'\D'), '');
+
+    // Get the last 10 digits
+    int startIndex = digitsOnly.length - 10;
+    if (startIndex < 0) {
+      startIndex = 0;
+    }
+    String last10Digits = digitsOnly.substring(startIndex);
+    return last10Digits;
   }
 
   Future<void> country() async {
@@ -772,7 +786,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                                           dropdownValue) {
                                         print(
                                             "fghfdsasdfghgfdsasdfghgfdsaASDFG  " +
-                                                country_id[i]);
+                                                country_id[i-1]);
 
                                         selectedCustomer_id =
                                         country_id[i];
@@ -864,12 +878,20 @@ class _AddAppointmentState extends State<AddAppointment> {
                                                         onPrimary: Colors.white,
                                                         surface: Colors.white,
                                                         onSurface: Colors.black,
+                                                        secondary: Colors.green,
+                                                        onSecondary: Colors.green,
+                                                        secondaryContainer: Colors.green,
+                                                      ),
+                                                      datePickerTheme: DatePickerThemeData(
+                                                        yearStyle: TextStyle(color: Colors.grey)
                                                       ),
                                                       dialogBackgroundColor:Colors.white,
                                                     ),
+
                                                     child: child!,
                                                   );
                                               },
+
                                             );
                                             int? month = date?.month;
                                             String? fm = "" + "${month}";

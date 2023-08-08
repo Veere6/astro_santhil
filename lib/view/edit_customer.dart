@@ -165,7 +165,7 @@ class _EditCustomerState extends State<EditCustomer> {
         builder: (context) => AlertDialog(
           title: Text("View Horoscope Image", textAlign: TextAlign.center,),
           titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-          content: horoscopeImage != null ?
+          content: horoscopeImage.path != "" ?
           Image.file(horoscopeImage!):
               Image.network(_customerDetailModel.data![0].hImage.toString())
           //     :
@@ -330,7 +330,7 @@ class _EditCustomerState extends State<EditCustomer> {
   }
 
 
-  List<String> country_id = [];
+  List<String> country_id = ["0"];
   List<String> countryList = ["Select Country",];
   String selectedCountry = "Select Country";
   late CountryModel _countryModel;
@@ -443,7 +443,7 @@ class _EditCustomerState extends State<EditCustomer> {
                                 onTap: (){
                                   _pickedImage();
                                 },
-                                child: image == null && _customerDetailModel.data![0].uImage!.isEmpty
+                                child: image.path == "" && _customerDetailModel.data![0].uImage!.isEmpty
                                     ? ClipRRect(
                                   borderRadius:
                                   BorderRadius.circular(50.0),
@@ -460,7 +460,7 @@ class _EditCustomerState extends State<EditCustomer> {
                                     ),
                                   ),
                                 ):
-                                image != null ?
+                                image.path != "" ?
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(50.0),
                                     child: Container(
@@ -833,6 +833,12 @@ class _EditCustomerState extends State<EditCustomer> {
                                                         onPrimary: Colors.white,
                                                         surface: Colors.white,
                                                         onSurface: Colors.black,
+                                                        secondary: Colors.green,
+                                                        onSecondary: Colors.green,
+                                                        secondaryContainer: Colors.green,
+                                                      ),
+                                                      datePickerTheme: DatePickerThemeData(
+                                                          yearStyle: TextStyle(color: Colors.grey)
                                                       ),
                                                       dialogBackgroundColor:Colors.white,
                                                     ),
