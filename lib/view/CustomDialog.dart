@@ -207,24 +207,33 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFCBFCCB),
       title: Text('${widget.title} Slot'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+            ),
             onPressed: () => _selectDate(context),
             child: Text(isDateshow==false?"Select Date":"${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",style: TextStyle(color: Colors.black),),
             // child: Text('Select Date' ),
           ),
           SizedBox(height: 16),
           ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+            ),
             onPressed: () => _selectStartTime(context),
             // child: Text('Select Start Time'),
             child: Text(isStartshow==false?"Select Start Time":"${formatTimeOfDay(selectedStartTime)}",style: TextStyle(color: Colors.black)),
           ),
           SizedBox(height: 16),
           ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+            ),
             onPressed: () => _selectEndTime(context),
             child: Text(isEndshow==false ? "Select End Time":"${formatTimeOfDay(selectedEndTime)}",style: TextStyle(color: Colors.black)),
             // child: Text('Select End Time'),
@@ -233,6 +242,9 @@ class _CustomDialogState extends State<CustomDialog> {
       ),
       actions: [
         ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+          ),
           onPressed: () {
             if(isDateshow==false){
               Fluttertoast.showToast(

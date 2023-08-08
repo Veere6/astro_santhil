@@ -97,18 +97,21 @@ class _AddAppointmentState extends State<AddAppointment> {
       builder: (context) =>
           AlertDialog(content: Text("Choose image source"), actions: [
         TextButton(
-            child: Text("Camera"),
+            child: Text("Camera",
+              style: TextStyle(color: Color(0xFF3BB143)),),
             onPressed: () {
               _getFromCamera(from);
               Navigator.pop(context);
             }),
         TextButton(
-            child: Text("Gallery"),
+            child: Text("Gallery",
+              style: TextStyle(color: Color(0xFF3BB143)),),
             onPressed: () {
               _getFromGallery(from);
               Navigator.pop(context);
             }),
-      ]),
+      ],
+          backgroundColor: Color(0xFFCBFCCB),),
     );
   }
 
@@ -197,6 +200,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
+            backgroundColor: Color(0xFFCBFCCB)
             ));
   }
 
