@@ -151,6 +151,7 @@ class _EditAppointmentState extends State<EditAppointment> {
 
   void _onDaySelected(DateTime day, DateTime focusedDay){
     setState(() {
+      dropdownValue2="";
       today = day;
       slots("");
       print(today);
@@ -218,6 +219,7 @@ class _EditAppointmentState extends State<EditAppointment> {
       _radioSelected = int.parse(_detailModel.body![0].feesStatus.toString());
       msg.text = _detailModel.body![0].message.toString();
       // slot_id = _detailModel.body![0].slot_id.toString();
+      selectedSlot_id = _detailModel.body![0].slot_id.toString();
       slots(_detailModel.body![0].slot_id.toString());
       viewDropDown("${_detailModel.body?[0].customerId}");
     }
@@ -404,7 +406,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                       ),
                       child: TableCalendar(
                         focusedDay: today,
-                        firstDay: DateTime.now(),
+                        firstDay: DateTime(today.year,today.month-1),
                         lastDay: DateTime.utc(2050,10,16),
                           calendarStyle: CalendarStyle(
                               selectedDecoration: BoxDecoration(
@@ -689,7 +691,38 @@ class _EditAppointmentState extends State<EditAppointment> {
                         children: [
                           InkWell(
                             onTap: (){
-                              updateAppointment();
+                              if (dropdownValue == "Select Customer") {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Customer",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.SNACKBAR);
+                              }
+                              else if (dropdownValue2 == "") {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Slot",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.SNACKBAR);
+                              }
+                              else if (fees.text.isEmpty) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Enter Fees",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.SNACKBAR);
+                              } else if (_radioSelected == 0) {
+                                Fluttertoast.showToast(
+                                    msg: "Please Select Fess Type",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.SNACKBAR);
+                              }
+                              // else if (msg.text.isEmpty) {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Please Enter Message",
+                              //       toastLength: Toast.LENGTH_SHORT,
+                              //       gravity: ToastGravity.SNACKBAR);
+                              // }
+                              else {
+                                updateAppointment();
+                              }
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width/2.4,

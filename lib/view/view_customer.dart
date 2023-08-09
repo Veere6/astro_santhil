@@ -33,7 +33,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
   String selectedSubCategory = "Select Sub Category";
   List<String> countryList = ["Select Country",];
   String selectedCountry = "Select Country";
-  List<String> country_id = [];
+  List<String> country_id = ["0"];
   String categoryId = "";
   String subCategoryId = "";
   String countryId = "";
@@ -138,7 +138,7 @@ class _ViewCustomerState extends State<ViewCustomer> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Color(0xFFCBFCCB),
+        
           content: Text("Are you sure you want to delete this appointment?", style: TextStyle(
               fontWeight: FontWeight.w600, fontSize: 18.0),
             textAlign: TextAlign.center,

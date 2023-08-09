@@ -66,9 +66,15 @@ class _EditCustomerState extends State<EditCustomer> {
             data: ThemeData.dark().copyWith(
               colorScheme: ColorScheme.dark(
                 primary: Colors.black,
-                onPrimary: Colors.black,
+                onPrimary: Colors.white,
                 surface: Colors.white,
                 onSurface: Colors.black,
+                secondary: Colors.green,
+                onSecondary: Colors.green,
+                secondaryContainer: Colors.green,
+              ),
+              datePickerTheme: DatePickerThemeData(
+                  yearStyle: TextStyle(color: Colors.grey)
               ),
               dialogBackgroundColor:Colors.white,
             ),
@@ -88,7 +94,7 @@ class _EditCustomerState extends State<EditCustomer> {
     showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
-          backgroundColor: Color(0xFFCBFCCB),
+          
           content: Text("Choose image source"),
           actions: [
             TextButton(
@@ -170,7 +176,7 @@ class _EditCustomerState extends State<EditCustomer> {
   void _viewHoroscopeImage() {
     showDialog(context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Color(0xFFCBFCCB),
+          
           title: Text("View Horoscope Image", textAlign: TextAlign.center,),
           titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
           content: horoscopeImage.path != "" ?

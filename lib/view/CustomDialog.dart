@@ -56,6 +56,12 @@ class _CustomDialogState extends State<CustomDialog> {
               onPrimary: Colors.white,
               surface: Colors.white,
               onSurface: Colors.black,
+              secondary: Colors.green,
+              onSecondary: Colors.green,
+              secondaryContainer: Colors.green,
+            ),
+            datePickerTheme: DatePickerThemeData(
+                yearStyle: TextStyle(color: Colors.grey)
             ),
             dialogBackgroundColor:Colors.white,
           ),
@@ -84,6 +90,12 @@ class _CustomDialogState extends State<CustomDialog> {
               onPrimary: Colors.white,
               surface: Colors.white,
               onSurface: Colors.black,
+              secondary: Colors.green,
+              onSecondary: Colors.green,
+              secondaryContainer: Colors.green,
+            ),
+            datePickerTheme: DatePickerThemeData(
+                yearStyle: TextStyle(color: Colors.grey)
             ),
             dialogBackgroundColor:Colors.white,
           ),
@@ -113,6 +125,12 @@ class _CustomDialogState extends State<CustomDialog> {
               onPrimary: Colors.white,
               surface: Colors.white,
               onSurface: Colors.black,
+              secondary: Colors.green,
+              onSecondary: Colors.green,
+              secondaryContainer: Colors.green,
+            ),
+            datePickerTheme: DatePickerThemeData(
+                yearStyle: TextStyle(color: Colors.grey)
             ),
             dialogBackgroundColor:Colors.white,
           ),
@@ -207,7 +225,7 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        backgroundColor: Color(0xFFCBFCCB),
+        
       title: Text('${widget.title} Slot'),
       content: Column(
         mainAxisSize: MainAxisSize.min,

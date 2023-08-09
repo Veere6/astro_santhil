@@ -107,7 +107,7 @@ class _CategoryManagement extends State<CategoryManagement>{
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color(0xFFCBFCCB),
+          
           title: Text('Delete Slot'),
           content: Text('Are you sure you want to delete this slot?'),
           actions: [
@@ -389,16 +389,24 @@ class _CategoryManagement extends State<CategoryManagement>{
                                         color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
                                       ),),
                                     SizedBox(width: 5,),
-                                    InkWell(
+                                   if(_body.bookStatus!="1") InkWell(
                                       onTap: (){
-                                        showCustomDialog(context,"Edit","${_body.date}","${_body.fromTime}","${_body.toTime}","${_body.slotId}",true);
+
+                                          showCustomDialog(
+                                              context,
+                                              "Edit",
+                                              "${_body.date}",
+                                              "${_body.fromTime}",
+                                              "${_body.toTime}",
+                                              "${_body.slotId}",
+                                              true);
                                       },
                                       child: Image.asset("assets/edit_ic.png",
                                         color: _body.bookStatus == "1" ? Colors.black38 : Colors.black,
                                         height: 15,),
                                     ),
-                                    SizedBox(width: 5,),
-                                    InkWell(
+                                    if(_body.bookStatus!="1") SizedBox(width: 5,),
+                                    if(_body.bookStatus!="1") InkWell(
                                       onTap: (){
                                         _showDeleteConfirmationDialog(context,_body.slotId.toString());
                                       },

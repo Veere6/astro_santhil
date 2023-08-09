@@ -1,14 +1,18 @@
+import 'dart:io';
+
 import 'package:astro_santhil_app/models/login_model.dart';
 import 'package:astro_santhil_app/networking/services.dart';
 import 'package:astro_santhil_app/view/home.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 void main() {
   runApp(MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,11 +20,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Astro Senthil',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF3BB143)),
         useMaterial3: true,
       ),
       home: SplashScreen(),
@@ -38,12 +45,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    getContactPermission();
+    checklogin();
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
+  }
+
+  void checklogin()async{
+    isAndroid13 = await isAndroid();
+    Future.delayed(Duration(seconds: isAndroid13 ? 0:2), () {
       navigate();
     });
   }
+
   void navigate() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     bool? status  = _preferences.getBool("_login");
@@ -57,21 +69,22 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void getContactPermission() async {
-
-    if(await Permission.contacts.isGranted) {
-      // getContacts();
-    }else {
-      await Permission.contacts.request();
+  bool isAndroid13=false;
+  Future<bool> isAndroid() async {
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+      print(">>>>>>>>>>>>>>>>${androidInfo.version.sdkInt}>>>>");
+      return androidInfo.version.sdkInt >= 33; // Android 13 corresponds to SDK 30
     }
+    return false;
   }
-
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
-        child: Container(
+        child: isAndroid13 ? null:Container(
             margin: EdgeInsets.symmetric(horizontal: 20.0),
             padding: EdgeInsets.only(
                 // top: MediaQuery.of(context).padding.top,
@@ -144,6 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
     navigate();
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -402,6 +417,4 @@ class _MyHomePageState extends State<MyHomePage> {
      )
    );
   }
-
-
 }

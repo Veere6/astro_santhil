@@ -72,9 +72,15 @@ class _AddAppointmentState extends State<AddAppointment> {
             data: ThemeData.dark().copyWith(
               colorScheme: ColorScheme.dark(
                 primary: Colors.black,
-                onPrimary: Colors.black,
+                onPrimary: Colors.white,
                 surface: Colors.white,
                 onSurface: Colors.black,
+                secondary: Colors.green,
+                onSecondary: Colors.green,
+                secondaryContainer: Colors.green,
+              ),
+              datePickerTheme: DatePickerThemeData(
+                  yearStyle: TextStyle(color: Colors.grey)
               ),
               dialogBackgroundColor:Colors.white,
             ),
@@ -111,7 +117,7 @@ class _AddAppointmentState extends State<AddAppointment> {
               Navigator.pop(context);
             }),
       ],
-          backgroundColor: Color(0xFFCBFCCB),),
+          ),
     );
   }
 
@@ -1378,7 +1384,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                               //   Fluttertoast.showToast(
                               //       msg: "Enter Date of bith");
                               // }
-                              else if (selectedCountry == "Select Country") {
+                              else if (dropdownValue == "Select Country") {
                                 Fluttertoast.showToast(msg: "Select country");
                               }
                               else if (phoneNumber.text.isEmpty) {

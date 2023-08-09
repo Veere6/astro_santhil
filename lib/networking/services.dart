@@ -488,7 +488,7 @@ class Services {
     request.fields["email"] = email;
     request.fields["phone"] = phone;
     request.fields["cat_id"] = catId;
-    request.fields["sub_cat_id"] = subCatId;
+    request.fields["sub_cat"] = subCatId;
     request.fields["place"] = place;
     request.fields["text"] = text;
     request.fields["birth_place"] = birthPlace;

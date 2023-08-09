@@ -64,9 +64,15 @@ class _SlotBookingState extends State<SlotBooking> {
             data: ThemeData.dark().copyWith(
               colorScheme: ColorScheme.dark(
                 primary: Colors.black,
-                onPrimary: Colors.black,
+                onPrimary: Colors.white,
                 surface: Colors.white,
                 onSurface: Colors.black,
+                secondary: Colors.green,
+                onSecondary: Colors.green,
+                secondaryContainer: Colors.green,
+              ),
+              datePickerTheme: DatePickerThemeData(
+                  yearStyle: TextStyle(color: Colors.grey)
               ),
               dialogBackgroundColor:Colors.white,
             ),
@@ -814,12 +820,12 @@ class _SlotBookingState extends State<SlotBooking> {
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.SNACKBAR);
                                   }
-                                  // else if (selectTimes == "Select Time") {
-                                  //   Fluttertoast.showToast(
-                                  //       msg: "Please Select Time",
-                                  //       toastLength: Toast.LENGTH_SHORT,
-                                  //       gravity: ToastGravity.SNACKBAR);
-                                  // }
+                                  else if (dropdownValue2 == "") {
+                                    Fluttertoast.showToast(
+                                        msg: "Please Select Slot",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.SNACKBAR);
+                                  }
                                   else if (fees.text.isEmpty) {
                                     Fluttertoast.showToast(
                                         msg: "Please Enter Fees",

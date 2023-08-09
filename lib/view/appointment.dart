@@ -133,6 +133,7 @@ class _AppointmentState extends State<Appointment> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
+          
           content: Text(
             "Are you sure you want to delete this appointment?",
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
@@ -145,7 +146,7 @@ class _AppointmentState extends State<Appointment> {
                 },
                 child: Text(
                   "Yes",
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0, color: Color(0xFF3BB143),),
                 )),
             TextButton(
                 onPressed: () {
@@ -153,7 +154,7 @@ class _AppointmentState extends State<Appointment> {
                 },
                 child: Text(
                   "No",
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0, color: Color(0xFF3BB143),),
                 ))
           ]),
     );
@@ -169,6 +170,7 @@ class _AppointmentState extends State<Appointment> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
+                
                 child: Container(
                   height: 200,
                   child: Column(
@@ -187,6 +189,7 @@ class _AppointmentState extends State<Appointment> {
                           Radio(
                               value: 1,
                               groupValue: _radioSelected,
+                              activeColor: Color(0xFF3BB143),
                               onChanged: (value) {
                                 setState(() {
                                   _radioSelected = value as int;
@@ -202,6 +205,7 @@ class _AppointmentState extends State<Appointment> {
                           Radio(
                               value: 2,
                               groupValue: _radioSelected,
+                              activeColor: Color(0xFF3BB143),
                               onChanged: (value) {
                                 setState(() {
                                   _radioSelected = value as int;
@@ -230,12 +234,14 @@ class _AppointmentState extends State<Appointment> {
                                     updateStatus(id);
                                   }
                                 },
-                                child: Text("Yes")),
+                                child: Text("Yes",
+                                  style: TextStyle(color: Color(0xFF3BB143)),)),
                             TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: Text("No"))
+                                child: Text("No",
+                                  style: TextStyle(color: Color(0xFF3BB143)),))
                           ],
                         ),
                       )
@@ -245,6 +251,7 @@ class _AppointmentState extends State<Appointment> {
           });
         });
   }
+
 
   @override
   void initState() {
@@ -375,339 +382,339 @@ class _AppointmentState extends State<Appointment> {
       body: Stack(
         children: [
           Container(
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(color: Colors.white),
-            child: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xFF3BB143),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20.0),
-                          bottomRight: Radius.circular(20.0),
-                        )),
-                    child: Container(
-                      padding: EdgeInsets.only(top: 30, bottom: 10),
-                      margin:
-                          EdgeInsets.only(left: 20.0, top: 10.0, right: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xFF3BB143),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20.0),
+                        bottomRight: Radius.circular(20.0),
+                      )),
+                  child: Container(
+                    padding: EdgeInsets.only(top: 30, bottom: 10),
+                    margin:
+                        EdgeInsets.only(left: 20.0, top: 10.0, right: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Menu("Appointment $tab")));
+                          },
+                          child: Container(
+                            child: Image.asset(
+                              "assets/drawer_ic.png",
+                              width: 22.51,
+                              height: 20.58,
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          child: Text(
+                            "APPOINTMENTS",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 21.61),
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          child: InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          Menu("Appointment $tab")));
+                              Navigator.pop(context);
                             },
-                            child: Container(
-                              child: Image.asset(
-                                "assets/drawer_ic.png",
-                                width: 22.51,
-                                height: 20.58,
-                              ),
+                            child: Icon(
+                              Icons.home,
+                              color: Colors.white,
                             ),
                           ),
-                          Spacer(),
-                          Container(
-                            child: Text(
-                              "APPOINTMENTS",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 21.61),
-                            ),
-                          ),
-                          Spacer(),
-                          Container(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.home,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'From Date',
-                            style: TextStyle(
-                              color: Color(0xFF8A92A2),
-                              fontSize: 13.55,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w400,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'From Date',
+                          style: TextStyle(
+                            color: Color(0xFF8A92A2),
+                            fontSize: 13.55,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            fromdateMethod();
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.all(10.0),
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    width: 0.50, color: Color(0xFFD0D4E0)),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  selectedFromDate.isNotEmpty
+                                      ? "${selectedFromDate}"
+                                      : "(DD/MM/YYYY)",
+                                  style: TextStyle(
+                                    color: Color(0xFF262A3F),
+                                    fontSize: 13.55,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 11.0),
+                                  child: Image.asset(
+                                    "assets/ic_down.png",
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              fromdateMethod();
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 5.0),
-                              padding: EdgeInsets.all(10.0),
-                              decoration: ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      width: 0.50, color: Color(0xFFD0D4E0)),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'To Date',
+                          style: TextStyle(
+                            color: Color(0xFF8A92A2),
+                            fontSize: 13.55,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            toDateMethod();
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.all(10.0),
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    width: 0.50, color: Color(0xFFD0D4E0)),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    selectedFromDate.isNotEmpty
-                                        ? "${selectedFromDate}"
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                    selectedToDate.isNotEmpty
+                                        ? "${selectedToDate}"
                                         : "(DD/MM/YYYY)",
                                     style: TextStyle(
                                       color: Color(0xFF262A3F),
                                       fontSize: 13.55,
                                       fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w400,
-                                    ),
+                                    )),
+                                Container(
+                                  margin: EdgeInsets.only(left: 11.0),
+                                  child: Image.asset(
+                                    "assets/ic_down.png",
+                                    color: Colors.black,
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 11.0),
-                                    child: Image.asset(
-                                      "assets/ic_down.png",
-                                      color: Colors.black,
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
+                          ),
+                        )
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        viewAppointment(tab);
+                      },
+                      child: Container(
+                        decoration: ShapeDecoration(
+                          color: Color(0xFF3BB143),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                        padding: EdgeInsets.all(5.0),
+                        margin: EdgeInsets.only(top: 15.0),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                          size: 30.0,
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'To Date',
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+
+                Container(
+                  height: 50,
+                  margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  decoration: ShapeDecoration(
+                    color: Color(0xFF3BB143),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          onClick("upcoming");
+                        },
+                        child: Container(
+                          width: tab.matchAsPrefix("upcoming") != null
+                              ? 90
+                              : null,
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: tab.matchAsPrefix("upcoming") != null
+                              ? ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                )
+                              : null,
+                          child: Text(
+                            'UPCOMING',
                             style: TextStyle(
-                              color: Color(0xFF8A92A2),
-                              fontSize: 13.55,
-                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontFamily: 'Inter',
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              toDateMethod();
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: 5.0),
-                              padding: EdgeInsets.all(10.0),
-                              decoration: ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      width: 0.50, color: Color(0xFFD0D4E0)),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                      selectedToDate.isNotEmpty
-                                          ? "${selectedToDate}"
-                                          : "(DD/MM/YYYY)",
-                                      style: TextStyle(
-                                        color: Color(0xFF262A3F),
-                                        fontSize: 13.55,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
-                                      )),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 11.0),
-                                    child: Image.asset(
-                                      "assets/ic_down.png",
-                                      color: Colors.black,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                       InkWell(
                         onTap: () {
-                          viewAppointment(tab);
+                          onClick("pending");
                         },
                         child: Container(
-                          decoration: ShapeDecoration(
-                            color: Color(0xFF3BB143),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
-                          padding: EdgeInsets.all(5.0),
-                          margin: EdgeInsets.only(top: 15.0),
+                          width: tab.matchAsPrefix("pending") != null
+                              ? 90
+                              : null,
+                          height: 40,
                           alignment: Alignment.center,
-                          child: Icon(
-                            Icons.search,
-                            color: Colors.white,
-                            size: 30.0,
+                          decoration: tab.matchAsPrefix("pending") != null
+                              ? ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                )
+                              : null,
+                          child: Text(
+                            'PENDING',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      )
+                      ),
+                      InkWell(
+                        onTap: () {
+                          onClick("cancel");
+                        },
+                        child: Container(
+                          width:
+                              tab.matchAsPrefix("cancel") != null ? 90 : null,
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: tab.matchAsPrefix("cancel") != null
+                              ? ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                )
+                              : null,
+                          child: Text(
+                            'CANCEL',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          onClick("completed");
+                        },
+                        child: Container(
+                          width: tab.matchAsPrefix("completed") != null
+                              ? 90
+                              : null,
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: tab.matchAsPrefix("completed") != null
+                              ? ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                )
+                              : null,
+                          child: Text(
+                            'COMPLETE',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-
-                  Container(
-                    height: 50,
-                    margin: EdgeInsets.symmetric(horizontal: 20.0),
-                    decoration: ShapeDecoration(
-                      color: Color(0xFF3BB143),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            onClick("upcoming");
-                          },
-                          child: Container(
-                            width: tab.matchAsPrefix("upcoming") != null
-                                ? 90
-                                : null,
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: tab.matchAsPrefix("upcoming") != null
-                                ? ShapeDecoration(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                  )
-                                : null,
-                            child: Text(
-                              'UPCOMING',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            onClick("pending");
-                          },
-                          child: Container(
-                            width: tab.matchAsPrefix("pending") != null
-                                ? 90
-                                : null,
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: tab.matchAsPrefix("pending") != null
-                                ? ShapeDecoration(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                  )
-                                : null,
-                            child: Text(
-                              'PENDING',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            onClick("cancel");
-                          },
-                          child: Container(
-                            width:
-                                tab.matchAsPrefix("cancel") != null ? 90 : null,
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: tab.matchAsPrefix("cancel") != null
-                                ? ShapeDecoration(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                  )
-                                : null,
-                            child: Text(
-                              'CANCEL',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            onClick("completed");
-                          },
-                          child: Container(
-                            width: tab.matchAsPrefix("completed") != null
-                                ? 90
-                                : null,
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: tab.matchAsPrefix("completed") != null
-                                ? ShapeDecoration(
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                  )
-                                : null,
-                            child: Text(
-                              'COMPLETE',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
+                ),
+                Expanded(
+                  child: Container(
                     padding: EdgeInsets.only(
-                        left: 10.0, top: 20.0, right: 10.0, bottom: 150.0),
+                        left: 10.0, top: 20.0, right: 10.0, bottom: 0),
                     color: Colors.white,
-                    height: MediaQuery.of(context).size.height,
+                    // height: MediaQuery.of(context).size.height,
                     child: _pageLoading
                         ? Center(
                             child: CircularProgressIndicator(),
@@ -1840,9 +1847,9 @@ class _AppointmentState extends State<Appointment> {
                                                           )));
                                                 })
                                             : Container(),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
         ],

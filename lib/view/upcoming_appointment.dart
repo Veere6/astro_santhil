@@ -83,25 +83,30 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-          content: Text("Are you sure you want to delete this appointment?", style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 18.0),
+          
+          content: Text(
+            "Are you sure you want to delete this appointment?",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
             textAlign: TextAlign.center,
           ),
           actions: [
             TextButton(
-                onPressed: (){
+                onPressed: () {
                   deleteAppointment(id);
                 },
-                child: Text("Yes", style: TextStyle(fontSize: 16.0),)
-            ),
+                child: Text(
+                  "Yes",
+                  style: TextStyle(fontSize: 16.0, color: Color(0xFF3BB143),),
+                )),
             TextButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("No", style: TextStyle(fontSize: 16.0),)
-            )
-          ]
-      ),
+                child: Text(
+                  "No",
+                  style: TextStyle(fontSize: 16.0, color: Color(0xFF3BB143),),
+                ))
+          ]),
     );
   }
 
@@ -109,89 +114,92 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
     showDialog(
         barrierDismissible: false,
         context: context,
-        builder: (context){
-          return StatefulBuilder(
-              builder: (context, setState){
-                return Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Container(
-                      height: 200,
-                      child: Column(
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                
+                child: Container(
+                  height: 200,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Appointment Status",
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Spacer(),
+                      Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Appointment Status", style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold
-                            ),),
-                          ),
-                          Spacer(),
-                          Row(
-                            children: [
-                              Radio(
-                                  value: 1,
-                                  groupValue: _radioSelected,
-                                  onChanged: (value) {
-                                    setState((){
-                                      _radioSelected = value as int;
-                                      _radioVal = 'Cancel';
-                                      print(_radioVal);
-                                    });
-                                  }
-                              ),
-                              Text("Cancel")
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Radio(
-                                  value: 2,
-                                  groupValue: _radioSelected,
-                                  onChanged: (value) {
-                                    setState((){
-                                      _radioSelected = value as int;
-                                      _radioVal = 'Complete';
-                                      print(_radioVal);
-                                    });
-                                  }
-                              ),
-                              Text("Complete")
-                            ],
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 20.0,),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                    onPressed: (){
-                                      if(_radioSelected == 1){
-                                        deleteAppointment(id);
-                                      }else if(_radioSelected == 2){
-                                        updateStatus(id);
-                                      }
-                                    },
-                                    child: Text("Yes")
-                                ),
-                                TextButton(
-                                    onPressed: (){
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("No")
-                                )
-
-                              ],
-                            ),
-                          )
+                          Radio(
+                              value: 1,
+                              groupValue: _radioSelected,
+                              activeColor: Color(0xFF3BB143),
+                              onChanged: (value) {
+                                setState(() {
+                                  _radioSelected = value as int;
+                                  _radioVal = 'Cancel';
+                                  print(_radioVal);
+                                });
+                              }),
+                          Text("Cancel")
                         ],
                       ),
-                    )
-                );
-              });
-        }
-    );
+                      Row(
+                        children: [
+                          Radio(
+                              value: 2,
+                              groupValue: _radioSelected,
+                              activeColor: Color(0xFF3BB143),
+                              onChanged: (value) {
+                                setState(() {
+                                  _radioSelected = value as int;
+                                  _radioVal = 'Complete';
+                                  print(_radioVal);
+                                });
+                              }),
+                          Text("Complete")
+                        ],
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 8.0,
+                          top: 8.0,
+                          right: 20.0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  if (_radioSelected == 1) {
+                                    deleteAppointment(id);
+                                  } else if (_radioSelected == 2) {
+                                    updateStatus(id);
+                                  }
+                                },
+                                child: Text("Yes",
+                                  style: TextStyle(color: Color(0xFF3BB143)),)),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("No",
+                                  style: TextStyle(color: Color(0xFF3BB143)),))
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ));
+          });
+        });
   }
 
   @override
