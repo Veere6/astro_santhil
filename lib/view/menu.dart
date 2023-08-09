@@ -49,7 +49,8 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) => Home()), (route) => false);
         return true;
       },
       child: Scaffold(
@@ -73,7 +74,8 @@ class _MenuState extends State<Menu> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) => Home()), (route) => false);
                           },
                           child: Container(
                             child: Image.asset(
