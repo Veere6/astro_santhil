@@ -27,8 +27,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Astro Senthil',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF3BB143)),
-        useMaterial3: true,
+        // colorScheme: ColorScheme.fromSeed(
+        //     seedColor: Color(0xFF3BB143),
+        //     seedColor: Colors.white,
+        //   primary: Colors.white
+        // ),
+        // dialogBackgroundColor: Colors.white,
+        primaryColor: Color(0xFF3BB143),
+        // shadowColor: Colors.white,
+        // useMaterial3: true,
+        primarySwatch:Colors.green, // Your primary color
       ),
       home: SplashScreen(),
     );

@@ -133,7 +133,9 @@ class _AppointmentState extends State<Appointment> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-          
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+
           content: Text(
             "Are you sure you want to delete this appointment?",
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
@@ -170,7 +172,6 @@ class _AppointmentState extends State<Appointment> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                
                 child: Container(
                   height: 200,
                   child: Column(
@@ -612,7 +613,7 @@ class _AppointmentState extends State<Appointment> {
                           child: Text(
                             'UPCOMING',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: tab.matchAsPrefix("upcoming") != null ? Colors.green:Colors.white,
                               fontSize: 12,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400,
@@ -641,7 +642,7 @@ class _AppointmentState extends State<Appointment> {
                           child: Text(
                             'PENDING',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: tab.matchAsPrefix("pending") != null ? Colors.green:Colors.white,
                               fontSize: 12,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400,
@@ -669,7 +670,7 @@ class _AppointmentState extends State<Appointment> {
                           child: Text(
                             'CANCEL',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: tab.matchAsPrefix("cancel") != null ? Colors.green:Colors.white,
                               fontSize: 12,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400,
@@ -698,7 +699,7 @@ class _AppointmentState extends State<Appointment> {
                           child: Text(
                             'COMPLETE',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: tab.matchAsPrefix("completed") != null ? Colors.green:Colors.white,
                               fontSize: 12,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400,

@@ -101,7 +101,10 @@ class _AddAppointmentState extends State<AddAppointment> {
     showDialog<ImageSource>(
       context: context,
       builder: (context) =>
-          AlertDialog(content: Text("Choose image source"), actions: [
+          AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            content: Text("Choose image source"), actions: [
         TextButton(
             child: Text("Camera",
               style: TextStyle(color: Color(0xFF3BB143)),),
@@ -190,6 +193,8 @@ class _AddAppointmentState extends State<AddAppointment> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
               title: Text(
                 "View Horoscope Image",
                 textAlign: TextAlign.center,
@@ -206,7 +211,6 @@ class _AddAppointmentState extends State<AddAppointment> {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
-            backgroundColor: Color(0xFFCBFCCB)
             ));
   }
 

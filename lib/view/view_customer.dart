@@ -138,8 +138,10 @@ class _ViewCustomerState extends State<ViewCustomer> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
         
-          content: Text("Are you sure you want to delete this appointment?", style: TextStyle(
+          content: Text("Are you sure you want to delete this customer?", style: TextStyle(
               fontWeight: FontWeight.w600, fontSize: 18.0),
             textAlign: TextAlign.center,
           ),

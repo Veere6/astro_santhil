@@ -107,31 +107,30 @@ class _CategoryManagement extends State<CategoryManagement>{
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           
-          title: Text('Delete Slot'),
+          // title: Text('Delete Slot'),
           content: Text('Are you sure you want to delete this slot?'),
-          actions: [
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
-              ),
-              onPressed: () {
-                deleteSlot(id);
-                Navigator.of(context).pop();
-              },
-              child: Text('Yes',style: TextStyle(color: Colors.black,
-              )),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('No',style: TextStyle(color: Colors.black)),
-            ),
-          ],
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    deleteSlot(id);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Yes",
+                    style: TextStyle(fontSize: 16.0, color: Color(0xFF3BB143),),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "No",
+                    style: TextStyle(fontSize: 16.0, color: Color(0xFF3BB143),),
+                  ))
+            ]
         );
       },
     );

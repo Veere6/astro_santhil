@@ -83,6 +83,8 @@ class _UpcomingAppointmentState extends State<UpcomingAppointment> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           
           content: Text(
             "Are you sure you want to delete this appointment?",

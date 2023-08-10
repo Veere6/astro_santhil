@@ -225,44 +225,54 @@ class _CustomDialogState extends State<CustomDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
         
       title: Text('${widget.title} Slot'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
             ),
             onPressed: () => _selectDate(context),
-            child: Text(isDateshow==false?"Select Date":"${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",style: TextStyle(color: Colors.black),),
+            child: Text(isDateshow==false?"Select Date":"${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",style: TextStyle(color: Colors.white),),
             // child: Text('Select Date' ),
           ),
           SizedBox(height: 16),
           ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
             ),
             onPressed: () => _selectStartTime(context),
             // child: Text('Select Start Time'),
-            child: Text(isStartshow==false?"Select Start Time":"${formatTimeOfDay(selectedStartTime)}",style: TextStyle(color: Colors.black)),
+            child: Text(isStartshow==false?"Select Start Time":"${formatTimeOfDay(selectedStartTime)}",style: TextStyle(color: Colors.white)),
           ),
           SizedBox(height: 16),
           ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
             ),
             onPressed: () => _selectEndTime(context),
-            child: Text(isEndshow==false ? "Select End Time":"${formatTimeOfDay(selectedEndTime)}",style: TextStyle(color: Colors.black)),
+            child: Text(isEndshow==false ? "Select End Time":"${formatTimeOfDay(selectedEndTime)}",style: TextStyle(color: Colors.white)),
             // child: Text('Select End Time'),
           ),
         ],
       ),
       actions: [
         ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Color(0xFFCBFCCB))
+          style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
           ),
+        ),
           onPressed: () {
             if(isDateshow==false){
               Fluttertoast.showToast(
@@ -294,7 +304,7 @@ class _CustomDialogState extends State<CustomDialog> {
               }
             }
           },
-          child: Text('Done',style: TextStyle(color: Colors.black)),
+          child: Text('Done',style: TextStyle(color: Colors.white)),
         ),
       ],
     );

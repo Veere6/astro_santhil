@@ -94,6 +94,8 @@ class _EditCustomerState extends State<EditCustomer> {
     showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           
           content: Text("Choose image source"),
           actions: [
@@ -122,6 +124,8 @@ class _EditCustomerState extends State<EditCustomer> {
     showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           content: Text("Choose image source"),
           actions: [
             TextButton(
@@ -141,7 +145,6 @@ class _EditCustomerState extends State<EditCustomer> {
                 }
             ),
           ],
-          backgroundColor: Color(0xFFCBFCCB)
       ),
     );
   }
@@ -176,6 +179,8 @@ class _EditCustomerState extends State<EditCustomer> {
   void _viewHoroscopeImage() {
     showDialog(context: context,
         builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
           
           title: Text("View Horoscope Image", textAlign: TextAlign.center,),
           titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
