@@ -78,12 +78,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   bool isAndroid13=false;
+  bool isload=false;
   Future<bool> isAndroid() async {
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
       print(">>>>>>>>>>>>>>>>${androidInfo.version.sdkInt}>>>>");
+      setState(() {
+        isload=true;
+      });
       return androidInfo.version.sdkInt >= 33; // Android 13 corresponds to SDK 30
     }
+    setState(() {
+      isload=true;
+    });
     return false;
   }
 
@@ -92,13 +99,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       body: Center(
-        child: isAndroid13 ? null:Container(
+        child:isload ? isAndroid13 ? CircularProgressIndicator():Container(
             margin: EdgeInsets.symmetric(horizontal: 20.0),
             padding: EdgeInsets.only(
                 // top: MediaQuery.of(context).padding.top,
                 bottom:MediaQuery.of(context).padding.bottom+20),
             child: Image.asset("assets/green text-01.png")
-        ),
+        ):CircularProgressIndicator(),
       ),
     );
   }
