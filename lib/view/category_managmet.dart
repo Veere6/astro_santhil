@@ -439,5 +439,4 @@ class _CategoryManagement extends State<CategoryManagement>{
       ),
     );
   }
-
 }
