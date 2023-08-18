@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:astro_santhil_app/models/appointment_view_model.dart';
 import 'package:astro_santhil_app/models/complete_appointment_model.dart';
@@ -7,8 +10,11 @@ import 'package:astro_santhil_app/networking/services.dart';
 import 'package:astro_santhil_app/models/cancel_appointment_model.dart';
 import 'package:astro_santhil_app/view/edit_appointment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'menu.dart';
@@ -377,6 +383,60 @@ class _AppointmentState extends State<Appointment> {
 
 
 
+  GlobalKey _globalKey = GlobalKey();
+
+  Future<void> _captureAndSave() async {
+    RenderRepaintBoundary boundary =
+    _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    ui.Image? image = await boundary?.toImage(pixelRatio: 3.0);
+    // ByteData? byteData = await image?.toByteData(format: ui.ImageByteFormat.png);
+    // Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+
+    // ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+
+    // Convert image to ByteData
+    // ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    // Uint8List pngBytes = byteData.buffer.asUint8List();
+
+    // Create a new canvas with white background and draw the image
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder, Rect.fromPoints(Offset(0, 0), Offset(image!.width.toDouble(), image.height.toDouble())));
+    canvas.drawColor(Colors.white, BlendMode.color); // Set background color
+    canvas.drawImage(image, Offset.zero, Paint());
+
+    // Convert canvas to image
+    final whiteBackgroundImage = await recorder.endRecording().toImage(image.width, image.height);
+    final whiteBackgroundByteData = await whiteBackgroundImage.toByteData(format: ui.ImageByteFormat.png);
+    final whiteBackgroundPngBytes = whiteBackgroundByteData?.buffer.asUint8List();
+
+// Save the image to the device's gallery or storage
+//     final output = await getTemporaryDirectory();
+//     File imgFile = File("${output.path}/image_with_white_background.png");
+    // await imgFile.writeAsBytes(whiteBackgroundPngBytes!);
+    // print('Image saved with white background: ${imgFile.path}');
+    _saved(whiteBackgroundPngBytes);
+    // final output = await getTemporaryDirectory();
+    // final outputFile = File("${output.path}/data_list.png");
+    // await outputFile.writeAsBytes(pngBytes);
+
+  }
+
+
+  // _captureAndSave() async {
+  //   RenderRepaintBoundary boundary =
+  //   _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+  //   ui.Image image = await boundary.toImage();
+  //   ByteData? byteData = await (image.toByteData(format: ui.ImageByteFormat.png));
+  //   if (byteData != null) {
+  //     final result = await ImageGallerySaver.saveImage(byteData.buffer.asUint8List());
+  //     print(result);
+  //   }
+  // }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -711,385 +771,39 @@ class _AppointmentState extends State<Appointment> {
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        left: 10.0, top: 20.0, right: 10.0, bottom: 0),
-                    color: Colors.white,
-                    // height: MediaQuery.of(context).size.height,
-                    child: _pageLoading
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : _appointmentViewModel.status == false
-                            ? Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 80.0),
-                                  child: Text(
-                                    "Appointment not available".toUpperCase(),
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: 10.0, top: 20.0, right: 10.0, bottom: 0),
+                      color: Colors.white,
+                      // height: MediaQuery.of(context).size.height,
+                      child: _pageLoading
+                          ? Container(
+                              height: 600,
+                              child: Center(child: CircularProgressIndicator()),
+                            )
+                          : _appointmentViewModel.status == false
+                              ? Container(
+                                height: 600,
+                                child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 80.0),
+                                      child: Text(
+                                        "Appointment not available".toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
                                   ),
-                                ),
                               )
-                            : tab.matchAsPrefix("upcoming") != null
-                                ? ListView.builder(
-                                    itemCount: _list.length,
-                                    physics: AlwaysScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      Body _body = _list[index];
-                                      int randomNumber = _random.nextInt(5);
-                                      // final time =
-                                      // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
-                                      // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
-                                      // "${_body.time!.substring(0,5)} AM";
-                                      return Container(
-                                          margin: EdgeInsets.only(bottom: 20.0),
-                                          child: Card(
-                                              color: Colors.white,
-                                              shadowColor: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              20.0))),
-                                              elevation: 10.0,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: Color(0xFF607D8B),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20.0))),
-                                                child: Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal: 20.0,
-                                                      vertical: 20.0),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            width: 35,
-                                                            height: 35,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle,
-                                                                    color: Colors
-                                                                        .white),
-                                                            child: Image.asset(
-                                                                "assets/Group 93.png"),
-                                                          ),
-                                                          Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 10.0),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  _body.name
-                                                                      .toString(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "\u{20B9}${_body.fees}",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Spacer(),
-                                                          Container(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                  "(${_body.date.toString().substring(0, 10)})",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "(${_body.from_time}-${_body.to_time})",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontFamily:
-                                                                        'Inter',
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 20.0),
-                                                        child: Row(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () async {
-                                                                final call =
-                                                                    Uri.parse(
-                                                                        'tel:${_body.phone}');
-                                                                if (await canLaunchUrl(
-                                                                    call)) {
-                                                                  launchUrl(
-                                                                      call);
-                                                                } else {
-                                                                  throw 'Could not launch $call';
-                                                                }
-                                                              },
-                                                              child: Container(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            25.0,
-                                                                        vertical:
-                                                                            5.0),
-                                                                decoration:
-                                                                    ShapeDecoration(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        shape:
-                                                                            RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(50),
-                                                                        )),
-                                                                child:
-                                                                    Image.asset(
-                                                                  "assets/Vector (20).png",
-                                                                  color: Colors
-                                                                      .green,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Spacer(),
-                                                            InkWell(
-                                                              onTap: () {
-                                                                updateStatusDailog(
-                                                                    _body.id
-                                                                        .toString());
-                                                              },
-                                                              child: Container(
-                                                                width: 40,
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        vertical:
-                                                                            5.0),
-                                                                decoration:
-                                                                    ShapeDecoration(
-                                                                  color: Color(
-                                                                      0xFF74919F),
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              6)),
-                                                                ),
-                                                                child: Column(
-                                                                  children: [
-                                                                    Image.asset(
-                                                                      "assets/status_ic.png",
-                                                                      height:
-                                                                          20,
-                                                                      color: Color(
-                                                                          0xffFEFEFE),
-                                                                    ),
-                                                                    Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                5.0),
-                                                                        child:
-                                                                            Text(
-                                                                          "Status",
-                                                                          style: TextStyle(
-                                                                              fontSize: 12.0,
-                                                                              color: Color(0xFFFDFDFD)),
-                                                                        ))
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) => EditAppointment(_body
-                                                                            .id
-                                                                            .toString(),tab)));
-                                                              },
-                                                              child: Container(
-                                                                width: 40,
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        vertical:
-                                                                            5.0),
-                                                                decoration:
-                                                                    ShapeDecoration(
-                                                                  color: Color(
-                                                                      0xFF74919F),
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              6)),
-                                                                ),
-                                                                margin: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            10.0),
-                                                                child: Column(
-                                                                  children: [
-                                                                    Image.asset(
-                                                                      "assets/edit_ic.png",
-                                                                      height:
-                                                                          20,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                    Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                5.0),
-                                                                        child:
-                                                                            Text(
-                                                                          "Edit",
-                                                                          style: TextStyle(
-                                                                              fontSize: 12.0,
-                                                                              color: Colors.white),
-                                                                        ))
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () {
-                                                                deleteDailog(_body
-                                                                    .id
-                                                                    .toString());
-                                                              },
-                                                              child: Container(
-                                                                width: 40,
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        vertical:
-                                                                            5.0),
-                                                                decoration:
-                                                                    ShapeDecoration(
-                                                                  color: Color(
-                                                                      0xFF74919F),
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              6)),
-                                                                ),
-                                                                child: Column(
-                                                                  children: [
-                                                                    Image.asset(
-                                                                      "assets/delete_ic.png",
-                                                                      height:
-                                                                          20,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                    Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                5.0),
-                                                                        child:
-                                                                            Text(
-                                                                          "Delete",
-                                                                          style: TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 12.0),
-                                                                        ))
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )));
-                                    })
-                                : tab.matchAsPrefix("pending") != null
+                              : RepaintBoundary(
+                                key: _globalKey,
+                                child: tab.matchAsPrefix("upcoming") != null
                                     ? ListView.builder(
-                                        itemCount: _list.length,
                                         shrinkWrap: true,
-                                        physics:
-                                            AlwaysScrollableScrollPhysics(),
+                                    physics: NeverScrollableScrollPhysics(),
+                                        itemCount: _list.length,
                                         itemBuilder: (context, index) {
                                           Body _body = _list[index];
                                           int randomNumber = _random.nextInt(5);
@@ -1107,8 +821,7 @@ class _AppointmentState extends State<Appointment> {
                                           // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
                                           // "${_body.time!.substring(0,5)} AM";
                                           return Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 20.0),
+                                              margin: EdgeInsets.only(bottom: 20.0),
                                               child: Card(
                                                   color: Colors.white,
                                                   shadowColor: Colors.white,
@@ -1120,21 +833,18 @@ class _AppointmentState extends State<Appointment> {
                                                   elevation: 10.0,
                                                   child: Container(
                                                     decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0xFF607D8B),
+                                                        color: Color(0xFF607D8B),
                                                         borderRadius:
                                                             BorderRadius.all(
                                                                 Radius.circular(
                                                                     20.0))),
                                                     child: Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 20.0,
-                                                              vertical: 20.0),
+                                                      margin: EdgeInsets.symmetric(
+                                                          horizontal: 20.0,
+                                                          vertical: 20.0),
                                                       child: Column(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
+                                                            MainAxisAlignment.start,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
@@ -1148,24 +858,23 @@ class _AppointmentState extends State<Appointment> {
                                                                     .start,
                                                             children: [
                                                               Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
+                                                                alignment: Alignment
+                                                                    .center,
                                                                 width: 35,
                                                                 height: 35,
-                                                                decoration: BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle,
-                                                                    color: Colors
-                                                                        .white),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                        color: Colors
+                                                                            .white),
                                                                 child: Image.asset(
                                                                     "assets/Group 93.png"),
                                                               ),
                                                               Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            10.0),
+                                                                margin:
+                                                                    EdgeInsets.only(
+                                                                        left: 10.0),
                                                                 child: Column(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
@@ -1186,26 +895,24 @@ class _AppointmentState extends State<Appointment> {
                                                                         fontFamily:
                                                                             'Inter',
                                                                         fontWeight:
-                                                                            FontWeight.w400,
+                                                                            FontWeight
+                                                                                .w400,
                                                                       ),
                                                                     ),
-                                                                    Row(
-                                                                      children: [
-                                                                        Text(
-                                                                          "\u{20B9}${_body.fees}",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontFamily:
-                                                                                'Inter',
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                          ),
-                                                                        ),
-                                                                      ],
+                                                                    Text(
+                                                                      "\u{20B9}${_body.fees}",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            'Inter',
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w400,
+                                                                      ),
                                                                     )
                                                                   ],
                                                                 ),
@@ -1228,7 +935,8 @@ class _AppointmentState extends State<Appointment> {
                                                                         fontFamily:
                                                                             'Inter',
                                                                         fontWeight:
-                                                                            FontWeight.w400,
+                                                                            FontWeight
+                                                                                .w400,
                                                                       ),
                                                                     ),
                                                                     Text(
@@ -1242,7 +950,8 @@ class _AppointmentState extends State<Appointment> {
                                                                         fontFamily:
                                                                             'Inter',
                                                                         fontWeight:
-                                                                            FontWeight.w400,
+                                                                            FontWeight
+                                                                                .w400,
                                                                       ),
                                                                     )
                                                                   ],
@@ -1251,14 +960,12 @@ class _AppointmentState extends State<Appointment> {
                                                             ],
                                                           ),
                                                           Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 20.0),
+                                                            margin: EdgeInsets.only(
+                                                                top: 20.0),
                                                             child: Row(
                                                               children: [
                                                                 InkWell(
-                                                                  onTap:
-                                                                      () async {
+                                                                  onTap: () async {
                                                                     final call =
                                                                         Uri.parse(
                                                                             'tel:${_body.phone}');
@@ -1270,20 +977,24 @@ class _AppointmentState extends State<Appointment> {
                                                                       throw 'Could not launch $call';
                                                                     }
                                                                   },
-                                                                  child:
-                                                                      Container(
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            25.0,
-                                                                        vertical:
-                                                                            5.0),
-                                                                    decoration: BoxDecoration(
-                                                                        color: Color(
-                                                                            0xfff5f5f5),
-                                                                        borderRadius:
-                                                                            BorderRadius.all(Radius.circular(50.0))),
-                                                                    child: Image
-                                                                        .asset(
+                                                                  child: Container(
+                                                                    padding: EdgeInsets
+                                                                        .symmetric(
+                                                                            horizontal:
+                                                                                25.0,
+                                                                            vertical:
+                                                                                5.0),
+                                                                    decoration:
+                                                                        ShapeDecoration(
+                                                                            color: Colors
+                                                                                .white,
+                                                                            shape:
+                                                                                RoundedRectangleBorder(
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(50),
+                                                                            )),
+                                                                    child:
+                                                                        Image.asset(
                                                                       "assets/Vector (20).png",
                                                                       color: Colors
                                                                           .green,
@@ -1297,37 +1008,40 @@ class _AppointmentState extends State<Appointment> {
                                                                         _body.id
                                                                             .toString());
                                                                   },
-                                                                  child:
-                                                                      Container(
+                                                                  child: Container(
                                                                     width: 40,
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            5.0),
+                                                                    padding: EdgeInsets
+                                                                        .symmetric(
+                                                                            vertical:
+                                                                                5.0),
                                                                     decoration:
                                                                         ShapeDecoration(
                                                                       color: Color(
                                                                           0xFF74919F),
                                                                       shape: RoundedRectangleBorder(
                                                                           borderRadius:
-                                                                              BorderRadius.circular(6)),
+                                                                              BorderRadius.circular(
+                                                                                  6)),
                                                                     ),
-                                                                    child:
-                                                                        Column(
+                                                                    child: Column(
                                                                       children: [
-                                                                        Image
-                                                                            .asset(
+                                                                        Image.asset(
                                                                           "assets/status_ic.png",
                                                                           height:
                                                                               20,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Color(
+                                                                              0xffFEFEFE),
                                                                         ),
                                                                         Container(
-                                                                            margin:
-                                                                                EdgeInsets.only(top: 5.0),
-                                                                            child: Text(
+                                                                            margin: EdgeInsets.only(
+                                                                                top:
+                                                                                    5.0),
+                                                                            child:
+                                                                                Text(
                                                                               "Status",
-                                                                              style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                                                              style: TextStyle(
+                                                                                  fontSize: 12.0,
+                                                                                  color: Color(0xFFFDFDFD)),
                                                                             ))
                                                                       ],
                                                                     ),
@@ -1338,43 +1052,48 @@ class _AppointmentState extends State<Appointment> {
                                                                     Navigator.push(
                                                                         context,
                                                                         MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                EditAppointment(_body.id.toString(),tab)));
+                                                                            builder: (context) => EditAppointment(_body
+                                                                                .id
+                                                                                .toString(),tab)));
                                                                   },
-                                                                  child:
-                                                                      Container(
+                                                                  child: Container(
                                                                     width: 40,
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            5.0),
+                                                                    padding: EdgeInsets
+                                                                        .symmetric(
+                                                                            vertical:
+                                                                                5.0),
                                                                     decoration:
                                                                         ShapeDecoration(
                                                                       color: Color(
                                                                           0xFF74919F),
                                                                       shape: RoundedRectangleBorder(
                                                                           borderRadius:
-                                                                              BorderRadius.circular(6)),
+                                                                              BorderRadius.circular(
+                                                                                  6)),
                                                                     ),
-                                                                    margin: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            10.0),
-                                                                    child:
-                                                                        Column(
+                                                                    margin: EdgeInsets
+                                                                        .symmetric(
+                                                                            horizontal:
+                                                                                10.0),
+                                                                    child: Column(
                                                                       children: [
-                                                                        Image
-                                                                            .asset(
+                                                                        Image.asset(
                                                                           "assets/edit_ic.png",
                                                                           height:
                                                                               20,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Colors
+                                                                              .white,
                                                                         ),
                                                                         Container(
-                                                                            margin:
-                                                                                EdgeInsets.only(top: 5.0),
-                                                                            child: Text(
+                                                                            margin: EdgeInsets.only(
+                                                                                top:
+                                                                                    5.0),
+                                                                            child:
+                                                                                Text(
                                                                               "Edit",
-                                                                              style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                                                              style: TextStyle(
+                                                                                  fontSize: 12.0,
+                                                                                  color: Colors.white),
                                                                             ))
                                                                       ],
                                                                     ),
@@ -1382,41 +1101,44 @@ class _AppointmentState extends State<Appointment> {
                                                                 ),
                                                                 InkWell(
                                                                   onTap: () {
-                                                                    deleteDailog(
-                                                                        _body.id
-                                                                            .toString());
+                                                                    deleteDailog(_body
+                                                                        .id
+                                                                        .toString());
                                                                   },
-                                                                  child:
-                                                                      Container(
+                                                                  child: Container(
                                                                     width: 40,
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            5.0),
+                                                                    padding: EdgeInsets
+                                                                        .symmetric(
+                                                                            vertical:
+                                                                                5.0),
                                                                     decoration:
                                                                         ShapeDecoration(
                                                                       color: Color(
                                                                           0xFF74919F),
                                                                       shape: RoundedRectangleBorder(
                                                                           borderRadius:
-                                                                              BorderRadius.circular(6)),
+                                                                              BorderRadius.circular(
+                                                                                  6)),
                                                                     ),
-                                                                    child:
-                                                                        Column(
+                                                                    child: Column(
                                                                       children: [
-                                                                        Image
-                                                                            .asset(
+                                                                        Image.asset(
                                                                           "assets/delete_ic.png",
                                                                           height:
                                                                               20,
-                                                                          color:
-                                                                              Colors.white,
+                                                                          color: Colors
+                                                                              .white,
                                                                         ),
                                                                         Container(
-                                                                            margin:
-                                                                                EdgeInsets.only(top: 5.0),
-                                                                            child: Text(
+                                                                            margin: EdgeInsets.only(
+                                                                                top:
+                                                                                    5.0),
+                                                                            child:
+                                                                                Text(
                                                                               "Delete",
-                                                                              style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                                                              style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                  fontSize: 12.0),
                                                                             ))
                                                                       ],
                                                                     ),
@@ -1430,15 +1152,15 @@ class _AppointmentState extends State<Appointment> {
                                                     ),
                                                   )));
                                         })
-                                    : tab.matchAsPrefix("cancel") != null
+                                    : tab.matchAsPrefix("pending") != null
                                         ? ListView.builder(
                                             itemCount: _list.length,
+                                            shrinkWrap: true,
                                             physics:
-                                                AlwaysScrollableScrollPhysics(),
+                                            NeverScrollableScrollPhysics(),
                                             itemBuilder: (context, index) {
                                               Body _body = _list[index];
-                                              int randomNumber =
-                                                  _random.nextInt(5);
+                                              int randomNumber = _random.nextInt(5);
                                               // final time =
                                               // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
                                               // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
@@ -1453,8 +1175,8 @@ class _AppointmentState extends State<Appointment> {
                                               // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
                                               // "${_body.time!.substring(0,5)} AM";
                                               return Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 20.0),
+                                                  margin:
+                                                      EdgeInsets.only(bottom: 20.0),
                                                   child: Card(
                                                       color: Colors.white,
                                                       shadowColor: Colors.white,
@@ -1466,19 +1188,17 @@ class _AppointmentState extends State<Appointment> {
                                                       elevation: 10.0,
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                            color: Color(
-                                                                0xFF607D8B),
+                                                            color:
+                                                                Color(0xFF607D8B),
                                                             borderRadius:
                                                                 BorderRadius.all(
                                                                     Radius.circular(
                                                                         20.0))),
                                                         child: Container(
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      20.0,
-                                                                  vertical:
-                                                                      20.0),
+                                                          margin:
+                                                              EdgeInsets.symmetric(
+                                                                  horizontal: 20.0,
+                                                                  vertical: 20.0),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -1506,17 +1226,15 @@ class _AppointmentState extends State<Appointment> {
                                                                             .circle,
                                                                         color: Colors
                                                                             .white),
-                                                                    child: Image
-                                                                        .asset(
-                                                                            "assets/Group 93.png"),
+                                                                    child: Image.asset(
+                                                                        "assets/Group 93.png"),
                                                                   ),
                                                                   Container(
                                                                     margin: EdgeInsets
                                                                         .only(
                                                                             left:
                                                                                 10.0),
-                                                                    child:
-                                                                        Column(
+                                                                    child: Column(
                                                                       mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .start,
@@ -1525,13 +1243,12 @@ class _AppointmentState extends State<Appointment> {
                                                                               .start,
                                                                       children: [
                                                                         Text(
-                                                                          _body
-                                                                              .name
+                                                                          _body.name
                                                                               .toString(),
                                                                           style:
                                                                               TextStyle(
-                                                                            color:
-                                                                                Colors.white,
+                                                                            color: Colors
+                                                                                .white,
                                                                             fontSize:
                                                                                 14,
                                                                             fontFamily:
@@ -1543,32 +1260,19 @@ class _AppointmentState extends State<Appointment> {
                                                                         Row(
                                                                           children: [
                                                                             Text(
-                                                                              "₹${_body.fees}",
-                                                                              style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: 14,
-                                                                                fontFamily: 'Inter',
-                                                                                fontWeight: FontWeight.w400,
+                                                                              "\u{20B9}${_body.fees}",
+                                                                              style:
+                                                                                  TextStyle(
+                                                                                color:
+                                                                                    Colors.white,
+                                                                                fontSize:
+                                                                                    14,
+                                                                                fontFamily:
+                                                                                    'Inter',
+                                                                                fontWeight:
+                                                                                    FontWeight.w400,
                                                                               ),
                                                                             ),
-                                                                            // Container(
-                                                                            //   height: 8.0,
-                                                                            //   width: 8.0,
-                                                                            //   margin: EdgeInsets.only(left: 5.0),
-                                                                            //   decoration: BoxDecoration(
-                                                                            //       shape: BoxShape.circle,
-                                                                            //       gradient: LinearGradient(
-                                                                            //           colors: [
-                                                                            //             Color(0xffFF3D3D),
-                                                                            //             Color(0xffFF663D)
-                                                                            //           ],
-                                                                            //           begin: const FractionalOffset(0.0, 0.0),
-                                                                            //           end: const FractionalOffset(0.0, 1.0),
-                                                                            //           stops: [0.0, 1.0],
-                                                                            //           tileMode: TileMode.clamp
-                                                                            //       )
-                                                                            //   ),
-                                                                            // )
                                                                           ],
                                                                         )
                                                                       ],
@@ -1576,8 +1280,7 @@ class _AppointmentState extends State<Appointment> {
                                                                   ),
                                                                   Spacer(),
                                                                   Container(
-                                                                    child:
-                                                                        Column(
+                                                                    child: Column(
                                                                       crossAxisAlignment:
                                                                           CrossAxisAlignment
                                                                               .end,
@@ -1586,8 +1289,8 @@ class _AppointmentState extends State<Appointment> {
                                                                           "(${_body.date.toString().substring(0, 10)})",
                                                                           style:
                                                                               TextStyle(
-                                                                            color:
-                                                                                Colors.white,
+                                                                            color: Colors
+                                                                                .white,
                                                                             fontSize:
                                                                                 14,
                                                                             fontFamily:
@@ -1600,8 +1303,8 @@ class _AppointmentState extends State<Appointment> {
                                                                           "(${_body.from_time}-${_body.to_time})",
                                                                           style:
                                                                               TextStyle(
-                                                                            color:
-                                                                                Colors.white,
+                                                                            color: Colors
+                                                                                .white,
                                                                             fontSize:
                                                                                 14,
                                                                             fontFamily:
@@ -1616,17 +1319,17 @@ class _AppointmentState extends State<Appointment> {
                                                                 ],
                                                               ),
                                                               Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        top:
-                                                                            20.0),
+                                                                margin:
+                                                                    EdgeInsets.only(
+                                                                        top: 20.0),
                                                                 child: Row(
                                                                   children: [
                                                                     InkWell(
                                                                       onTap:
                                                                           () async {
                                                                         final call =
-                                                                            Uri.parse('tel:${_body.phone}');
+                                                                            Uri.parse(
+                                                                                'tel:${_body.phone}');
                                                                         if (await canLaunchUrl(
                                                                             call)) {
                                                                           launchUrl(
@@ -1643,17 +1346,150 @@ class _AppointmentState extends State<Appointment> {
                                                                             vertical:
                                                                                 5.0),
                                                                         decoration: BoxDecoration(
-                                                                            color:
-                                                                                Color(0xfff5f5f5),
-                                                                            borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                                                                            color: Color(
+                                                                                0xfff5f5f5),
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(50.0))),
                                                                         child: Image
                                                                             .asset(
                                                                           "assets/Vector (20).png",
-                                                                          color:
-                                                                              Colors.green,
+                                                                          color: Colors
+                                                                              .green,
                                                                         ),
                                                                       ),
-                                                                    )
+                                                                    ),
+                                                                    Spacer(),
+                                                                    InkWell(
+                                                                      onTap: () {
+                                                                        updateStatusDailog(
+                                                                            _body.id
+                                                                                .toString());
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        width: 40,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                5.0),
+                                                                        decoration:
+                                                                            ShapeDecoration(
+                                                                          color: Color(
+                                                                              0xFF74919F),
+                                                                          shape: RoundedRectangleBorder(
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(6)),
+                                                                        ),
+                                                                        child:
+                                                                            Column(
+                                                                          children: [
+                                                                            Image
+                                                                                .asset(
+                                                                              "assets/status_ic.png",
+                                                                              height:
+                                                                                  20,
+                                                                              color:
+                                                                                  Colors.white,
+                                                                            ),
+                                                                            Container(
+                                                                                margin:
+                                                                                    EdgeInsets.only(top: 5.0),
+                                                                                child: Text(
+                                                                                  "Status",
+                                                                                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                                                                ))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    InkWell(
+                                                                      onTap: () {
+                                                                        Navigator.push(
+                                                                            context,
+                                                                            MaterialPageRoute(
+                                                                                builder: (context) =>
+                                                                                    EditAppointment(_body.id.toString(),tab)));
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        width: 40,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                5.0),
+                                                                        decoration:
+                                                                            ShapeDecoration(
+                                                                          color: Color(
+                                                                              0xFF74919F),
+                                                                          shape: RoundedRectangleBorder(
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(6)),
+                                                                        ),
+                                                                        margin: EdgeInsets.symmetric(
+                                                                            horizontal:
+                                                                                10.0),
+                                                                        child:
+                                                                            Column(
+                                                                          children: [
+                                                                            Image
+                                                                                .asset(
+                                                                              "assets/edit_ic.png",
+                                                                              height:
+                                                                                  20,
+                                                                              color:
+                                                                                  Colors.white,
+                                                                            ),
+                                                                            Container(
+                                                                                margin:
+                                                                                    EdgeInsets.only(top: 5.0),
+                                                                                child: Text(
+                                                                                  "Edit",
+                                                                                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                                                                ))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    InkWell(
+                                                                      onTap: () {
+                                                                        deleteDailog(
+                                                                            _body.id
+                                                                                .toString());
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        width: 40,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                5.0),
+                                                                        decoration:
+                                                                            ShapeDecoration(
+                                                                          color: Color(
+                                                                              0xFF74919F),
+                                                                          shape: RoundedRectangleBorder(
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(6)),
+                                                                        ),
+                                                                        child:
+                                                                            Column(
+                                                                          children: [
+                                                                            Image
+                                                                                .asset(
+                                                                              "assets/delete_ic.png",
+                                                                              height:
+                                                                                  20,
+                                                                              color:
+                                                                                  Colors.white,
+                                                                            ),
+                                                                            Container(
+                                                                                margin:
+                                                                                    EdgeInsets.only(top: 5.0),
+                                                                                child: Text(
+                                                                                  "Delete",
+                                                                                  style: TextStyle(color: Colors.white, fontSize: 12.0),
+                                                                                ))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               )
@@ -1662,15 +1498,15 @@ class _AppointmentState extends State<Appointment> {
                                                         ),
                                                       )));
                                             })
-                                        : tab.matchAsPrefix("completed") != null
+                                        : tab.matchAsPrefix("cancel") != null
                                             ? ListView.builder(
                                                 itemCount: _list.length,
-                                                physics:
-                                                    AlwaysScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                physics: NeverScrollableScrollPhysics(),
                                                 itemBuilder: (context, index) {
+                                                  Body _body = _list[index];
                                                   int randomNumber =
                                                       _random.nextInt(5);
-                                                  Body _body = _list[index];
                                                   // final time =
                                                   // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
                                                   // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
@@ -1689,21 +1525,20 @@ class _AppointmentState extends State<Appointment> {
                                                           bottom: 20.0),
                                                       child: Card(
                                                           color: Colors.white,
-                                                          shadowColor:
-                                                              Colors.white,
+                                                          shadowColor: Colors.white,
                                                           shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
+                                                              borderRadius:
+                                                                  BorderRadius.all(
+                                                                      Radius.circular(
                                                                           20.0))),
                                                           elevation: 10.0,
                                                           child: Container(
                                                             decoration: BoxDecoration(
                                                                 color: Color(
                                                                     0xFF607D8B),
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
+                                                                borderRadius:
+                                                                    BorderRadius.all(
+                                                                        Radius.circular(
                                                                             20.0))),
                                                             child: Container(
                                                               margin: EdgeInsets
@@ -1730,36 +1565,47 @@ class _AppointmentState extends State<Appointment> {
                                                                     children: [
                                                                       Container(
                                                                         alignment:
-                                                                            Alignment.center,
-                                                                        width:
-                                                                            35,
-                                                                        height:
-                                                                            35,
+                                                                            Alignment
+                                                                                .center,
+                                                                        width: 35,
+                                                                        height: 35,
                                                                         decoration: BoxDecoration(
-                                                                            shape:
-                                                                                BoxShape.circle,
-                                                                            color: Colors.white),
-                                                                        child: Image.asset(
-                                                                            "assets/Group 93.png"),
+                                                                            shape: BoxShape
+                                                                                .circle,
+                                                                            color: Colors
+                                                                                .white),
+                                                                        child: Image
+                                                                            .asset(
+                                                                                "assets/Group 93.png"),
                                                                       ),
                                                                       Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            left:
-                                                                                10.0),
+                                                                        margin: EdgeInsets
+                                                                            .only(
+                                                                                left:
+                                                                                    10.0),
                                                                         child:
                                                                             Column(
                                                                           mainAxisAlignment:
-                                                                              MainAxisAlignment.start,
+                                                                              MainAxisAlignment
+                                                                                  .start,
                                                                           crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
+                                                                              CrossAxisAlignment
+                                                                                  .start,
                                                                           children: [
                                                                             Text(
-                                                                              _body.name.toString(),
-                                                                              style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: 14,
-                                                                                fontFamily: 'Inter',
-                                                                                fontWeight: FontWeight.w400,
+                                                                              _body
+                                                                                  .name
+                                                                                  .toString(),
+                                                                              style:
+                                                                                  TextStyle(
+                                                                                color:
+                                                                                    Colors.white,
+                                                                                fontSize:
+                                                                                    14,
+                                                                                fontFamily:
+                                                                                    'Inter',
+                                                                                fontWeight:
+                                                                                    FontWeight.w400,
                                                                               ),
                                                                             ),
                                                                             Row(
@@ -1773,6 +1619,24 @@ class _AppointmentState extends State<Appointment> {
                                                                                     fontWeight: FontWeight.w400,
                                                                                   ),
                                                                                 ),
+                                                                                // Container(
+                                                                                //   height: 8.0,
+                                                                                //   width: 8.0,
+                                                                                //   margin: EdgeInsets.only(left: 5.0),
+                                                                                //   decoration: BoxDecoration(
+                                                                                //       shape: BoxShape.circle,
+                                                                                //       gradient: LinearGradient(
+                                                                                //           colors: [
+                                                                                //             Color(0xffFF3D3D),
+                                                                                //             Color(0xffFF663D)
+                                                                                //           ],
+                                                                                //           begin: const FractionalOffset(0.0, 0.0),
+                                                                                //           end: const FractionalOffset(0.0, 1.0),
+                                                                                //           stops: [0.0, 1.0],
+                                                                                //           tileMode: TileMode.clamp
+                                                                                //       )
+                                                                                //   ),
+                                                                                // )
                                                                               ],
                                                                             )
                                                                           ],
@@ -1783,24 +1647,35 @@ class _AppointmentState extends State<Appointment> {
                                                                         child:
                                                                             Column(
                                                                           crossAxisAlignment:
-                                                                              CrossAxisAlignment.end,
+                                                                              CrossAxisAlignment
+                                                                                  .end,
                                                                           children: [
                                                                             Text(
                                                                               "(${_body.date.toString().substring(0, 10)})",
-                                                                              style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: 14,
-                                                                                fontFamily: 'Inter',
-                                                                                fontWeight: FontWeight.w400,
+                                                                              style:
+                                                                                  TextStyle(
+                                                                                color:
+                                                                                    Colors.white,
+                                                                                fontSize:
+                                                                                    14,
+                                                                                fontFamily:
+                                                                                    'Inter',
+                                                                                fontWeight:
+                                                                                    FontWeight.w400,
                                                                               ),
                                                                             ),
                                                                             Text(
                                                                               "(${_body.from_time}-${_body.to_time})",
-                                                                              style: TextStyle(
-                                                                                color: Colors.white,
-                                                                                fontSize: 14,
-                                                                                fontFamily: 'Inter',
-                                                                                fontWeight: FontWeight.w400,
+                                                                              style:
+                                                                                  TextStyle(
+                                                                                color:
+                                                                                    Colors.white,
+                                                                                fontSize:
+                                                                                    14,
+                                                                                fontFamily:
+                                                                                    'Inter',
+                                                                                fontWeight:
+                                                                                    FontWeight.w400,
                                                                               ),
                                                                             )
                                                                           ],
@@ -1820,22 +1695,30 @@ class _AppointmentState extends State<Appointment> {
                                                                               () async {
                                                                             final call =
                                                                                 Uri.parse('tel:${_body.phone}');
-                                                                            if (await canLaunchUrl(call)) {
-                                                                              launchUrl(call);
+                                                                            if (await canLaunchUrl(
+                                                                                call)) {
+                                                                              launchUrl(
+                                                                                  call);
                                                                             } else {
                                                                               throw 'Could not launch $call';
                                                                             }
                                                                           },
                                                                           child:
                                                                               Container(
-                                                                            padding:
-                                                                                EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
-                                                                            decoration:
-                                                                                BoxDecoration(color: Color(0xfff5f5f5), borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                                                                            child:
-                                                                                Image.asset(
+                                                                            padding: EdgeInsets.symmetric(
+                                                                                horizontal:
+                                                                                    25.0,
+                                                                                vertical:
+                                                                                    5.0),
+                                                                            decoration: BoxDecoration(
+                                                                                color:
+                                                                                    Color(0xfff5f5f5),
+                                                                                borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                                                                            child: Image
+                                                                                .asset(
                                                                               "assets/Vector (20).png",
-                                                                              color: Colors.green,
+                                                                              color:
+                                                                                  Colors.green,
                                                                             ),
                                                                           ),
                                                                         )
@@ -1847,7 +1730,194 @@ class _AppointmentState extends State<Appointment> {
                                                             ),
                                                           )));
                                                 })
-                                            : Container(),
+                                            : tab.matchAsPrefix("completed") != null
+                                                ? ListView.builder(
+                                                    itemCount: _list.length,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                                    itemBuilder: (context, index) {
+                                                      int randomNumber =
+                                                          _random.nextInt(5);
+                                                      Body _body = _list[index];
+                                                      // final time =
+                                                      // _body.time!.substring(0,2).contains("13") ? "01${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("14") ? "02${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("15") ? "03${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("16") ? "04${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("17") ? "05${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("18") ? "06${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("19") ? "07${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("20") ? "08${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("21") ? "09${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("22") ? "10${_body.time!.substring(2,5)} PM":
+                                                      // _body.time!.substring(0,2).contains("23") ? "11${_body.time!.substring(2,5)} PM":
+                                                      // "${_body.time!.substring(0,5)} AM";
+                                                      return Container(
+                                                          margin: EdgeInsets.only(
+                                                              bottom: 20.0),
+                                                          child: Card(
+                                                              color: Colors.white,
+                                                              shadowColor:
+                                                                  Colors.white,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius
+                                                                      .all(Radius
+                                                                          .circular(
+                                                                              20.0))),
+                                                              elevation: 10.0,
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                    color: Color(
+                                                                        0xFF607D8B),
+                                                                    borderRadius: BorderRadius
+                                                                        .all(Radius
+                                                                            .circular(
+                                                                                20.0))),
+                                                                child: Container(
+                                                                  margin: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              20.0,
+                                                                          vertical:
+                                                                              20.0),
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .start,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .start,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment
+                                                                                .start,
+                                                                        children: [
+                                                                          Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            width:
+                                                                                35,
+                                                                            height:
+                                                                                35,
+                                                                            decoration: BoxDecoration(
+                                                                                shape:
+                                                                                    BoxShape.circle,
+                                                                                color: Colors.white),
+                                                                            child: Image.asset(
+                                                                                "assets/Group 93.png"),
+                                                                          ),
+                                                                          Container(
+                                                                            margin: EdgeInsets.only(
+                                                                                left:
+                                                                                    10.0),
+                                                                            child:
+                                                                                Column(
+                                                                              mainAxisAlignment:
+                                                                                  MainAxisAlignment.start,
+                                                                              crossAxisAlignment:
+                                                                                  CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text(
+                                                                                  _body.name.toString(),
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: 14,
+                                                                                    fontFamily: 'Inter',
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                  ),
+                                                                                ),
+                                                                                Row(
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      "₹${_body.fees}",
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.white,
+                                                                                        fontSize: 14,
+                                                                                        fontFamily: 'Inter',
+                                                                                        fontWeight: FontWeight.w400,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          Spacer(),
+                                                                          Container(
+                                                                            child:
+                                                                                Column(
+                                                                              crossAxisAlignment:
+                                                                                  CrossAxisAlignment.end,
+                                                                              children: [
+                                                                                Text(
+                                                                                  "(${_body.date.toString().substring(0, 10)})",
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: 14,
+                                                                                    fontFamily: 'Inter',
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                  ),
+                                                                                ),
+                                                                                Text(
+                                                                                  "(${_body.from_time}-${_body.to_time})",
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: 14,
+                                                                                    fontFamily: 'Inter',
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                  ),
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Container(
+                                                                        margin: EdgeInsets
+                                                                            .only(
+                                                                                top:
+                                                                                    20.0),
+                                                                        child: Row(
+                                                                          children: [
+                                                                            InkWell(
+                                                                              onTap:
+                                                                                  () async {
+                                                                                final call =
+                                                                                    Uri.parse('tel:${_body.phone}');
+                                                                                if (await canLaunchUrl(call)) {
+                                                                                  launchUrl(call);
+                                                                                } else {
+                                                                                  throw 'Could not launch $call';
+                                                                                }
+                                                                              },
+                                                                              child:
+                                                                                  Container(
+                                                                                padding:
+                                                                                    EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
+                                                                                decoration:
+                                                                                    BoxDecoration(color: Color(0xfff5f5f5), borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                                                                                child:
+                                                                                    Image.asset(
+                                                                                  "assets/Vector (20).png",
+                                                                                  color: Colors.green,
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              )));
+                                                    })
+                                                : Container(),
+                              ),
+                    ),
                   ),
                 )
               ],
@@ -1855,6 +1925,18 @@ class _AppointmentState extends State<Appointment> {
           ),
         ],
       ),
+      floatingActionButton: _list.isNotEmpty ? FloatingActionButton(
+        onPressed: _captureAndSave,
+        child: Icon(Icons.download),
+      ):null
     );
+  }
+  _saved(image) async {
+    try{
+      final result = await ImageGallerySaver.saveImage(image);
+      Fluttertoast.showToast(msg: "File Saved to Gallery");
+    }catch(e){
+      print("Errror in side the save image ${e}");
+    }
   }
 }
