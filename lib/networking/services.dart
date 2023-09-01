@@ -31,7 +31,7 @@ import 'package:path_provider/path_provider.dart';
 
 class Services {
 
-  static String mainUrl = "https://eyellowpagesafrica.com/astro_senthil/api/";
+  static String mainUrl = "https://cws.in.net/astro_senthil/api/";
 
   static String login = "${mainUrl}admin";
   static String appointment = "${mainUrl}Apointment";

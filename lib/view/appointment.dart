@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:astro_santhil_app/models/appointment_view_model.dart';
@@ -8,8 +9,10 @@ import 'package:astro_santhil_app/models/cancel_appointment_model.dart';
 import 'package:astro_santhil_app/view/edit_appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart'as http;
 
 import 'menu.dart';
 
@@ -29,6 +32,7 @@ class _AppointmentState extends State<Appointment> {
   List<Body> _list = [];
   List<uBody> _upcominglist = [];
   bool _pageLoading = false;
+
   List<Color> gradientColorList = [
     Color(0xff1C3B70),
     Color(0xff019AD6),
@@ -354,6 +358,7 @@ class _AppointmentState extends State<Appointment> {
             child: child!,
           );
         });
+
     int? month = toDate?.month;
     String? fm = "" + "${month}";
     String? fd = "" + "${toDate?.day}";
@@ -374,6 +379,41 @@ class _AppointmentState extends State<Appointment> {
       });
     }
   }
+
+  Future<void> downloadAndSaveExcel(String fileUrl, String fileName) async {
+    final response = await http.get(Uri.parse(fileUrl));
+
+    if (response.statusCode == 200) {
+      final bytes = response.bodyBytes;
+      final directory = await getExternalStorageDirectory();
+      final filePath = '${directory?.path}/$fileName';
+
+      final File file = File(filePath);
+      await file.writeAsBytes(bytes);
+      print(file);
+      // Display a message to the user that the file has been saved.
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('File Downloaded'),
+            content: Text('The Excel file has been saved to your device.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      throw Exception('Failed to download file');
+    }
+  }
+
 
 
 
@@ -569,6 +609,28 @@ class _AppointmentState extends State<Appointment> {
                         alignment: Alignment.center,
                         child: Icon(
                           Icons.search,
+                          color: Colors.white,
+                          size: 30.0,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        String downloadLink = 'https://cws.in.net/astro_senthil/api/CSV/get_csv?s_date=2023-08-15&e_date=2023-08-31&view_type=pending';
+                        String fileName = 'example_file.pdf';// Change to your desired file name
+                        downloadAndSaveExcel(downloadLink, fileName);
+                      },
+                      child: Container(
+                        decoration: ShapeDecoration(
+                          color: Color(0xFF3BB143),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                        ),
+                        padding: EdgeInsets.all(5.0),
+                        margin: EdgeInsets.only(top: 15.0),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.download_for_offline,
                           color: Colors.white,
                           size: 30.0,
                         ),
