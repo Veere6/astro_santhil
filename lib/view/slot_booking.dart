@@ -238,13 +238,13 @@ class _SlotBookingState extends State<SlotBooking> {
         final fromTime =_body.fromTime.toString().toUpperCase();
         final toTime =_body.toTime.toString().toUpperCase();
 
-        String dateTimeString = "${_body.date} ${_body.toTime}";
+        String dateTimeString = "${_body.date.toString().substring(0,10)} ${_body.fromTime}".toUpperCase();
 
-// Define a format that matches the provided string format
-        DateFormat format = DateFormat("yyyy-MM-dd hh:mma");
+        DateFormat format = DateFormat("yyyy-MM-dd hh:mmaa");
 
-// Parse the string into a DateTime object
         DateTime dateTime = format.parse(dateTimeString);
+
+        // print(">>><<<$dateTimeString");
 
         if (_body.bookStatus != "1") {
           if (isDateTimeGreaterThanNow(dateTime)){
