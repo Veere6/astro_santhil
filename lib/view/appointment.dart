@@ -26,6 +26,7 @@ class Appointment extends StatefulWidget {
 }
 
 class _AppointmentState extends State<Appointment> {
+
   late AppointmentViewModel _appointmentViewModel;
   late CancelAppointmentModel _cancelAppointmentModel;
   late CompleteAppointmentModel _completeAppointmentModel;
@@ -380,40 +381,14 @@ class _AppointmentState extends State<Appointment> {
     }
   }
 
-  Future<void> downloadAndSaveExcel(String fileUrl, String fileName) async {
-    final response = await http.get(Uri.parse(fileUrl));
-
-    if (response.statusCode == 200) {
-      final bytes = response.bodyBytes;
-      final directory = await getExternalStorageDirectory();
-      final filePath = '${directory?.path}/$fileName';
-
-      final File file = File(filePath);
-      await file.writeAsBytes(bytes);
-      print(file);
-      // Display a message to the user that the file has been saved.
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('File Downloaded'),
-            content: Text('The Excel file has been saved to your device.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+  _launchURL() async {
+    String url = 'https://cws.in.net/astro_senthil/api/CSV/get_csv?s_date=${selectedFromDate}&e_date=${selectedToDate}'; // Replace with the URL you want to open
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      throw Exception('Failed to download file');
+      throw 'Could not launch $url';
     }
   }
-
 
 
 
@@ -618,7 +593,9 @@ class _AppointmentState extends State<Appointment> {
                       onTap: () {
                         String downloadLink = 'https://cws.in.net/astro_senthil/api/CSV/get_csv?s_date=2023-08-15&e_date=2023-08-31&view_type=pending';
                         String fileName = 'example_file.pdf';// Change to your desired file name
-                        downloadAndSaveExcel(downloadLink, fileName);
+                        // downloadAndSaveExcel(downloadLink, fileName);
+                        _launchURL();
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => ExcelDownlaod()));
                       },
                       child: Container(
                         decoration: ShapeDecoration(

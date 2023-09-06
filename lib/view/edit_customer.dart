@@ -1002,7 +1002,7 @@ class _EditCustomerState extends State<EditCustomer> {
                                 controller: phoneNumber,
                                 textAlignVertical: TextAlignVertical.center,
                                 textAlign: TextAlign.left,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                   isDense: true,
                                   hintText: 'Phone Number',

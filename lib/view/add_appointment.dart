@@ -338,7 +338,7 @@ class _AddAppointmentState extends State<AddAppointment> {
       setState(() {
         userName.text = contact?.fullName ?? "";
         if (contact!.phoneNumber!.number!.isNotEmpty) {
-          phoneNumber.text = getLast10Digits(contact?.phoneNumber?.number ?? "");
+          phoneNumber.text = contact?.phoneNumber?.number ?? "";
         } else {
           phoneNumber.text = '';
         }
@@ -401,6 +401,7 @@ class _AddAppointmentState extends State<AddAppointment> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
+          margin: EdgeInsets.only(bottom: 40.0),
           decoration: BoxDecoration(color: Colors.white),
           child: Container(
             child: SingleChildScrollView(
@@ -1068,10 +1069,9 @@ class _AddAppointmentState extends State<AddAppointment> {
                             ),
                             child: TextField(
                                 controller: phoneNumber,
-                                maxLength: 10,
                                 textAlignVertical: TextAlignVertical.center,
                                 textAlign: TextAlign.left,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                   counterText: "",
                                   isDense: true,

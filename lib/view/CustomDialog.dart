@@ -27,6 +27,7 @@ class CustomDialog extends StatefulWidget {
 
 class _CustomDialogState extends State<CustomDialog> {
   DateTime selectedDate = DateTime.now();
+  final _currentTime = TimeOfDay.now();
   TimeOfDay selectedStartTime = TimeOfDay.now();
   TimeOfDay selectedEndTime = TimeOfDay.now();
 
@@ -46,7 +47,7 @@ class _CustomDialogState extends State<CustomDialog> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2000),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget? child){
         return Theme(
@@ -81,7 +82,62 @@ class _CustomDialogState extends State<CustomDialog> {
   Future<void> _selectStartTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: selectedStartTime,
+      initialTime: selectedStartTime != null ? selectedStartTime : TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child){
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.black,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+              secondary: Colors.green,
+              onSecondary: Colors.green,
+              secondaryContainer: Colors.green,
+            ),
+            datePickerTheme: DatePickerThemeData(
+                yearStyle: TextStyle(color: Colors.grey)
+            ),
+            dialogBackgroundColor:Colors.white,
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != selectedStartTime) {
+      setState(() {
+        DateTime date = DateTime.now();
+        print(date);
+        print(selectedDate);
+        if(selectedDate.toString().substring(0,10) == date.toString().substring(0,10)) {
+          if(picked.hour > _currentTime.hour ||
+              (picked.hour == _currentTime.hour &&
+                  picked.minute > _currentTime.minute)){
+            setState(() {
+              isStartshow = true;
+              selectedStartTime = picked;
+            });
+          }else{
+            Fluttertoast.showToast(msg: "Always select a time greater than the current time");
+          }
+
+        }else{
+          setState(() {
+            isStartshow = true;
+            selectedStartTime = picked;
+          });
+        }
+      });
+    }
+  }
+
+  bool isEndshow=false;
+  String startdate="";
+  Future<void> _selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedEndTime != null ? selectedEndTime : selectedStartTime,
       builder: (BuildContext context, Widget? child){
         return Theme(
           data: ThemeData.dark().copyWith(
@@ -105,51 +161,32 @@ class _CustomDialogState extends State<CustomDialog> {
     );
     if (picked != null && picked != selectedStartTime) {
       setState(() {
-        isStartshow=true;
-        selectedStartTime = picked;
+        if(picked.hour >= selectedStartTime.hour && picked.minute >= selectedStartTime.minute){
+          isEndshow=true;
+          selectedEndTime = picked;
+        }else{
+          if(picked.minute == selectedStartTime.minute){
+            Fluttertoast.showToast(
+                msg: "Time should be bigger than To time",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR);
+
+          }
+          Fluttertoast.showToast(
+              msg: "Time should be bigger than To time",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.SNACKBAR);
+        }
       });
     }
   }
 
-  bool isEndshow=false;
-  String startdate="";
-  Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedEndTime,
-      builder: (BuildContext context, Widget? child){
-        return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: Colors.black,
-              onPrimary: Colors.white,
-              surface: Colors.white,
-              onSurface: Colors.black,
-              secondary: Colors.green,
-              onSecondary: Colors.green,
-              secondaryContainer: Colors.green,
-            ),
-            datePickerTheme: DatePickerThemeData(
-                yearStyle: TextStyle(color: Colors.grey)
-            ),
-            dialogBackgroundColor:Colors.white,
-          ),
-          child: child!,
-        );
-      },
-    );
-    if (picked != null && picked != selectedEndTime) {
-      setState(() {
-        isEndshow=true;
-        selectedEndTime = picked;
-      });
-    }
-  }
 
   String formatTimeOfDay(TimeOfDay time) {
     final now = DateTime.now();
     final dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
-    return DateFormat('hh:mm a').format(dateTime);
+    var format = DateFormat('hh:mm a').format(dateTime);
+    return format;
   }
 
 

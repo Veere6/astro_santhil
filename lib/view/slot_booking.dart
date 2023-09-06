@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 class SlotBooking extends StatefulWidget {
 
@@ -53,6 +54,14 @@ class _SlotBookingState extends State<SlotBooking> {
   List<String> spinnerItems = [
     'Select Customer',
   ];
+
+  dynamic formatTimeOfDay(TimeOfDay time) {
+    final now = DateTime.now();
+    final dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    var format = DateFormat('hh:mm a').format(dateTime);
+    return format.replaceAll(" ", "");
+  }
+
 
   Future<Null> selectTime(BuildContext context) async {
     picked = await showTimePicker(
@@ -220,60 +229,17 @@ class _SlotBookingState extends State<SlotBooking> {
     slot_id.clear();
     slotItems.clear();
     _viewSlotModel = await Services.SlotView(dob);
+
     if(_viewSlotModel.status == true){
       for(var i = 0; i < _viewSlotModel.body!.length; i++) {
         // _list = _viewSlotModel.body[i]. ?? [];
 
         SlotBody _body = _viewSlotModel.body![i];
         final fromTime =_body.fromTime.toString().toUpperCase();
-        // _body.fromTime!.substring(0, 2).contains("13") ? "01${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("14") ? "02${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("15") ? "03${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("16") ? "04${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("17") ? "05${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("18") ? "06${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("19") ? "07${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("20") ? "08${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("21") ? "09${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("22") ? "10${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // _body.fromTime!.substring(0, 2).contains("23") ? "11${_body.fromTime!
-        //     .substring(2, 5)} PM" :
-        // "${_body.fromTime!.substring(0, 5)} AM";
 
         final toTime =_body.toTime.toString().toUpperCase();
-        // _body.toTime!.substring(0, 2).contains("13") ? "01${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("14") ? "02${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("15") ? "03${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("16") ? "04${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("17") ? "05${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("18") ? "06${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("19") ? "07${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("20") ? "08${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("21") ? "09${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("22") ? "10${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // _body.toTime!.substring(0, 2).contains("23") ? "11${_body.toTime!
-        //     .substring(2, 5)} PM" :
-        // "${_body.toTime!.substring(0, 5)} AM";
+        TimeOfDay now = TimeOfDay.now();
+        print(formatTimeOfDay(now));
 
         if (_body.bookStatus != "1") {
           _list.add("${fromTime} - ${toTime}");
