@@ -236,24 +236,36 @@ class _SlotBookingState extends State<SlotBooking> {
 
         SlotBody _body = _viewSlotModel.body![i];
         final fromTime =_body.fromTime.toString().toUpperCase();
-
         final toTime =_body.toTime.toString().toUpperCase();
-        TimeOfDay now = TimeOfDay.now();
-        print(formatTimeOfDay(now));
+
+        String dateTimeString = "${_body.date} ${_body.toTime}";
+
+// Define a format that matches the provided string format
+        DateFormat format = DateFormat("yyyy-MM-dd hh:mma");
+
+// Parse the string into a DateTime object
+        DateTime dateTime = format.parse(dateTimeString);
 
         if (_body.bookStatus != "1") {
-          _list.add("${fromTime} - ${toTime}");
-          slot_id.add("${_body.slotId}");
-          slotItems.add(DropdownMenuItem(
-            child: Text("${fromTime} - ${toTime}"),
-            value: "${fromTime} - ${toTime}",
-          ));
+          if (isDateTimeGreaterThanNow(dateTime)){
+            _list.add("${fromTime} - ${toTime}");
+            slot_id.add("${_body.slotId}");
+            slotItems.add(DropdownMenuItem(
+              child: Text("${fromTime} - ${toTime}"),
+              value: "${fromTime} - ${toTime}",
+            ));
+        }
         }
       }
     }
     setState(() {
       _pageLoading = false;
     });
+  }
+
+  bool isDateTimeGreaterThanNow(DateTime dateTimeToCheck) {
+    final now = DateTime.now();
+    return dateTimeToCheck.isAfter(now);
   }
 
 
